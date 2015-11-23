@@ -38,7 +38,7 @@ class SystemModuleController extends BaseController
 //         exit();
 //         `id` `code` `display_label` `has_lef` `des` `entry_url` `display_order` `create_user` `create_date`
         $query = SystemModule::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '2']);
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
         $models = $query->orderBy('display_order')
         ->offset($pagination->offset)
         ->limit($pagination->limit)
