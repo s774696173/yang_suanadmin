@@ -64,9 +64,17 @@ class SystemFunctionController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+//         echo "===========";
+        $model = $this->findModel($id);
+        echo json_encode($model->getAttributes());
+//         exit();
+//         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+//         return $model->getAttributes();
+        
+//         return [
+//             'search' => $search,
+//             'code' => 100,
+//         ];
     }
 
     /**

@@ -63,7 +63,7 @@ $modelLabel = new SystemModule();
             echo '  <td class="center">';
             // onclick="editAction(##id##)"
             echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
-            echo '      <a id="view_btn" onclick="viewAction()" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
+            echo '      <a id="view_btn" onclick="viewAction('.$model->id.')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
             echo '      <a id="edit_btn" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
             echo '      <a id="delete_btn" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
             echo '  </td>';
@@ -98,7 +98,7 @@ $modelLabel = new SystemModule();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(['id' => 'login-form', 'class'=>'form-horizontal', 'action'=>'index.php?r=site/login']); ?>
+                <?php $form = ActiveForm::begin(['id' => 'login-form', 'class'=>'form-horizontal', 'action'=>'index.php?r=system-module/save']); ?>
 
 				<div class="form-group">
 					<label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
@@ -224,13 +224,42 @@ $modelLabel = new SystemModule();
 
 <script>
 
-function viewAction(){
+function viewAction(id){
 // 	console.log(arguments);
 // 	alert("===");
+// 	return;
 // 	for(var i=0;i<arguments.length;i++)
 // 		 console.log(arguments[i]);
- 	$('#edit_system_module').modal('show');
+	$.ajax({
+		   type: "GET",
+		   url: "index.php?r=system-module/view",
+		   data: {"id":id},
+		   cache: false,
+		   dataType:"json",
+		   error: function (xmlHttpRequest, textStatus, errorThrown) {
+			    alert("出错了，" + textStatus);
+			},
+		   success: function(msg){
+			   console.log(msg);
+		       alert( "Data Saved: " + msg );
+		   }
+		});
+	
+	
+//  	$('#edit_system_module').modal('show');
 
+}
+
+function addAction(id){
+	
+}
+
+function editAction(id){
+	
+}
+
+function deleteAction(id){
+	
 }
 // $('#view_btn').click(function (e) {
 //     e.preventDefault();
