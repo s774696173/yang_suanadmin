@@ -57,9 +57,12 @@ class SystemModuleController extends BaseController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
+        $id = Yii::$app->request->post('id');
+//         $this->enableCsrfValidation = false;
         $model = $this->findModel($id);
+        
         echo json_encode($model->getAttributes());
 //         return $this->render('view', [
 //             'model' => $this->findModel($id),
@@ -74,7 +77,6 @@ class SystemModuleController extends BaseController
     public function actionCreate()
     {
         $model = new SystemModule();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
