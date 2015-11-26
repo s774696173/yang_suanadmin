@@ -8,23 +8,23 @@ use backend\models\SystemFunctionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\Pagination;
+
 /**
  * SystemFunctionController implements the CRUD actions for SystemFunction model.
  */
 class SystemFunctionController extends Controller
 {
-//     public function behaviors()
-//     {
-//         return [
-//             'verbs' => [
-//                 'class' => VerbFilter::className(),
-//                 'actions' => [
-//                     'delete' => ['post'],
-//                 ],
-//             ],
-//         ];
-//     }
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * Lists all SystemFunction models.
@@ -33,28 +33,12 @@ class SystemFunctionController extends Controller
     public function actionIndex()
     {
         $searchModel = new SystemFunctionSearch();
-        $module_id = Yii::$app->request->post('id');
-        $query = SystemFunction::find()->andWhere('module_id=:module_id', ['module_id'=>$module_id]);
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
-        $models = $query->orderBy('display_order')
-        ->offset($pagination->offset)
-        ->limit($pagination->limit)
-        ->all();
-        //         echo "count=" . count($models);
-        //         exit();
-        //         return $this->render('index');
-        return $this->render('index', [
-            'models'=>$models,
-            'pages'=>$pagination,
-        ]);
-        
-        
-//         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-//         return $this->render('index', [
-//             'searchModel' => $searchModel,
-//             'dataProvider' => $dataProvider,
-//         ]);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -64,17 +48,9 @@ class SystemFunctionController extends Controller
      */
     public function actionView($id)
     {
-//         echo "===========";
-        $model = $this->findModel($id);
-        echo json_encode($model->getAttributes());
-//         exit();
-//         Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
-//         return $model->getAttributes();
-        
-//         return [
-//             'search' => $search,
-//             'code' => 100,
-//         ];
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**

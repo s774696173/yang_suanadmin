@@ -33,7 +33,7 @@ use yii\helpers\Html;
 
     <!-- jQuery -->
     <script src="bower_components/jquery/jquery.min.js"></script>
-
+    <script src="js/jquery.form.min.js"></script>
     <!-- The fav icon -->
     <link rel="shortcut icon" href="img/favicon.ico">
 
@@ -41,14 +41,6 @@ use yii\helpers\Html;
 
 <body>
 <?= $content ?>
-
-
-
-
-
-  
-
-
 
 <!-- external javascript -->
 

@@ -76,6 +76,7 @@ class SystemModuleController extends BaseController
      */
     public function actionCreate()
     {
+        //echo json_encode(['id'=>1, 'action'=>'create']); 
         $model = new SystemModule();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -94,6 +95,8 @@ class SystemModuleController extends BaseController
      */
     public function actionUpdate($id)
     {
+//         echo json_encode(['id'=>1, 'action'=>'update']);
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
