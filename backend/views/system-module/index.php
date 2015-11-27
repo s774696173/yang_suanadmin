@@ -8,36 +8,36 @@ $modelLabel = new SystemModule();
 ?>
 
 <div class="row">
+
 	<div class="box col-md-12">
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
 					<i class="glyphicon glyphicon-user"></i>模块
 				</h2>
-
-
 				<div class="box-icon">
-					<button id="create_btn" type="button" class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
+					<button id="create_btn" type="button"
+						class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
 					|
 					<button id="delete_btn" type="button" class="btn btn-xs btn-danger">批量删除</button>
-
 					<!-- 
 					<a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a> 
 					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
 					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
 					 -->
 				</div>
-
 			</div>
 			<div class="box-content">
-
+				<div id="alert_dialog" class="alert alert-success hide">
+					<a href="#" class="close" data-dismiss="alert">&times;</a>
+				</div>
 
 				<table id="data_table"
 					class="table table-striped table-bordered bootstrap-datatable datatable responsive">
 					<thead>
 						<tr>
 						<?php
-    // `id` `code` `display_label` `has_lef` `des` `entry_url` `display_order` `create_user` `create_date`
+    
     echo '<th><label><input type="checkbox"></label></th>';
     echo '<th>' . $modelLabel->getAttributeLabel('code') . '</th>';
     echo '<th>' . $modelLabel->getAttributeLabel('display_label') . '</th>';
@@ -51,26 +51,26 @@ $modelLabel = new SystemModule();
 					</thead>
 					<tbody>
 					
-					    <?php
-        foreach ($models as $model) {
-            echo '<tr>';
-            echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
-            echo '  <td>' . $model->code . '</td>';
-            echo '  <td>' . $model->display_label . '</td>';
-            echo '  <td>' . $model->has_lef . '</td>';
-            echo '  <td>' . $model->create_user . '</td>';
-            echo '  <td>' . $model->create_date . '</td>';
-            echo '  <td class="center">';
-            // onclick="editAction(##id##)"
-            echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
-            echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-            echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
-            echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
-            echo '  </td>';
-            echo '<tr/>';
-        }
-        
-        ?>
+		<?php
+foreach ($models as $model) {
+    echo '<tr>';
+    echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
+    echo '  <td>' . $model->code . '</td>';
+    echo '  <td>' . $model->display_label . '</td>';
+    echo '  <td>' . $model->has_lef . '</td>';
+    echo '  <td>' . $model->create_user . '</td>';
+    echo '  <td>' . $model->create_date . '</td>';
+    echo '  <td class="center">';
+    // onclick="editAction(##id##)"
+    echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
+    echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
+    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+    echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
+    echo '  </td>';
+    echo '<tr/>';
+}
+
+?>
 				
 					</tbody>
 				</table>
@@ -90,7 +90,6 @@ $modelLabel = new SystemModule();
 
 <div class="modal fade" id="edit_dialog" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
-
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -292,7 +291,45 @@ function editAction(id){
 }
 
 function deleteAction(id){
-	
+	alert_dialog('info');
+	var ids = [];
+	if(!!id == true){
+		ids[0] = id;
+	}
+	else{
+		var checkboxs = $('#data_table :checked');
+	    if(checkboxs.size() > 0){
+	        var c = 0;
+	        for(i = 0; i < checkboxs.size(); i++){
+	            var id = checkboxs.eq(i).val();
+	            if(id != ""){
+	            	ids[c++] = id;
+	            }
+	        }
+	    }
+	}
+	if(ids.length > 0){
+		confirm_dialog('请确认是否删除', function(){
+			var csrf = $('meta[name="csrf-token"]').attr("content");
+		    $.ajax({
+				   type: "GET",
+				   url: "index.php?r=system-module/delete",
+				   data: {"ids":ids,"_csrf":csrf},
+				   cache: false,
+				   dataType:"json",
+				   error: function (xmlHttpRequest, textStatus, errorThrown) {
+					    alert("出错了，" + textStatus);
+					},
+				   success: function(data){
+					   
+				   }
+				});
+		});
+	}
+	else{
+		alert_dialog('测试 11111式');
+	}
+    
 }
 function getSelectedIdValues(formId)
 {
@@ -321,22 +358,7 @@ $('#create_btn').click(function (e) {
 });
 $('#delete_btn').click(function (e) {
     e.preventDefault();
-    var checkboxs = $('#data_table :checked');
-    var ids = '';
-    if(checkboxs.size() > 0){
-        for(i = 0; i < checkboxs.size(); i++){
-            var id = checkboxs.eq(i).val();
-            if(id != ""){
-            	ids = ids + id + ',';
-            }
-        	//console.log(checkboxs.eq(i).val());
-        	//if(checkboxs[i].){
-        }
-        if(ids != ''){
-        	ids = ids.substr(0, ids.length - 1);
-        }
-    }
-    console.log(ids);
+    deleteAction('');
 });
 
 $('#system_module_form').bind('submit', function(e) {

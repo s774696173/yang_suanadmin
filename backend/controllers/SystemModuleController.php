@@ -60,13 +60,8 @@ class SystemModuleController extends BaseController
     public function actionView()
     {
         $id = Yii::$app->request->post('id');
-//         $this->enableCsrfValidation = false;
         $model = $this->findModel($id);
-        
         echo json_encode($model->getAttributes());
-//         return $this->render('view', [
-//             'model' => $this->findModel($id),
-//         ]);
     }
 
     /**
@@ -114,11 +109,17 @@ class SystemModuleController extends BaseController
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete(array $ids)
     {
-        $this->findModel($id)->delete();
+        if(count($ids) > 0){
+            $idsStr = implode(',', $ids);
+            $c = SystemModule::deleteAll(" id in (:ids)", array('ids'=>$idsStr));
+            echo json_encode(array('errno'=>0, 'data'=>$c));
+        }
+        else{
+            echo json_encode(array('errno'=>2, 'msg'=>''));
+        }
 
-        return $this->redirect(['index']);
     }
 
     /**

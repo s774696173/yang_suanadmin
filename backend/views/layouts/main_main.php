@@ -37,9 +37,61 @@ use yii\helpers\Html;
     <!-- The fav icon -->
     <link rel="shortcut icon" href="img/favicon.ico">
 
+    <script>
+    $(function($){
+  		window.confirm_dialog = function(content, ok_fun){
+  			$('#confirm_content').text(content);
+  			$('#confirm_dialog_ok').click(ok_fun);
+  			$('#confirm_dialog').modal('show');
+  		}
+  		// alert-success alert-info alert-warning alert-danger  alert alert-danger alert-dismissable
+  		window.alert_dialog = function(content){
+  	  		console.log('===');
+//   	  		if(!type){
+//   	  	  		switch(type){
+//   				case 'succcess':
+//   					$('#alert_dialog').attr('class', 'alert alert-success alert-dismissable');
+//   					break;
+//   				case 'warning':
+//   					$('#alert_dialog').attr('class', 'alert alert-warning alert-dismissable');
+//   					break;
+//   				case 'danger':
+//   					$('#alert_dialog').attr('class', 'alert alert-danger alert-dismissable');
+//   					break;
+//   				default:  //info
+//   					$('#alert_dialog').attr('class', 'alert alert-info alert-dismissable');
+//   					break;
+//   			}
+//   	  		}
+  			$('#alert_dialog').text(content);
+  			$('#alert_dialog').removeClass('hide');
+  		}
+  	});
+    </script>
 </head>
 
 <body>
+<div class="modal fade" id="confirm_dialog" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>请确认</h3>
+			</div>
+			<div id="confirm_content" class="modal-body">
+                
+            </div>
+			<div class="modal-footer">
+				<a id="confirm_dialog_cancel" href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
+					id="confirm_dialog_ok" href="#" class="btn btn-primary">确定</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <?= $content ?>
 
 <!-- external javascript -->
