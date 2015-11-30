@@ -39,33 +39,45 @@ use yii\helpers\Html;
 
     <script>
     $(function($){
-  		window.confirm_dialog = function(content, ok_fun){
-  			$('#confirm_content').text(content);
-  			$('#confirm_dialog_ok').click(ok_fun);
-  			$('#confirm_dialog').modal('show');
-  		}
-  		// alert-success alert-info alert-warning alert-danger  alert alert-danger alert-dismissable
-  		window.alert_dialog = function(content){
-  	  		console.log('===');
-//   	  		if(!type){
-//   	  	  		switch(type){
-//   				case 'succcess':
-//   					$('#alert_dialog').attr('class', 'alert alert-success alert-dismissable');
-//   					break;
-//   				case 'warning':
-//   					$('#alert_dialog').attr('class', 'alert alert-warning alert-dismissable');
-//   					break;
-//   				case 'danger':
-//   					$('#alert_dialog').attr('class', 'alert alert-danger alert-dismissable');
-//   					break;
-//   				default:  //info
-//   					$('#alert_dialog').attr('class', 'alert alert-info alert-dismissable');
-//   					break;
-//   			}
-//   	  		}
-  			$('#alert_dialog').text(content);
-  			$('#alert_dialog').removeClass('hide');
-  		}
+        window.admin_tool = function(){
+            return {
+            	confirm : function(content, ok_fun){
+            		$('#confirm_content').text(content);
+          			$('#confirm_dialog_ok').click(function(){
+          				ok_fun();
+          				$('#confirm_dialog').modal('hide');
+          			});
+          			$('#confirm_dialog').modal('show');
+          		},
+          		alert : function(id, msg, type){
+              		var alert_type = '';
+              		switch(type){
+              			case 'success':
+              				alert_type = 'alert-success';
+                  			break;
+              			case 'warning':
+              				alert_type = 'alert-warning';
+                  			break;
+              			case 'danger':
+              				alert_type = 'alert-danger';
+                  			break;
+                  		default:
+                  			alert_type = 'alert-info';
+              		}
+              		$('#' + id).html('<div class="alert ' + alert_type + ' alert-dismissable">'
+                      		+ '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>');
+          		}
+            };
+        }();
+
+        // 全选
+        $('#data_table_check').click( function() {
+            var b = this.checked;
+        	$('#data_table tbody :checkbox').each(function(i){
+        		this.checked = b;
+        	});
+        });
+        
   	});
     </script>
 </head>

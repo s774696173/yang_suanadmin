@@ -73,12 +73,19 @@ class SystemModuleController extends BaseController
     {
         //echo json_encode(['id'=>1, 'action'=>'create']); 
         $model = new SystemModule();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+//         $model->getErrors();
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate() == true && $model->save()){
+                $msg = array('errno'=>0, 'msg'=>'保存成功');
+                echo json_encode($msg);
+            }
+            else{
+                $msg = array('errno'=>2, 'data'=>$model->getErrors());
+                echo json_encode($msg);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $msg = array('errno'=>2, 'msg'=>'数据出错');
+            echo json_encode($msg);
         }
     }
 
@@ -111,10 +118,11 @@ class SystemModuleController extends BaseController
      */
     public function actionDelete(array $ids)
     {
+        
         if(count($ids) > 0){
             $idsStr = implode(',', $ids);
-            $c = SystemModule::deleteAll(" id in (:ids)", array('ids'=>$idsStr));
-            echo json_encode(array('errno'=>0, 'data'=>$c));
+            $c = SystemModule::deleteAll(['in', 'id', $ids]);
+            echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));

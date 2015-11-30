@@ -20,25 +20,19 @@ $modelLabel = new SystemModule();
 						class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
 					|
 					<button id="delete_btn" type="button" class="btn btn-xs btn-danger">批量删除</button>
-					<!-- 
-					<a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a> 
-					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
-					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
-					 -->
+				
 				</div>
 			</div>
 			<div class="box-content">
-				<div id="alert_dialog" class="alert alert-success hide">
-					<a href="#" class="close" data-dismiss="alert">&times;</a>
-				</div>
-
+			    <div id="msg_info">
+                </div>
 				<table id="data_table"
 					class="table table-striped table-bordered bootstrap-datatable datatable responsive">
 					<thead>
 						<tr>
 						<?php
     
-    echo '<th><label><input type="checkbox"></label></th>';
+    echo '<th><label><input id="data_table_check" type="checkbox"></label></th>';
     echo '<th>' . $modelLabel->getAttributeLabel('code') . '</th>';
     echo '<th>' . $modelLabel->getAttributeLabel('display_label') . '</th>';
     echo '<th>' . $modelLabel->getAttributeLabel('has_lef') . '</th>';
@@ -53,7 +47,7 @@ $modelLabel = new SystemModule();
 					
 		<?php
 foreach ($models as $model) {
-    echo '<tr>';
+    echo '<tr id="rowid_' . $model->id . '">';
     echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
     echo '  <td>' . $model->code . '</td>';
     echo '  <td>' . $model->display_label . '</td>';
@@ -61,7 +55,6 @@ foreach ($models as $model) {
     echo '  <td>' . $model->create_user . '</td>';
     echo '  <td>' . $model->create_date . '</td>';
     echo '  <td class="center">';
-    // onclick="editAction(##id##)"
     echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
@@ -291,7 +284,6 @@ function editAction(id){
 }
 
 function deleteAction(id){
-	alert_dialog('info');
 	var ids = [];
 	if(!!id == true){
 		ids[0] = id;
@@ -309,25 +301,29 @@ function deleteAction(id){
 	    }
 	}
 	if(ids.length > 0){
-		confirm_dialog('请确认是否删除', function(){
-			var csrf = $('meta[name="csrf-token"]').attr("content");
+		admin_tool.confirm('请确认是否删除', function(){
+			console.log(this);
+			///var csrf = $('meta[name="csrf-token"]').attr("content"); // "_csrf":csrf
 		    $.ajax({
 				   type: "GET",
 				   url: "index.php?r=system-module/delete",
-				   data: {"ids":ids,"_csrf":csrf},
+				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
 				   error: function (xmlHttpRequest, textStatus, errorThrown) {
 					    alert("出错了，" + textStatus);
 					},
 				   success: function(data){
-					   
+					   for(i = 0; i < ids.length; i++){
+						   $('#rowid_' + ids[i]).remove();
+					   }
+					   admin_tool.alert('msg_info', '删除成功', 'success');
 				   }
 				});
 		});
 	}
 	else{
-		alert_dialog('测试 11111式');
+		admin_tool.alert('msg_info', '请先选择要删除的数据', 'warning');
 	}
     
 }
@@ -371,22 +367,20 @@ $('#system_module_form').bind('submit', function(e) {
     	url: "index.php?r=system-module/" + action,
     	success: function(value) 
     	{
-        	console.log(value);
-//     		if(value.id && value.id != 0)
-//     		{
-//         		showAlertDialog("保存成功");
-//         		$("#edit_adminMessage").dialog( "close" );
-//         		displayDataListContentAjax();
-//     		}
-//     		else
-//     		{
-//     			$("#msg_error").html(typeof(value.AdminMessage_msg)== "undefined" ? "" : value.AdminMessage_msg[0]);
-//     			$("#expiry_days_error").html(typeof(value.AdminMessage_expiry_days)== "undefined" ? "" : value.AdminMessage_expiry_days[0]);
-//     			$("#create_user_error").html(typeof(value.AdminMessage_create_user)== "undefined" ? "" : value.AdminMessage_create_user[0]);
-//     			$("#create_date_error").html(typeof(value.AdminMessage_create_date)== "undefined" ? "" : value.AdminMessage_create_date[0]);
-//     			$("#update_user_error").html(typeof(value.AdminMessage_update_user)== "undefined" ? "" : value.AdminMessage_update_user[0]);
-//     			$("#update_date_error").html(typeof(value.AdminMessage_update_date)== "undefined" ? "" : value.AdminMessage_update_date[0]);
-//     		}
+    		//console.log(value);
+        	if(value.errno == 0){
+        		$('#edit_dialog').modal('hide');
+        		admin_tool.alert('msg_info', '添加成功', 'success');
+        	}
+        	else{
+            	var json = value.data;
+        		for(var key in json){
+        			console.log(key+':'+json[key]);
+        			$('#' + key).attr({'data-placement':'bottom', 'data-content':json[key], 'data-toggle':'popover'}).addClass('popover-show').popover('show');
+        			
+        		}
+        	}
+
     	}
     });
 });
