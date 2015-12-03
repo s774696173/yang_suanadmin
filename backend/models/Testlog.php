@@ -54,9 +54,9 @@ class Testlog extends \backend\models\BaseModel
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'method' => 'Method',
-            'create_time' => 'Create Time',
+            'name' => '名称',
+            'method' => '方法',
+            'create_time' => '创建时间',
             'c1' => 'C1',
             'c2' => 'C2',
             'c3' => 'C3',
@@ -86,10 +86,10 @@ class Testlog extends \backend\models\BaseModel
      * update_date: 修改时间。生成的代码自动赋值
      */
     public function getTableColumnInfo(){
-        $tableColumnInfo = array(
+        return array(
         'id' => array(
                         'name' => 'id',
-//                         'allowNull' => false,
+                        'allowNull' => false,
 //                         'autoIncrement' => true,
 //                         'comment' => '',
 //                         'dbType' => "bigint(20) unsigned",
@@ -112,9 +112,9 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'name' => array(
                         'name' => 'name',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '',
+//                         'comment' => '名称',
 //                         'dbType' => "varchar(10)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -135,9 +135,9 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'method' => array(
                         'name' => 'method',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '',
+//                         'comment' => '方法',
 //                         'dbType' => "varchar(10)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -158,9 +158,9 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'create_time' => array(
                         'name' => 'create_time',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '',
+//                         'comment' => '创建时间',
 //                         'dbType' => "datetime",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -181,7 +181,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c1' => array(
                         'name' => 'c1',
-//                         'allowNull' => false,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "char(1)",
@@ -204,7 +204,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c2' => array(
                         'name' => 'c2',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "date",
@@ -227,7 +227,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c3' => array(
                         'name' => 'c3',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "double",
@@ -250,12 +250,12 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c4' => array(
                         'name' => 'c4',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
-//                         'dbType' => "enum('a','b','c')",
+//                         'dbType' => "enum('a','b','c','','''''')",
                         'defaultValue' => '',
-                        'enumValues' => ["a","b","c"],
+                        'enumValues' => ["a","b","c","",""],
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
                         'precision' => '',
@@ -273,7 +273,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c5' => array(
                         'name' => 'c5',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "decimal(10,0)",
@@ -296,7 +296,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c6' => array(
                         'name' => 'c6',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "text",
@@ -319,7 +319,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c7' => array(
                         'name' => 'c7',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "binary(1)",
@@ -342,7 +342,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c8' => array(
                         'name' => 'c8',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "tinyint(1)",
@@ -365,7 +365,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c9' => array(
                         'name' => 'c9',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "year(4)",
@@ -388,7 +388,7 @@ class Testlog extends \backend\models\BaseModel
                     ),
 		'c10' => array(
                         'name' => 'c10',
-//                         'allowNull' => true,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '',
 //                         'dbType' => "mediumblob",
