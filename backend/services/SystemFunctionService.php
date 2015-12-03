@@ -1,14 +1,9 @@
 <?php
 namespace backend\services;
-use Yii;
 
-class SystemFunctionService extends BaseService
-{
+use backend\models\SystemFunction;
 
-    function __construct()
-    {}
-    
-    
+class SystemFunctionService extends SystemFunction{
+
+   
 }
-
-?>

@@ -3,8 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\data\Pagination;
 use backend\models\SystemFunction;
-use backend\models\SystemFunctionSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class SystemFunctionController extends Controller
 {
+    /*
     public function behaviors()
     {
         return [
@@ -25,19 +27,23 @@ class SystemFunctionController extends Controller
             ],
         ];
     }
-
+    */
     /**
      * Lists all SystemFunction models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
-        $searchModel = new SystemFunctionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $query = SystemFunction::find();
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
+        //$models = $query->orderBy('display_order')
+        $models = $query->andWhere(['module_id'=>$id])
+        ->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'models'=>$models,
+            'pages'=>$pagination,
         ]);
     }
 
@@ -48,9 +54,10 @@ class SystemFunctionController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        //$id = Yii::$app->request->post('id');
+        $model = $this->findModel($id);
+        echo json_encode($model->getAttributes());
+
     }
 
     /**
@@ -61,13 +68,18 @@ class SystemFunctionController extends Controller
     public function actionCreate()
     {
         $model = new SystemFunction();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate() == true && $model->save()){
+                $msg = array('errno'=>0, 'msg'=>'保存成功');
+                echo json_encode($msg);
+            }
+            else{
+                $msg = array('errno'=>2, 'data'=>$model->getErrors());
+                echo json_encode($msg);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $msg = array('errno'=>2, 'msg'=>'数据出错');
+            echo json_encode($msg);
         }
     }
 
@@ -80,14 +92,20 @@ class SystemFunctionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate() == true && $model->save()){
+                $msg = array('errno'=>0, 'msg'=>'保存成功');
+                echo json_encode($msg);
+            }
+            else{
+                $msg = array('errno'=>2, 'data'=>$model->getErrors());
+                echo json_encode($msg);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $msg = array('errno'=>2, 'msg'=>'数据出错');
+            echo json_encode($msg);
         }
+    
     }
 
     /**
@@ -96,11 +114,20 @@ class SystemFunctionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete(array $ids)
     {
-        $this->findModel($id)->delete();
+        if(count($ids) > 0){
+            $idsStr = implode(',', $ids);
+            $c = SystemFunction::deleteAll(['in', 'id', $ids]);
+            echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
+        }
+        else{
+            echo json_encode(array('errno'=>2, 'msg'=>''));
+        }
+    
+        //$this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        //return $this->redirect(['index']);
     }
 
     /**
