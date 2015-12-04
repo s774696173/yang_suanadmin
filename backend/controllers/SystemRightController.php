@@ -4,16 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\SystemFunction;
+use backend\models\SystemRight;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SystemFunctionController implements the CRUD actions for SystemFunction model.
+ * SystemRightController implements the CRUD actions for SystemRight model.
  */
-class SystemFunctionController extends Controller
+class SystemRightController extends Controller
 {
     /*
     public function behaviors()
@@ -29,12 +29,12 @@ class SystemFunctionController extends Controller
     }
     */
     /**
-     * Lists all SystemFunction models.
+     * Lists all SystemRight models.
      * @return mixed
      */
     public function actionIndex($id)
     {
-        $query = SystemFunction::find()->andWhere(['module_id'=>$id]);
+        $query = SystemRight::find()->andWhere(['func_id'=>$id]);
         $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
         //$models = $query->orderBy('display_order')
         $models = $query
@@ -48,7 +48,7 @@ class SystemFunctionController extends Controller
     }
 
     /**
-     * Displays a single SystemFunction model.
+     * Displays a single SystemRight model.
      * @param integer $id
      * @return mixed
      */
@@ -61,13 +61,13 @@ class SystemFunctionController extends Controller
     }
 
     /**
-     * Creates a new SystemFunction model.
+     * Creates a new SystemRight model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new SystemFunction();
+        $model = new SystemRight();
         if ($model->load(Yii::$app->request->post())) {
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
@@ -84,7 +84,7 @@ class SystemFunctionController extends Controller
     }
 
     /**
-     * Updates an existing SystemFunction model.
+     * Updates an existing SystemRight model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -109,7 +109,7 @@ class SystemFunctionController extends Controller
     }
 
     /**
-     * Deletes an existing SystemFunction model.
+     * Deletes an existing SystemRight model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,7 +118,7 @@ class SystemFunctionController extends Controller
     {
         if(count($ids) > 0){
             $idsStr = implode(',', $ids);
-            $c = SystemFunction::deleteAll(['in', 'id', $ids]);
+            $c = SystemRight::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
@@ -131,15 +131,15 @@ class SystemFunctionController extends Controller
     }
 
     /**
-     * Finds the SystemFunction model based on its primary key value.
+     * Finds the SystemRight model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return SystemFunction the loaded model
+     * @return SystemRight the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = SystemFunction::findOne($id)) !== null) {
+        if (($model = SystemRight::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

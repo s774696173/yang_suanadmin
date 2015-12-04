@@ -4,31 +4,25 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "system_right".
+ * This is the model class for table "system_role".
  *
  * @property integer $id
- * @property integer $func_id
- * @property string $right_name
- * @property string $display_label
+ * @property string $code
+ * @property string $name
  * @property string $des
- * @property integer $display_order
- * @property string $has_lef
  * @property string $create_user
  * @property string $create_date
  * @property string $update_user
  * @property string $update_date
- *
- * @property SystemFunction $func
- * @property SystemRightUrl[] $systemRightUrls
  */
-class SystemRight extends \backend\models\BaseModel
+class SystemRole extends \backend\models\BaseModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'system_right';
+        return 'system_role';
     }
 
     /**
@@ -37,12 +31,10 @@ class SystemRight extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['func_id'], 'required'],
-            [['func_id', 'display_order'], 'integer'],
+            [['code', 'name'], 'required'],
             [['create_date', 'update_date'], 'safe'],
-            [['right_name', 'display_label', 'des'], 'string', 'max' => 200],
-            [['has_lef'], 'string', 'max' => 1],
-            [['create_user', 'update_user'], 'string', 'max' => 50]
+            [['code', 'name', 'create_user', 'update_user'], 'string', 'max' => 50],
+            [['des'], 'string', 'max' => 400]
         ];
     }
 
@@ -53,37 +45,18 @@ class SystemRight extends \backend\models\BaseModel
     {
         return [
             'id' => '主键',
-            'func_id' => '功能主键',
-            'right_name' => '名称',
-            'display_label' => '显示名',
-            'des' => '描述',
-            'display_order' => '显示顺序',
-            'has_lef' => '是否有子',
+            'code' => '角色编号',
+            'name' => '角色名称',
+            'des' => '角色描述',
             'create_user' => '创建人',
             'create_date' => '创建时间',
-            'update_user' => '修改人',
-            'update_date' => '修改时间',
+            'update_user' => '更新人',
+            'update_date' => '更新时间',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFunc()
-    {
-        return $this->hasOne(SystemFunction::className(), ['id' => 'func_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSystemRightUrls()
-    {
-        return $this->hasMany(SystemRightUrl::className(), ['right_id' => 'id']);
-    }
-
   /**
-     * 返回数据库字段信息
+     * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
      * inputtype - 对应控件类型，包含text,select,checkbox,radio,file,password
@@ -122,22 +95,22 @@ class SystemRight extends \backend\models\BaseModel
                         'order' => false,
                         'udc'=>'',
                     ),
-		'func_id' => array(
-                        'name' => 'func_id',
+		'code' => array(
+                        'name' => 'code',
                         'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '功能主键',
-//                         'dbType' => "int(11)",
+//                         'comment' => '角色编号',
+//                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
-                        'phpType' => 'integer',
-                        'precision' => '11',
+                        'phpType' => 'string',
+                        'precision' => '50',
                         'scale' => '',
-                        'size' => '11',
-                        'type' => 'integer',
+                        'size' => '50',
+                        'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('func_id'),
+                        'label'=>$this->getAttributeLabel('code'),
                         'inputtype' => 'text',
                         'displaylist' => true,
                         'searchble' => false,
@@ -145,45 +118,22 @@ class SystemRight extends \backend\models\BaseModel
                         'order' => false,
                         'udc'=>'',
                     ),
-		'right_name' => array(
-                        'name' => 'right_name',
-                        'allowNull' => true,
+		'name' => array(
+                        'name' => 'name',
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '名称',
-//                         'dbType' => "varchar(200)",
+//                         'comment' => '角色名称',
+//                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '200',
+                        'precision' => '50',
                         'scale' => '',
-                        'size' => '200',
+                        'size' => '50',
                         'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('right_name'),
-                        'inputtype' => 'text',
-                        'displaylist' => true,
-                        'searchble' => false,
-                        'readonly' => false,
-                        'order' => false,
-                        'udc'=>'',
-                    ),
-		'display_label' => array(
-                        'name' => 'display_label',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '显示名',
-//                         'dbType' => "varchar(200)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '200',
-                        'scale' => '',
-                        'size' => '200',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('display_label'),
+                        'label'=>$this->getAttributeLabel('name'),
                         'inputtype' => 'text',
                         'displaylist' => true,
                         'searchble' => false,
@@ -195,64 +145,18 @@ class SystemRight extends \backend\models\BaseModel
                         'name' => 'des',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '描述',
-//                         'dbType' => "varchar(200)",
+//                         'comment' => '角色描述',
+//                         'dbType' => "varchar(400)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '200',
+                        'precision' => '400',
                         'scale' => '',
-                        'size' => '200',
+                        'size' => '400',
                         'type' => 'string',
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('des'),
-                        'inputtype' => 'text',
-                        'displaylist' => true,
-                        'searchble' => false,
-                        'readonly' => false,
-                        'order' => false,
-                        'udc'=>'',
-                    ),
-		'display_order' => array(
-                        'name' => 'display_order',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '显示顺序',
-//                         'dbType' => "int(5)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'integer',
-                        'precision' => '5',
-                        'scale' => '',
-                        'size' => '5',
-                        'type' => 'integer',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('display_order'),
-                        'inputtype' => 'text',
-                        'displaylist' => true,
-                        'searchble' => false,
-                        'readonly' => false,
-                        'order' => false,
-                        'udc'=>'',
-                    ),
-		'has_lef' => array(
-                        'name' => 'has_lef',
-                        'allowNull' => false,
-//                         'autoIncrement' => false,
-//                         'comment' => '是否有子',
-//                         'dbType' => "varchar(1)",
-                        'defaultValue' => 'n',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '1',
-                        'scale' => '',
-                        'size' => '1',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('has_lef'),
                         'inputtype' => 'text',
                         'displaylist' => true,
                         'searchble' => false,
@@ -310,7 +214,7 @@ class SystemRight extends \backend\models\BaseModel
                         'name' => 'update_user',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '修改人',
+//                         'comment' => '更新人',
 //                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -333,7 +237,7 @@ class SystemRight extends \backend\models\BaseModel
                         'name' => 'update_date',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '修改时间',
+//                         'comment' => '更新时间',
 //                         'dbType' => "datetime",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -355,6 +259,5 @@ class SystemRight extends \backend\models\BaseModel
 		        );
         
     }
-    
-
+ 
 }

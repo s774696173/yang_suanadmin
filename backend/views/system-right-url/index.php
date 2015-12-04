@@ -5,9 +5,9 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use backend\models\SystemModule;
 use yii\bootstrap\ActiveForm;
-use backend\models\SystemFunction;
+use backend\models\SystemRightUrl;
 
-$modelLabel = new \backend\models\SystemFunction();
+$modelLabel = new \backend\models\SystemRightUrl();
 ?>
 
 <div class="row">
@@ -16,7 +16,7 @@ $modelLabel = new \backend\models\SystemFunction();
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
-					<i class="glyphicon glyphicon-user"></i>功能
+					<i class="glyphicon glyphicon-user"></i>访问URL
 				</h2>
 				<div class="box-icon">
 					<button id="create_btn" type="button"
@@ -41,31 +41,16 @@ $modelLabel = new \backend\models\SystemFunction();
 						      echo '<th>' . $modelLabel->getAttributeLabel('id'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('code'). '</th>';
+						      echo '<th>' . $modelLabel->getAttributeLabel('right_id'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('func_name'). '</th>';
+						      echo '<th>' . $modelLabel->getAttributeLabel('url'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('module_id'). '</th>';
+						      echo '<th>' . $modelLabel->getAttributeLabel('para_name'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('display_label'). '</th>';
-						      
-						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('des'). '</th>';
-						      
-						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('display_order'). '</th>';
-						      
-						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('entry_right_name'). '</th>';
-						      
-						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
-						      
-						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
+						      echo '<th>' . $modelLabel->getAttributeLabel('para_value'). '</th>';
 						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
@@ -82,8 +67,6 @@ $modelLabel = new \backend\models\SystemFunction();
 						      
 						      ?>
 						      <th>操作</th>
-						 
-			
 
 						</tr>
 					</thead>
@@ -94,22 +77,17 @@ foreach ($models as $model) {
     echo '<tr id="rowid_' . $model->id . '">';
     echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
         echo '  <td>' . $model->id . '</td>';
-        echo '  <td>' . $model->code . '</td>';
-        echo '  <td>' . $model->func_name . '</td>';
-        echo '  <td>' . $model->module_id . '</td>';
-        echo '  <td>' . $model->display_label . '</td>';
-        echo '  <td>' . $model->des . '</td>';
-        echo '  <td>' . $model->display_order . '</td>';
-        echo '  <td>' . $model->entry_right_name . '</td>';
-        echo '  <td>' . $model->entry_url . '</td>';
-        echo '  <td>' . $model->has_lef . '</td>';
+        echo '  <td>' . $model->right_id . '</td>';
+        echo '  <td>' . $model->url . '</td>';
+        echo '  <td>' . $model->para_name . '</td>';
+        echo '  <td>' . $model->para_value . '</td>';
         echo '  <td>' . $model->create_user . '</td>';
         echo '  <td>' . $model->create_date . '</td>';
         echo '  <td>' . $model->update_user . '</td>';
         echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
-    echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="index.php?r=system-right/index&id=' . $model->id . '"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
+   
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -143,86 +121,41 @@ foreach ($models as $model) {
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "system-function-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-function/save"]); ?>                
-                <input type="hidden" class="form-control" id="id" name="SystemFunction[id]" >
+                <?php $form = ActiveForm::begin(["id" => "system-right-url-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-right-url/save"]); ?>                
+                <input type="hidden" class="form-control" id="id" name="SystemRightUrl[id]" >
                                     
-                    <div id="code_div" class="form-group">
-    					<label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
+                    <div id="right_id_div" class="form-group">
+    					<label for="right_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_id")?></label>
     					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="code"
-    							name="SystemFunction[code]" placeholder="必填">
+    						<input type="text" class="form-control" id="right_id"
+    							name="SystemRightUrl[right_id]" placeholder="必填">
     					</div>
     					<div class="clearfix"></div>
     				</div>
                                     
-                    <div id="func_name_div" class="form-group">
-    					<label for="func_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("func_name")?></label>
+                    <div id="url_div" class="form-group">
+    					<label for="url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("url")?></label>
     					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="func_name"
-    							name="SystemFunction[func_name]" placeholder="必填">
+    						<input type="text" class="form-control" id="url"
+    							name="SystemRightUrl[url]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
                                     
-                    <div id="module_id_div" class="form-group">
-    					<label for="module_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("module_id")?></label>
+                    <div id="para_name_div" class="form-group">
+    					<label for="para_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("para_name")?></label>
     					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="module_id"
-    							name="SystemFunction[module_id]" placeholder="必填">
+    						<input type="text" class="form-control" id="para_name"
+    							name="SystemRightUrl[para_name]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
                                     
-                    <div id="display_label_div" class="form-group">
-    					<label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
+                    <div id="para_value_div" class="form-group">
+    					<label for="para_value" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("para_value")?></label>
     					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="display_label"
-    							name="SystemFunction[display_label]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                                    
-                    <div id="des_div" class="form-group">
-    					<label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="des"
-    							name="SystemFunction[des]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                                    
-                    <div id="display_order_div" class="form-group">
-    					<label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="display_order"
-    							name="SystemFunction[display_order]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                                    
-                    <div id="entry_right_name_div" class="form-group">
-    					<label for="entry_right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_right_name")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="entry_right_name"
-    							name="SystemFunction[entry_right_name]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                                    
-                    <div id="entry_url_div" class="form-group">
-    					<label for="entry_url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_url")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="entry_url"
-    							name="SystemFunction[entry_url]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                                    
-                    <div id="has_lef_div" class="form-group">
-    					<label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="has_lef"
-    							name="SystemFunction[has_lef]" placeholder="必填">
+    						<input type="text" class="form-control" id="para_value"
+    							name="SystemRightUrl[para_value]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -231,7 +164,7 @@ foreach ($models as $model) {
     					<label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
     					<div class="col-sm-10">
     						<input type="text" class="form-control" id="create_user"
-    							name="SystemFunction[create_user]" placeholder="">
+    							name="SystemRightUrl[create_user]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -240,7 +173,7 @@ foreach ($models as $model) {
     					<label for="create_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_date")?></label>
     					<div class="col-sm-10">
     						<input type="text" class="form-control" id="create_date"
-    							name="SystemFunction[create_date]" placeholder="">
+    							name="SystemRightUrl[create_date]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -249,7 +182,7 @@ foreach ($models as $model) {
     					<label for="update_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_user")?></label>
     					<div class="col-sm-10">
     						<input type="text" class="form-control" id="update_user"
-    							name="SystemFunction[update_user]" placeholder="">
+    							name="SystemRightUrl[update_user]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -258,7 +191,7 @@ foreach ($models as $model) {
     					<label for="update_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_date")?></label>
     					<div class="col-sm-10">
     						<input type="text" class="form-control" id="update_date"
-    							name="SystemFunction[update_date]" placeholder="">
+    							name="SystemRightUrl[update_date]" placeholder="">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -280,15 +213,10 @@ function viewAction(id){
 function initEditSystemModule(data, type){
 	if(type == 'create'){
 				$("#id").val('');
-				$("#code").val('');
-				$("#func_name").val('');
-				$("#module_id").val('');
-				$("#display_label").val('');
-				$("#des").val('');
-				$("#display_order").val('');
-				$("#entry_right_name").val('');
-				$("#entry_url").val('');
-				$("#has_lef").val('');
+				$("#right_id").val('');
+				$("#url").val('');
+				$("#para_name").val('');
+				$("#para_value").val('');
 				$("#create_user").val('');
 				$("#create_date").val('');
 				$("#update_user").val('');
@@ -296,15 +224,10 @@ function initEditSystemModule(data, type){
 			}
 	else{
 				$("#id").val(data.id);
-	    		$("#code").val(data.code);
-	    		$("#func_name").val(data.func_name);
-	    		$("#module_id").val(data.module_id);
-	    		$("#display_label").val(data.display_label);
-	    		$("#des").val(data.des);
-	    		$("#display_order").val(data.display_order);
-	    		$("#entry_right_name").val(data.entry_right_name);
-	    		$("#entry_url").val(data.entry_url);
-	    		$("#has_lef").val(data.has_lef);
+	    		$("#right_id").val(data.right_id);
+	    		$("#url").val(data.url);
+	    		$("#para_name").val(data.para_name);
+	    		$("#para_value").val(data.para_value);
 	    		$("#create_user").val(data.create_user);
 	    		$("#create_date").val(data.create_date);
 	    		$("#update_user").val(data.update_user);
@@ -312,15 +235,10 @@ function initEditSystemModule(data, type){
 	    	}
 	if(type == "view"){
 				$("#id").attr({readonly:true,disabled:true});
-        		$("#code").attr({readonly:true,disabled:true});
-        		$("#func_name").attr({readonly:true,disabled:true});
-        		$("#module_id").attr({readonly:true,disabled:true});
-        		$("#display_label").attr({readonly:true,disabled:true});
-        		$("#des").attr({readonly:true,disabled:true});
-        		$("#display_order").attr({readonly:true,disabled:true});
-        		$("#entry_right_name").attr({readonly:true,disabled:true});
-        		$("#entry_url").attr({readonly:true,disabled:true});
-        		$("#has_lef").attr({readonly:true,disabled:true});
+        		$("#right_id").attr({readonly:true,disabled:true});
+        		$("#url").attr({readonly:true,disabled:true});
+        		$("#para_name").attr({readonly:true,disabled:true});
+        		$("#para_value").attr({readonly:true,disabled:true});
         		$("#create_user").attr({readonly:true,disabled:true});
         		$("#create_date").attr({readonly:true,disabled:true});
         		$("#update_user").attr({readonly:true,disabled:true});
@@ -329,15 +247,10 @@ function initEditSystemModule(data, type){
 	}
 	else{
 				$("#id").attr({readonly:false,disabled:false});
-        		$("#code").attr({readonly:false,disabled:false});
-        		$("#func_name").attr({readonly:false,disabled:false});
-        		$("#module_id").attr({readonly:false,disabled:false});
-        		$("#display_label").attr({readonly:false,disabled:false});
-        		$("#des").attr({readonly:false,disabled:false});
-        		$("#display_order").attr({readonly:false,disabled:false});
-        		$("#entry_right_name").attr({readonly:false,disabled:false});
-        		$("#entry_url").attr({readonly:false,disabled:false});
-        		$("#has_lef").attr({readonly:false,disabled:false});
+        		$("#right_id").attr({readonly:false,disabled:false});
+        		$("#url").attr({readonly:false,disabled:false});
+        		$("#para_name").attr({readonly:false,disabled:false});
+        		$("#para_value").attr({readonly:false,disabled:false});
         		$("#create_user").attr({readonly:false,disabled:false});
         		$("#create_date").attr({readonly:false,disabled:false});
         		$("#update_user").attr({readonly:false,disabled:false});
@@ -355,7 +268,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=system-function/view",
+		   url: "index.php?r=system-right-url/view",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -395,7 +308,7 @@ function deleteAction(id){
 			///var csrf = $('meta[name="csrf-token"]').attr("content"); // "_csrf":csrf
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=system-function/delete",
+				   url: "index.php?r=system-right-url/delete",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -435,7 +348,7 @@ function getSelectedIdValues(formId)
 }
 $('#edit_dialog_ok').click(function (e) {
     e.preventDefault();
-	$('#system-function-form').submit();
+	$('#system-right-url-form').submit();
 });
 $('#create_btn').click(function (e) {
     e.preventDefault();
@@ -446,14 +359,14 @@ $('#delete_btn').click(function (e) {
     deleteAction('');
 });
 
-$('#system-function-form').bind('submit', function(e) {
+$('#system-right-url-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
 	var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=system-function/" + action,
+    	url: "index.php?r=system-right-url/" + action,
     	success: function(value) 
     	{
     		//console.log(value);

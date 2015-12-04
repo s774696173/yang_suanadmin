@@ -11,6 +11,15 @@ use backend\models\AdminUser;
  */
 class SiteController extends BaseController
 {
+//     http://tarruda.github.io/bootstrap-datetimepicker/
+// http://blueimp.github.io/jQuery-File-Upload/
+//     http://www.oschina.net/p/bootstrap-wysihtml5
+//     http://alittlecode.com/2012/04/jquery-form-validation-with-styles-from-twitter-bootstrap/
+
+/*
+https://github.com/jonmiles/bootstrap-treeview
+http://www.htmleaf.com/Demo/201502141380.html
+*/
     /**
      * @inheritdoc
      */

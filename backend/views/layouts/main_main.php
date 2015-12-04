@@ -141,6 +141,6 @@ use yii\helpers\Html;
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
 
-
+<script src="js/bootstrap-treeview.min.js"></script>
 </body>
 </html>
