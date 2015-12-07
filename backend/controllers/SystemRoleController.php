@@ -9,11 +9,14 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\services\SystemRightService;
+use backend\services\SystemRightUrlService;
+use backend\services\SystemRoleRightService;
 
 /**
  * SystemRoleController implements the CRUD actions for SystemRole model.
  */
-class SystemRoleController extends Controller
+class SystemRoleController extends BaseController
 {
     /*
     public function behaviors()
@@ -144,5 +147,71 @@ class SystemRoleController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+                    //actionDelete
+    public function actionGetAllRights($roleId){
+
+        $roleRights = SystemRoleRightService::findAll(['role_id'=>$roleId]);
+        $roleRightsData = [];
+        foreach($roleRights as $r){
+            $roleRightsData[$r->right_id] = $r->right_id;
+        }
+        $systemRightService = new SystemRightService();
+        //$roleRights = $systemRightService->findAll(array('role_id'=>$roleId));
+        $rights = $systemRightService->getAllRight();
+        $datas = array();
+        foreach($rights as $r){
+            //echo json_encode($r)."\n";
+            $mid = $r['mid'];
+            $m_name = $r['m_name'];
+            $fid = $r['fid'];
+            $f_name = $r['f_name'];
+            $rid = $r['rid'];
+            $r_name = $r['r_name'];
+
+            $rightData = ['rid'=>$rid, 'text'=>$r_name, 'type'=>'r', 'selectable'=>false];
+            if(isset($roleRightsData[$rid]) == true){
+                $rightData['state']['checked'] = true;
+            }
+            if(isset($datas[$mid]) == false){
+                $moduleData = ['mid'=>$mid, 'text'=>$m_name, 'type'=>'m', 'selectable'=>false];
+                $datas[$mid] = $moduleData;
+            }
+            
+            if(isset($datas[$mid]['funs'][$fid]) == false){
+                $funData = ['fid'=>$fid, 'text'=>$f_name, 'type'=>'f', 'selectable'=>false];
+                $datas[$mid]['funs'][$fid] = $funData;
+            }
+            $datas[$mid]['funs'][$fid]['rights'][$rid] = $rightData;
+        }
+        $rightDatas = [];
+        foreach($datas as $k=>$modules){
+            $funs = $modules['funs'];
+            foreach($funs as $f=>$fun){
+                $rights = $funs[$f]['rights'];
+                unset($funs[$f]['rights']);
+                $rights = array_values($rights);
+                $funs[$f]['nodes'] = $rights;
+              
+            }
+            unset($datas[$k]['funs']);
+            $funs = array_values($funs);
+            $datas[$k]['nodes']=$funs;
+
+        }
+        $datas = array_values($datas);
+        
+        echo json_encode($datas);
+
+    }
+    
+    public function actionSaveRights(array $rids, $roleId){
+       
+       if(count($rids) > 0){
+           $systemRightUrlService = new SystemRightUrlService();
+           print_r(Yii::$app->user->identity);
+           $systemRightUrlService->saveRights($rids, $roleId, Yii::$app->user->identity->uname);
+       }
+        
     }
 }

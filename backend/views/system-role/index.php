@@ -84,7 +84,7 @@ foreach ($models as $model) {
        
     echo '  <td class="center">';
     echo '      <a id="user_btn"  class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配用户</a>';
-    echo '      <a id="right_btn"  class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
+    echo '      <a id="right_btn" onclick="rightAction('.$model->id.')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -117,13 +117,14 @@ foreach ($models as $model) {
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
+			     <input type="hidden" id="select_role_id" />
                 <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-role/save"]); ?>                
                <div id="treeview"/>
                 <?php ActiveForm::end(); ?>            
             </div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
-					id="edit_dialog_ok" href="#" class="btn btn-primary">确定</a>
+					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a>
 			</div>
 		</div>
 	</div>
@@ -218,53 +219,93 @@ foreach ($models as $model) {
 <script>
 $(function(){
 	// 树节点 http://www.htmleaf.com/jQuery/Menu-Navigation/201502141379.html
-	var treeData = 
-			[
-			 {
-				 text: "Node 1",
-				 selectable:false,
-				 state:{
-					// checked:true
-					 expanded:false,
-					 //selected:false
-					 },
-				 nodes:[
-				        {text: "Node 11"}
-						]
-			},
-			 {text: "Node 2"},
-			 {
-				 text: "Node 21",
-				 state:{
-					// checked:true
-					 },
-				 nodes:[
-				        {text: "Node 23"}
-						 ]
-			}
-		
-			]
-	;
-	$('#treeview').treeview({
-		data:treeData,
-		showIcon: false,
-        showCheckbox: true,
-        onNodeChecked: function(event, node) {
-          console.log('======',node);
-          
-          $('#treeview').treeview('checkNode', [ 1, { silent: true } ]);
-          //$('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
-        },
-        onNodeUnchecked: function (event, node) {
-        	console.log('=====',node);
-          //$('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
-        }
-		});
 
 	$('#user_btn').click(function(){
 		$('#tree_dialog').modal('show');
 	});
+
+	$('#right_btn').click(function(){
+		
+	});
 });
+
+function changeCheckState(node, checked){
+	if(!!node.nodes == true){
+		var nodes = node.nodes;
+		for(var i = 0; i < nodes.length; i++){
+			var node1 = nodes[i];
+			if(checked == true){
+				$('#treeview').treeview('checkNode', [ node1.nodeId, { silent: true } ]);
+			}
+			else{
+				$('#treeview').treeview('uncheckNode', [ node1.nodeId, { silent: true } ]);
+			}
+			changeCheckState(node1, checked);
+		}
+	}
+}
+
+function rightAction(roleId){
+	$('#select_role_id').val(roleId);
+	$.ajax({
+		   type: "GET",
+		   url: "index.php?r=system-role/get-all-rights",
+		   data: {'roleId':roleId},
+		   cache: false,
+		   dataType:"json",
+		   error: function (xmlHttpRequest, textStatus, errorThrown) {
+			    alert("出错了，" + textStatus);
+			},
+		   success: function(data){
+			   //console.log(data);
+				$('#treeview').treeview({
+					data:data,
+					showIcon: false,
+			        showCheckbox: true,
+			        onNodeChecked: function(event, node) {
+			          //console.log('======',node);
+			          changeCheckState(node, true);
+			        },
+			        onNodeUnchecked: function (event, node) {
+			        	changeCheckState(node, false);
+			        }
+					});
+		   }
+		});
+	$('#tree_dialog').modal('show');
+}
+
+
+$('#right_dialog_ok').click(function(){
+	var role_id = $('#select_role_id').val();
+	var checkNodes = $('#treeview').treeview('getChecked');
+	if(checkNodes.length > 0){
+		var rids = [];
+		for(i = 0; i < checkNodes.length; i++){
+			var node = checkNodes[i];
+			if(node.type == 'r'){
+				rids.push(node.rid);
+			}
+		}
+		$.ajax({
+			   type: "GET",
+			   url: "index.php?r=system-role/save-rights",
+			   data: {"rids":rids, 'roleId':role_id},
+			   cache: false,
+			   dataType:"json",
+			   error: function (xmlHttpRequest, textStatus, errorThrown) {
+				    alert("出错了，" + textStatus);
+				},
+			   success: function(data){
+//	 			   console.log(msg);
+				   //initEditSystemModule(data, type);
+			   }
+			});
+// 		console.log('====',rids);
+	}
+});
+
+
 
 function viewAction(id){
 	initModel(id, 'view', 'fun');
