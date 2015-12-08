@@ -98,10 +98,20 @@ http://www.htmleaf.com/Demo/201502141380.html
 //         session_start();
 //         print_r(Yii::$app->session);
 //         var_dump($_SESSION);
-        var_dump(Yii::$app->user->identity->getSystemMenus());
+//         var_dump(Yii::$app->user->identity->getSystemMenus());
 //         print_r(Yii::$app->user->identity->menus);
 //         print_r(Yii::$app->user->id);
-            
+        $password = '123456';
+//         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+//         $hash = '$2y$13$9O6bKJieocg//oSax9fZOOuljAKarBXknqD8.RyYg60FfNjS7SoqK';
+//            $hash = '$2y$13$Ay9W92ngBAGmw3NOrpJgUuo8f5n.CUNtfUyxOnp/HiPFfebb0UgjS';
+//         $hash = '$2y$13$acwBLlB9tYdLEYKtbQ14TOzKt1QjqPyfM5wP4hFiaqIjbQ1yZX22G';
+        var_dump($hash);
+        $result =Yii::$app->getSecurity()->validatePassword($password, $hash);
+        var_dump($result);
+        
+//         $2y$13$AkWg3SY6me04fZ0q65i.YO2R55zY2TzVDseyf2GQVoQrgSQoQgP4i
+//         $2y$13$AkWg3SY6me04fZ0q65i.YO2R55zY2TzVDseyf2GQVoQrgSQoQgP4i
     }
     
     public function actionLogout()

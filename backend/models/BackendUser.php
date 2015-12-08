@@ -22,7 +22,9 @@ class BackendUser extends ActiveRecord implements IdentityInterface
      */
     public static function validatePassword($user, $password)
     {
-        if ($user != null && $user->password == $password) {
+//         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+        
+        if ($user != null && Yii::$app->getSecurity()->validatePassword($password, $user->password)) {
             return true;
         } else {
             return false;
@@ -37,23 +39,10 @@ class BackendUser extends ActiveRecord implements IdentityInterface
     public static function login($username, $password, $rememberMe)
     {
         $user = AdminUser::findByUsername($username);
-        // var_dump(get_parent_class($user));
-        // exit();
-        // var_dump(is_subclass_of($user, 'AdminUser'));
         if (self::validatePassword($user, $password) == true) {
-            //$user->initUserModuleList($user->id);
-            //var_dump($user);
-            //echo "=====login==================<br/>";
-            //$user->initUserUrls($user->id);
             if (Yii::$app->user->login($user, $rememberMe ? 3600 * 24 * 30 : 0) == true) {
                 $user->initUserModuleList();
                 $user->initUserUrls();
-//                 Yii::$app->session['system_menus'.] = $user->initUserModuleList();
-//                 Yii::$app->session['system_rights'] = $user->initUserUrls();
-//                 // Yii::$app->user->menu =
-                //Yii::$app->user->menu = $user->initUserModuleList($user->id);
-//                 var_dump(Yii::$app->user->menu);
-//                 var_dump(Yii::$app->user->identity);
                 return true;
             } else {
                 return false;

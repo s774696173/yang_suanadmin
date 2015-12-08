@@ -169,17 +169,17 @@ class SystemRoleController extends BaseController
             $rid = $r['rid'];
             $r_name = $r['r_name'];
 
-            $rightData = ['rid'=>$rid, 'text'=>$r_name, 'type'=>'r', 'selectable'=>false];
+            $rightData = ['rid'=>$rid, 'text'=>$r_name, 'type'=>'r', 'selectable'=>false, 'state'=>['checked'=>false]];
             if(isset($roleRightsData[$rid]) == true){
                 $rightData['state']['checked'] = true;
             }
             if(isset($datas[$mid]) == false){
-                $moduleData = ['mid'=>$mid, 'text'=>$m_name, 'type'=>'m', 'selectable'=>false];
+                $moduleData = ['mid'=>$mid, 'text'=>$m_name, 'type'=>'m', 'selectable'=>false, 'state'=>['checked'=>true]];
                 $datas[$mid] = $moduleData;
             }
             
             if(isset($datas[$mid]['funs'][$fid]) == false){
-                $funData = ['fid'=>$fid, 'text'=>$f_name, 'type'=>'f', 'selectable'=>false];
+                $funData = ['fid'=>$fid, 'text'=>$f_name, 'type'=>'f', 'selectable'=>false, 'state'=>['checked'=>true]];
                 $datas[$mid]['funs'][$fid] = $funData;
             }
             $datas[$mid]['funs'][$fid]['rights'][$rid] = $rightData;
@@ -192,7 +192,17 @@ class SystemRoleController extends BaseController
                 unset($funs[$f]['rights']);
                 $rights = array_values($rights);
                 $funs[$f]['nodes'] = $rights;
-              
+                // 检查当前功能下所有权限是否选中,
+                foreach($rights as $r=>$right){
+                    if($right['state']['checked'] == false){
+                         $funs[$f]['state']['checked'] = false;
+                        break;
+                    }
+                }
+                // 判断当前模块下所有功能是否全选中
+                if($datas[$k]['state']['checked'] == true && $funs[$f]['state']['checked'] == false){
+                    $datas[$k]['state']['checked'] = false;
+                }
             }
             unset($datas[$k]['funs']);
             $funs = array_values($funs);
@@ -208,10 +218,14 @@ class SystemRoleController extends BaseController
     public function actionSaveRights(array $rids, $roleId){
        
        if(count($rids) > 0){
-           $systemRightUrlService = new SystemRightUrlService();
-           print_r(Yii::$app->user->identity);
-           $systemRightUrlService->saveRights($rids, $roleId, Yii::$app->user->identity->uname);
+           $systemRoleRightService = new SystemRoleRightService();
+           //print_r(Yii::$app->user->identity);
+           $count = $systemRoleRightService->saveRights($rids, $roleId, Yii::$app->user->identity->uname);
+           if($count > 0){
+               echo json_encode(array('errno'=>0, 'data'=>$count, 'msg'=>'保存成功'));
+               return;
+           }
        }
-        
+       echo json_encode(array('errno'=>2, 'data'=>$count, 'msg'=>'保存失败'));
     }
 }

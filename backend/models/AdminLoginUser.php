@@ -91,9 +91,9 @@ class AdminLoginUser extends AdminUser implements IdentityInterface
      * @see \yii\web\IdentityInterface::getId()
      */
     public function getId(){
-        echo "<<============";
-        var_dump($this->getAttributes());
-        echo "============>>";
+//         echo "<<============";
+//         var_dump($this->getAttributes());
+//         echo "============>>";
         
         return $this->uname;
     }
