@@ -67,7 +67,7 @@ $this->title = 'My Yii Application';
 			</ul>
 		</div>
 		<!-- theme selector ends -->
-
+<!-- 
 		<ul class="collapse navbar-collapse nav navbar-nav top-menu">
 			<li><a href="#"><i class="glyphicon glyphicon-globe"></i> Visit Site</a></li>
 			<li class="dropdown"><a href="#" data-toggle="dropdown"><i
@@ -89,7 +89,7 @@ $this->title = 'My Yii Application';
 				</form>
 			</li>
 		</ul>
-
+ -->
 	</div>
 </div>
 <!-- topbar ends -->
