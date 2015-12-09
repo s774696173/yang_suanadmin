@@ -16,7 +16,7 @@ $modelLabel = new \backend\models\SystemFunction();
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
-					<i class="glyphicon glyphicon-user"></i>功能
+					<i class="glyphicon glyphicon-user"></i>功能管理
 				</h2>
 				<div class="box-icon">
 					<button id="create_btn" type="button"
@@ -47,7 +47,7 @@ $modelLabel = new \backend\models\SystemFunction();
 						      echo '<th>' . $modelLabel->getAttributeLabel('func_name'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('module_id'). '</th>';
+						 //     echo '<th>' . $modelLabel->getAttributeLabel('module_id'). '</th>';
 						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('display_label'). '</th>';
@@ -74,10 +74,10 @@ $modelLabel = new \backend\models\SystemFunction();
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
+						    //  echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
+						   //   echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
 						      
 						      
 						      ?>
@@ -96,7 +96,7 @@ foreach ($models as $model) {
         echo '  <td>' . $model->id . '</td>';
         echo '  <td>' . $model->code . '</td>';
         echo '  <td>' . $model->func_name . '</td>';
-        echo '  <td>' . $model->module_id . '</td>';
+      //  echo '  <td>' . $model->module_id . '</td>';
         echo '  <td>' . $model->display_label . '</td>';
         echo '  <td>' . $model->des . '</td>';
         echo '  <td>' . $model->display_order . '</td>';
@@ -105,13 +105,13 @@ foreach ($models as $model) {
         echo '  <td>' . $model->has_lef . '</td>';
         echo '  <td>' . $model->create_user . '</td>';
         echo '  <td>' . $model->create_date . '</td>';
-        echo '  <td>' . $model->update_user . '</td>';
-        echo '  <td>' . $model->update_date . '</td>';
+      //  echo '  <td>' . $model->update_user . '</td>';
+      //  echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
-    echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="index.php?r=system-right/index&id=' . $model->id . '"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
-    echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+    echo '      <a id="add_fun_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right/index&id=' . $model->id . '"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>权限管理</a>';
+    echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
+    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
     echo '  </td>';
     echo '<tr/>';

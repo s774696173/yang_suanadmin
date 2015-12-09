@@ -3,49 +3,44 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\SystemModule;
 use yii\data\Pagination;
+use backend\models\SystemModule;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\base\Object;
 
 /**
  * SystemModuleController implements the CRUD actions for SystemModule model.
  */
 class SystemModuleController extends BaseController
 {
-//     public function behaviors()
-//     {
-//         return [
-//             'verbs' => [
-//                 'class' => VerbFilter::className(),
-//                 'actions' => [
-//                     'delete' => ['post'],
-//                 ],
-//             ],
-//         ];
-//     }
-
+    /*
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+    */
     /**
      * Lists all SystemModule models.
      * @return mixed
      */
     public function actionIndex()
     {
-//         $this->layout = null;
-//         echo "=======1";
-//         exit();
-//         `id` `code` `display_label` `has_lef` `des` `entry_url` `display_order` `create_user` `create_date`
         $query = SystemModule::find();
         $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
-        $models = $query->orderBy('display_order')
+        //$models = $query->orderBy('display_order')
+        $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
-//         echo "count=" . count($models);
-//         exit();
-//         return $this->render('index');
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
@@ -57,11 +52,12 @@ class SystemModuleController extends BaseController
      * @param integer $id
      * @return mixed
      */
-    public function actionView()
+    public function actionView($id)
     {
-        $id = Yii::$app->request->post('id');
+        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
+
     }
 
     /**
@@ -71,9 +67,7 @@ class SystemModuleController extends BaseController
      */
     public function actionCreate()
     {
-        //echo json_encode(['id'=>1, 'action'=>'create']); 
         $model = new SystemModule();
-//         $model->getErrors();
         if ($model->load(Yii::$app->request->post())) {
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
@@ -97,17 +91,21 @@ class SystemModuleController extends BaseController
      */
     public function actionUpdate($id)
     {
-//         echo json_encode(['id'=>1, 'action'=>'update']);
-
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate() == true && $model->save()){
+                $msg = array('errno'=>0, 'msg'=>'保存成功');
+                echo json_encode($msg);
+            }
+            else{
+                $msg = array('errno'=>2, 'data'=>$model->getErrors());
+                echo json_encode($msg);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $msg = array('errno'=>2, 'msg'=>'数据出错');
+            echo json_encode($msg);
         }
+    
     }
 
     /**
@@ -118,7 +116,6 @@ class SystemModuleController extends BaseController
      */
     public function actionDelete(array $ids)
     {
-        
         if(count($ids) > 0){
             $idsStr = implode(',', $ids);
             $c = SystemModule::deleteAll(['in', 'id', $ids]);
@@ -127,7 +124,10 @@ class SystemModuleController extends BaseController
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
+    
+        //$this->findModel($id)->delete();
 
+        //return $this->redirect(['index']);
     }
 
     /**

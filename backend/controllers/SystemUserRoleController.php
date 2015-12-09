@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * SystemUserRoleController implements the CRUD actions for SystemUserRole model.
  */
-class SystemUserRoleController extends Controller
+class SystemUserRoleController extends BaseController
 {
     /*
     public function behaviors()

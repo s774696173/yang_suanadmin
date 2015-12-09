@@ -19,6 +19,7 @@ class BaseController extends Controller
             //echo "<br/>";
             //print_r($this->id);
             $url = $this->id . '/' . $action->id;
+            // 检查是否已经登录
             if(Yii::$app->user->isGuest){
                 $allowUrl = ['site/index'];   
                 if(in_array($url, $allowUrl) == false){
@@ -26,6 +27,10 @@ class BaseController extends Controller
                     //throw new BadRequestHttpException(Yii::t('yii', '没有权限访问'));
                     // return false;
                 }
+            }
+            else{
+                // 检查是否有权限
+                
             }
             return true;
         }

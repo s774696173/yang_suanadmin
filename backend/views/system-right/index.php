@@ -16,7 +16,7 @@ $modelLabel = new \backend\models\SystemRight();
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
-					<i class="glyphicon glyphicon-user"></i>权限
+					<i class="glyphicon glyphicon-user"></i>权限管理
 				</h2>
 				<div class="box-icon">
 					<button id="create_btn" type="button"
@@ -95,9 +95,9 @@ foreach ($models as $model) {
         echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
-    echo '      <a id="add_fun_btn" class="btn btn-success btn-sm" href="index.php?r=system-right-url/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>添加功能</a>';
-    echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-success btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-info btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+    echo '      <a id="add_fun_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right-url/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>action管理</a>';
+    echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
+    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
     echo '  </td>';
     echo '<tr/>';
@@ -238,66 +238,63 @@ function viewAction(id){
 
 function initEditSystemModule(data, type){
 	if(type == 'create'){
-				$("#id").val('');
-				$("#func_id").val('');
-				$("#right_name").val('');
-				$("#display_label").val('');
-				$("#des").val('');
-				$("#display_order").val('');
-				$("#has_lef").val('');
-				$("#create_user").val('');
-				$("#create_date").val('');
-				$("#update_user").val('');
-				$("#update_date").val('');
-			}
-	else{
-				$("#id").val(data.id);
-	    		$("#func_id").val(data.func_id);
-	    		$("#right_name").val(data.right_name);
-	    		$("#display_label").val(data.display_label);
-	    		$("#des").val(data.des);
-	    		$("#display_order").val(data.display_order);
-	    		$("#has_lef").val(data.has_lef);
-	    		$("#create_user").val(data.create_user);
-	    		$("#create_date").val(data.create_date);
-	    		$("#update_user").val(data.update_user);
-	    		$("#update_date").val(data.update_date);
-	    	}
-	if(type == "view"){
-				$("#id").attr({readonly:true,disabled:true});
-        		$("#func_id").attr({readonly:true,disabled:true});
-        		$("#right_name").attr({readonly:true,disabled:true});
-        		$("#display_label").attr({readonly:true,disabled:true});
-        		$("#des").attr({readonly:true,disabled:true});
-        		$("#display_order").attr({readonly:true,disabled:true});
-        		$("#has_lef").attr({readonly:true,disabled:true});
-        		$("#create_user").attr({readonly:true,disabled:true});
-        		$("#create_date").attr({readonly:true,disabled:true});
-        		$("#update_user").attr({readonly:true,disabled:true});
-        		$("#update_date").attr({readonly:true,disabled:true});
-        		$('#edit_dialog_ok').addClass('hidden');
+		$("#id").val('');
+		$("#func_id").val('');
+		$("#right_name").val('');
+		$("#display_label").val('');
+		$("#des").val('');
+		$("#display_order").val('');
+		$("#has_lef").val('');
+		$("#create_user").val('');
+		$("#create_date").val('');
+		$("#update_user").val('');
+		$("#update_date").val('');
 	}
 	else{
-				$("#id").attr({readonly:false,disabled:false});
-        		$("#func_id").attr({readonly:false,disabled:false});
-        		$("#right_name").attr({readonly:false,disabled:false});
-        		$("#display_label").attr({readonly:false,disabled:false});
-        		$("#des").attr({readonly:false,disabled:false});
-        		$("#display_order").attr({readonly:false,disabled:false});
-        		$("#has_lef").attr({readonly:false,disabled:false});
-        		$("#create_user").attr({readonly:false,disabled:false});
-        		$("#create_date").attr({readonly:false,disabled:false});
-        		$("#update_user").attr({readonly:false,disabled:false});
-        		$("#update_date").attr({readonly:false,disabled:false});
-        		$('#edit_dialog_ok').removeClass('hidden');
+		$("#id").val(data.id);
+		$("#func_id").val(data.func_id);
+		$("#right_name").val(data.right_name);
+		$("#display_label").val(data.display_label);
+		$("#des").val(data.des);
+		$("#display_order").val(data.display_order);
+		$("#has_lef").val(data.has_lef);
+		$("#create_user").val(data.create_user);
+		$("#create_date").val(data.create_date);
+		$("#update_user").val(data.update_user);
+		$("#update_date").val(data.update_date);
+	}
+	if(type == "view"){
+		$("#id").attr({readonly:true,disabled:true});
+		$("#func_id").attr({readonly:true,disabled:true});
+		$("#right_name").attr({readonly:true,disabled:true});
+		$("#display_label").attr({readonly:true,disabled:true});
+		$("#des").attr({readonly:true,disabled:true});
+		$("#display_order").attr({readonly:true,disabled:true});
+		$("#has_lef").attr({readonly:true,disabled:true});
+		$("#create_user").attr({readonly:true,disabled:true});
+		$("#create_date").attr({readonly:true,disabled:true});
+		$("#update_user").attr({readonly:true,disabled:true});
+		$("#update_date").attr({readonly:true,disabled:true});
+		$('#edit_dialog_ok').addClass('hidden');
+	}
+	else{
+		$("#id").attr({readonly:false,disabled:false});
+		$("#func_id").attr({readonly:false,disabled:false});
+		$("#right_name").attr({readonly:false,disabled:false});
+		$("#display_label").attr({readonly:false,disabled:false});
+		$("#des").attr({readonly:false,disabled:false});
+		$("#display_order").attr({readonly:false,disabled:false});
+		$("#has_lef").attr({readonly:false,disabled:false});
+		$("#create_user").attr({readonly:false,disabled:false});
+		$("#create_date").attr({readonly:false,disabled:false});
+		$("#update_user").attr({readonly:false,disabled:false});
+		$("#update_date").attr({readonly:false,disabled:false});
+		$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');
 }
 
 
-function addAction(id){
-	
-}
 function initModel(id, type, fun){
 	
 	$.ajax({

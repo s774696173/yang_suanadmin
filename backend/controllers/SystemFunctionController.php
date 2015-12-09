@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * SystemFunctionController implements the CRUD actions for SystemFunction model.
  */
-class SystemFunctionController extends Controller
+class SystemFunctionController extends BaseController
 {
     /*
     public function behaviors()

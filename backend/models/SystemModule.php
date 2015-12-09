@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\models;
 
 use Yii;
@@ -21,7 +20,7 @@ use Yii;
  *
  * @property SystemFunction[] $systemFunctions
  */
-class SystemModule extends \yii\db\ActiveRecord
+class SystemModule extends \backend\models\BaseModel
 {
     /**
      * @inheritdoc
@@ -71,13 +70,13 @@ class SystemModule extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-//     public function getSystemFunctions()
-//     {
-//         return $this->hasMany(SystemFunction::className(), ['module_id' => 'id']);
-//     }
+    public function getSystemFunctions()
+    {
+        return $this->hasMany(SystemFunction::className(), ['module_id' => 'id']);
+    }
 
-    /**
-     * 返回数据库字段信息
+  /**
+     * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
      * inputtype - 对应控件类型，包含text,select,checkbox,radio,file,password
@@ -91,67 +90,263 @@ class SystemModule extends \yii\db\ActiveRecord
      * create_date: 创建时间。生成的代码自动赋值
      * update_date: 修改时间。生成的代码自动赋值
      */
-    public function getTableColumnInfo()
-    {
-        $tableColumnInfo = array(
-            'id'=>array(
-                'COLUMN_NAME'=>'id',
-                'COLUMN_DEFAULT'=>'',
-                'IS_NULLABLE'=>'NO',
-                'DATA_TYPE'=>'bigint',
-                'CHARACTER_MAXIMUM_LENGTH'=>'',
-                'NUMERIC_PRECISION'=>'20',
-                'NUMERIC_SCALE'=>'0',
-                'COLUMN_TYPE'=>"bigint(20) unsigned",
-                'COLUMN_KEY'=>'PRI',
-                'COLUMN_COMMENT'=>array(
-                    'label'=>'主键id',
-                    'inputtype'=>'text',
-                    'displaylist'=>true,
-                    'searchble'=>true,
-                    'readonly'=>true,
-                )
-            ),
-            'code'=>array(
-                'COLUMN_NAME'=>'code',
-                'COLUMN_DEFAULT'=>'',
-                'IS_NULLABLE'=>'NO',
-                'DATA_TYPE'=>'varchar',
-                'CHARACTER_MAXIMUM_LENGTH'=>'50',
-                'NUMERIC_PRECISION'=>'',
-                'NUMERIC_SCALE'=>'',
-                'COLUMN_TYPE'=>"varchar(50)",
-                'COLUMN_KEY'=>'MUL',
-                'COLUMN_COMMENT'=>array(
-                    'label'=>'广告代码',
-                    'inputtype'=>'select',
-                    'displaylist'=>true,
-                    'searchble'=>true,
-                    'readonly'=>false,
-                    'udc'=>'ad_code',
-                )
-            ),
-            'content'=>array(
-                'COLUMN_NAME'=>'content',
-                'COLUMN_DEFAULT'=>'',
-                'IS_NULLABLE'=>'YES',
-                'DATA_TYPE'=>'text',
-                'CHARACTER_MAXIMUM_LENGTH'=>'65535',
-                'NUMERIC_PRECISION'=>'',
-                'NUMERIC_SCALE'=>'',
-                'COLUMN_TYPE'=>"text",
-                'COLUMN_KEY'=>'',
-                'COLUMN_COMMENT'=>array(
-                    'label'=>'广告内容',
-                    'inputtype'=>'text',
-                    'displaylist'=>true,
-                    'searchble'=>false,
-                    'readonly'=>false,
-                )
-            ),
-    
-         
-        );
-        return $tableColumnInfo;
+    public function getTableColumnInfo(){
+        return array(
+        'id' => array(
+                        'name' => 'id',
+                        'allowNull' => false,
+//                         'autoIncrement' => true,
+//                         'comment' => '主键',
+//                         'dbType' => "int(11)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => true,
+                        'phpType' => 'integer',
+                        'precision' => '11',
+                        'scale' => '',
+                        'size' => '11',
+                        'type' => 'integer',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('id'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => true,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'code' => array(
+                        'name' => 'code',
+                        'allowNull' => false,
+//                         'autoIncrement' => false,
+//                         'comment' => 'code',
+//                         'dbType' => "varchar(50)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '50',
+                        'scale' => '',
+                        'size' => '50',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('code'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'display_label' => array(
+                        'name' => 'display_label',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '显示名称',
+//                         'dbType' => "varchar(200)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '200',
+                        'scale' => '',
+                        'size' => '200',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('display_label'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'has_lef' => array(
+                        'name' => 'has_lef',
+                        'allowNull' => false,
+//                         'autoIncrement' => false,
+//                         'comment' => '是否有子',
+//                         'dbType' => "varchar(1)",
+                        'defaultValue' => 'n',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '1',
+                        'scale' => '',
+                        'size' => '1',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('has_lef'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'des' => array(
+                        'name' => 'des',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '描述',
+//                         'dbType' => "varchar(400)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '400',
+                        'scale' => '',
+                        'size' => '400',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('des'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'entry_url' => array(
+                        'name' => 'entry_url',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '入口地址',
+//                         'dbType' => "varchar(100)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '100',
+                        'scale' => '',
+                        'size' => '100',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('entry_url'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'display_order' => array(
+                        'name' => 'display_order',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '顺序',
+//                         'dbType' => "int(5)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'integer',
+                        'precision' => '5',
+                        'scale' => '',
+                        'size' => '5',
+                        'type' => 'integer',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('display_order'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'create_user' => array(
+                        'name' => 'create_user',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '创建人',
+//                         'dbType' => "varchar(50)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '50',
+                        'scale' => '',
+                        'size' => '50',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('create_user'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'create_date' => array(
+                        'name' => 'create_date',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '创建时间',
+//                         'dbType' => "datetime",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '',
+                        'scale' => '',
+                        'size' => '',
+                        'type' => 'datetime',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('create_date'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'update_user' => array(
+                        'name' => 'update_user',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '修改人',
+//                         'dbType' => "varchar(50)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '50',
+                        'scale' => '',
+                        'size' => '50',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('update_user'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'update_date' => array(
+                        'name' => 'update_date',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '修改时间',
+//                         'dbType' => "datetime",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '',
+                        'scale' => '',
+                        'size' => '',
+                        'type' => 'datetime',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('update_date'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		        );
+        
     }
+ 
 }
