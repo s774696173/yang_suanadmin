@@ -41,11 +41,11 @@ $modelLabel = new \backend\models\SystemModule();
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('display_label'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
+						      //echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('des'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
+						      //echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('display_order'). '</th>';
 						      
@@ -53,9 +53,9 @@ $modelLabel = new \backend\models\SystemModule();
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
+						      //echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
+						      //echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
 						      
 						      ?>
 						      <th>操作</th>
@@ -70,14 +70,14 @@ foreach ($models as $model) {
         echo '  <td>' . $model->id . '</td>';
         echo '  <td>' . $model->code . '</td>';
         echo '  <td>' . $model->display_label . '</td>';
-        echo '  <td>' . $model->has_lef . '</td>';
+        //echo '  <td>' . $model->has_lef . '</td>';
         echo '  <td>' . $model->des . '</td>';
-        echo '  <td>' . $model->entry_url . '</td>';
+        //echo '  <td>' . $model->entry_url . '</td>';
         echo '  <td>' . $model->display_order . '</td>';
         echo '  <td>' . $model->create_user . '</td>';
         echo '  <td>' . $model->create_date . '</td>';
-        echo '  <td>' . $model->update_user . '</td>';
-        echo '  <td>' . $model->update_date . '</td>';
+        //echo '  <td>' . $model->update_user . '</td>';
+        //echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
     echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=system-function/index&id='. $model->id .'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>功能管理</a>';
@@ -134,7 +134,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                    <!--               
                     <div id="has_lef_div" class="form-group">
     					<label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
     					<div class="col-sm-10">
@@ -143,7 +143,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                               -->      
                     <div id="des_div" class="form-group">
     					<label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
     					<div class="col-sm-10">
@@ -152,7 +152,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                    <!--                 
                     <div id="entry_url_div" class="form-group">
     					<label for="entry_url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_url")?></label>
     					<div class="col-sm-10">
@@ -161,7 +161,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                             -->        
                     <div id="display_order_div" class="form-group">
     					<label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
     					<div class="col-sm-10">
@@ -170,7 +170,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                    <!--              
                     <div id="create_user_div" class="form-group">
     					<label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
     					<div class="col-sm-10">
@@ -206,6 +206,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
+    				 -->   
                 			<?php ActiveForm::end(); ?>            </div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
@@ -222,6 +223,7 @@ function viewAction(id){
 }
 
 function initEditSystemModule(data, type){
+	// 值初始化
 	if(type == 'create'){
 		$("#id").val('');
 		$("#code").val('');
@@ -234,9 +236,8 @@ function initEditSystemModule(data, type){
 		$("#create_date").val('');
 		$("#update_user").val('');
 		$("#update_date").val('');
-		$("#update_date").attr({readonly:true,disabled:true});
 	}
-	else{
+	else{ // update view
 		$("#id").val(data.id);
     	$("#code").val(data.code);
     	$("#display_label").val(data.display_label);
@@ -248,7 +249,8 @@ function initEditSystemModule(data, type){
     	$("#create_date").val(data.create_date);
     	$("#update_user").val(data.update_user);
     	$("#update_date").val(data.update_date);
-    	}
+    }
+    // 控件显示初始化
 	if(type == "view"){
 		$("#id").attr({readonly:true,disabled:true});
     	$("#code").attr({readonly:true,disabled:true});
@@ -258,12 +260,16 @@ function initEditSystemModule(data, type){
     	$("#entry_url").attr({readonly:true,disabled:true});
     	$("#display_order").attr({readonly:true,disabled:true});
     	$("#create_user").attr({readonly:true,disabled:true});
+    	$("#create_user").parent().parent().show();
     	$("#create_date").attr({readonly:true,disabled:true});
+    	$("#create_date").parent().parent().show();
     	$("#update_user").attr({readonly:true,disabled:true});
+    	$("#update_user").parent().parent().show();
     	$("#update_date").attr({readonly:true,disabled:true});
+    	$("#update_date").parent().parent().show();
     	$('#edit_dialog_ok').addClass('hidden');
 	}
-	else{
+	else{ // create update
 		$("#id").attr({readonly:false,disabled:false});
     	$("#code").attr({readonly:false,disabled:false});
     	$("#display_label").attr({readonly:false,disabled:false});
@@ -271,10 +277,14 @@ function initEditSystemModule(data, type){
     	$("#des").attr({readonly:false,disabled:false});
     	$("#entry_url").attr({readonly:false,disabled:false});
     	$("#display_order").attr({readonly:false,disabled:false});
-    	$("#create_user").attr({readonly:false,disabled:false});
-    	$("#create_date").attr({readonly:false,disabled:false});
-    	$("#update_user").attr({readonly:false,disabled:false});
-    	$("#update_date").attr({readonly:false,disabled:false});
+    	$("#create_user").attr({readonly:true,disabled:true});
+    	$("#create_user").parent().parent().hide();
+    	$("#create_date").attr({readonly:true,disabled:true});
+    	$("#create_date").parent().parent().hide();
+    	$("#update_user").attr({readonly:true,disabled:true});
+    	$("#update_user").parent().parent().hide();
+    	$("#update_date").attr({readonly:true,disabled:true});
+    	$("#update_date").parent().parent().hide();
     	$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');

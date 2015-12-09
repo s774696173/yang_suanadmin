@@ -44,6 +44,7 @@ class SystemFunctionController extends BaseController
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'module_id'=>$id
         ]);
     }
 
@@ -69,6 +70,13 @@ class SystemFunctionController extends BaseController
     {
         $model = new SystemFunction();
         if ($model->load(Yii::$app->request->post())) {
+            $model->display_label = $model->func_name;
+            $model->entry_right_name = $model->func_name;
+            $model->has_lef = 'n';
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);

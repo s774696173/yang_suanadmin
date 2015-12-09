@@ -3,7 +3,6 @@
 <?php
 use yii\widgets\LinkPager;
 use yii\base\Object;
-use backend\models\SystemModule;
 use yii\bootstrap\ActiveForm;
 use backend\models\SystemFunction;
 
@@ -16,7 +15,7 @@ $modelLabel = new \backend\models\SystemFunction();
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
-					<i class="glyphicon glyphicon-user"></i>功能管理
+					<i class="glyphicon glyphicon-user"></i>模块管理
 				</h2>
 				<div class="box-icon">
 					<button id="create_btn" type="button"
@@ -33,58 +32,39 @@ $modelLabel = new \backend\models\SystemFunction();
 					class="table table-striped table-bordered bootstrap-datatable datatable responsive">
 					<thead>
 						<tr>
-						
 						<?php
 						      echo '<th><label><input id="data_table_check" type="checkbox"></label></th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('id'). '</th>';
-						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('code'). '</th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('func_name'). '</th>';
 						      
-						      
-						 //     echo '<th>' . $modelLabel->getAttributeLabel('module_id'). '</th>';
-						      
+						      echo '<th>' . $modelLabel->getAttributeLabel('module_id'). '</th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('display_label'). '</th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('des'). '</th>';
-						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('display_order'). '</th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('entry_right_name'). '</th>';
-						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
-						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
 						      
-						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
 						      
+						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
 						      
-						    //  echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
-						      
-						      
-						   //   echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
-						      
+						      echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
 						      
 						      ?>
 						      <th>操作</th>
-						 
-			
-
 						</tr>
 					</thead>
 					<tbody>
@@ -96,7 +76,7 @@ foreach ($models as $model) {
         echo '  <td>' . $model->id . '</td>';
         echo '  <td>' . $model->code . '</td>';
         echo '  <td>' . $model->func_name . '</td>';
-      //  echo '  <td>' . $model->module_id . '</td>';
+        echo '  <td>' . $model->module_id . '</td>';
         echo '  <td>' . $model->display_label . '</td>';
         echo '  <td>' . $model->des . '</td>';
         echo '  <td>' . $model->display_order . '</td>';
@@ -105,11 +85,11 @@ foreach ($models as $model) {
         echo '  <td>' . $model->has_lef . '</td>';
         echo '  <td>' . $model->create_user . '</td>';
         echo '  <td>' . $model->create_date . '</td>';
-      //  echo '  <td>' . $model->update_user . '</td>';
-      //  echo '  <td>' . $model->update_date . '</td>';
+        echo '  <td>' . $model->update_user . '</td>';
+        echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
-    echo '      <a id="add_fun_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right/index&id=' . $model->id . '"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>权限管理</a>';
+   
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -145,7 +125,7 @@ foreach ($models as $model) {
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "system-function-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-function/save"]); ?>                
                 <input type="hidden" class="form-control" id="id" name="SystemFunction[id]" >
-                                    
+                <input type="hidden" class="form-control" id="module_id" name="SystemFunction[module_id]" value="<?=$module_id?>">                    
                     <div id="code_div" class="form-group">
     					<label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
     					<div class="col-sm-10">
@@ -164,14 +144,7 @@ foreach ($models as $model) {
     					<div class="clearfix"></div>
     				</div>
                                     
-                    <div id="module_id_div" class="form-group">
-    					<label for="module_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("module_id")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="module_id"
-    							name="SystemFunction[module_id]" placeholder="必填">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
+                   
                                     
                     <div id="display_label_div" class="form-group">
     					<label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
@@ -213,7 +186,7 @@ foreach ($models as $model) {
     					<label for="entry_url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_url")?></label>
     					<div class="col-sm-10">
     						<input type="text" class="form-control" id="entry_url"
-    							name="SystemFunction[entry_url]" placeholder="">
+    							name="SystemFunction[entry_url]" placeholder="必填">
     					</div>
     					<div class="clearfix"></div>
     				</div>
@@ -279,70 +252,77 @@ function viewAction(id){
 
 function initEditSystemModule(data, type){
 	if(type == 'create'){
-				$("#id").val('');
-				$("#code").val('');
-				$("#func_name").val('');
-				$("#module_id").val('');
-				$("#display_label").val('');
-				$("#des").val('');
-				$("#display_order").val('');
-				$("#entry_right_name").val('');
-				$("#entry_url").val('');
-				$("#has_lef").val('');
-				$("#create_user").val('');
-				$("#create_date").val('');
-				$("#update_user").val('');
-				$("#update_date").val('');
-			}
-	else{
-				$("#id").val(data.id);
-	    		$("#code").val(data.code);
-	    		$("#func_name").val(data.func_name);
-	    		$("#module_id").val(data.module_id);
-	    		$("#display_label").val(data.display_label);
-	    		$("#des").val(data.des);
-	    		$("#display_order").val(data.display_order);
-	    		$("#entry_right_name").val(data.entry_right_name);
-	    		$("#entry_url").val(data.entry_url);
-	    		$("#has_lef").val(data.has_lef);
-	    		$("#create_user").val(data.create_user);
-	    		$("#create_date").val(data.create_date);
-	    		$("#update_user").val(data.update_user);
-	    		$("#update_date").val(data.update_date);
-	    	}
-	if(type == "view"){
-				$("#id").attr({readonly:true,disabled:true});
-        		$("#code").attr({readonly:true,disabled:true});
-        		$("#func_name").attr({readonly:true,disabled:true});
-        		$("#module_id").attr({readonly:true,disabled:true});
-        		$("#display_label").attr({readonly:true,disabled:true});
-        		$("#des").attr({readonly:true,disabled:true});
-        		$("#display_order").attr({readonly:true,disabled:true});
-        		$("#entry_right_name").attr({readonly:true,disabled:true});
-        		$("#entry_url").attr({readonly:true,disabled:true});
-        		$("#has_lef").attr({readonly:true,disabled:true});
-        		$("#create_user").attr({readonly:true,disabled:true});
-        		$("#create_date").attr({readonly:true,disabled:true});
-        		$("#update_user").attr({readonly:true,disabled:true});
-        		$("#update_date").attr({readonly:true,disabled:true});
-        		$('#edit_dialog_ok').addClass('hidden');
+		$("#id").val('');
+		$("#code").val('');
+		$("#func_name").val('');
+		//$("#module_id").val('');
+		$("#display_label").val('');
+		$("#des").val('');
+		$("#display_order").val('');
+		$("#entry_right_name").val('');
+		$("#entry_url").val('');
+		$("#has_lef").val('');
+		$("#create_user").val('');
+		$("#create_date").val('');
+		$("#update_user").val('');
+		$("#update_date").val('');
+		
 	}
 	else{
-				$("#id").attr({readonly:false,disabled:false});
-        		$("#code").attr({readonly:false,disabled:false});
-        		$("#func_name").attr({readonly:false,disabled:false});
-        		$("#module_id").attr({readonly:false,disabled:false});
-        		$("#display_label").attr({readonly:false,disabled:false});
-        		$("#des").attr({readonly:false,disabled:false});
-        		$("#display_order").attr({readonly:false,disabled:false});
-        		$("#entry_right_name").attr({readonly:false,disabled:false});
-        		$("#entry_url").attr({readonly:false,disabled:false});
-        		$("#has_lef").attr({readonly:false,disabled:false});
-        		$("#create_user").attr({readonly:false,disabled:false});
-        		$("#create_date").attr({readonly:false,disabled:false});
-        		$("#update_user").attr({readonly:false,disabled:false});
-        		$("#update_date").attr({readonly:false,disabled:false});
-        		$('#edit_dialog_ok').removeClass('hidden');
+		$("#id").val(data.id);
+    	$("#code").val(data.code);
+    	$("#func_name").val(data.func_name);
+    	$("#module_id").val(data.module_id);
+    	$("#display_label").val(data.display_label);
+    	$("#des").val(data.des);
+    	$("#display_order").val(data.display_order);
+    	$("#entry_right_name").val(data.entry_right_name);
+    	$("#entry_url").val(data.entry_url);
+    	$("#has_lef").val(data.has_lef);
+    	$("#create_user").val(data.create_user);
+    	$("#create_date").val(data.create_date);
+    	$("#update_user").val(data.update_user);
+    	$("#update_date").val(data.update_date);
+    	}
+	if(type == "view"){
+		$("#id").attr({readonly:true,disabled:true});
+    	$("#code").attr({readonly:true,disabled:true});
+    	$("#func_name").attr({readonly:true,disabled:true});
+    	//$("#module_id").attr({readonly:true,disabled:true});
+    	$("#display_label").attr({readonly:true,disabled:true});
+    	$("#des").attr({readonly:true,disabled:true});
+    	$("#display_order").attr({readonly:true,disabled:true});
+    	$("#entry_right_name").attr({readonly:true,disabled:true});
+    	$("#entry_url").attr({readonly:true,disabled:true});
+    	$("#has_lef").attr({readonly:true,disabled:true});
+    	$("#create_user").attr({readonly:true,disabled:true});
+    	$("#create_date").attr({readonly:true,disabled:true});
+    	$("#update_user").attr({readonly:true,disabled:true});
+    	$("#update_date").attr({readonly:true,disabled:true});
+    	$('#edit_dialog_ok').addClass('hidden');
+	}
+	else{
+		$("#id").attr({readonly:false,disabled:false});
+    	$("#code").attr({readonly:false,disabled:false});
+    	$("#func_name").attr({readonly:false,disabled:false});
+    	
+    	$("#display_label").attr({readonly:false,disabled:false});
+    	$("#des").attr({readonly:false,disabled:false});
+    	$("#display_order").attr({readonly:false,disabled:false});
+    	$("#entry_right_name").attr({readonly:false,disabled:false});
+    	$("#entry_right_name").parent().parent().hide();
+    	$("#entry_url").attr({readonly:false,disabled:false});
+    	$("#has_lef").attr({readonly:false,disabled:false});
+    	$("#has_lef").parent().parent().hide();
+    	$("#create_user").attr({readonly:false,disabled:false});
+    	$("#create_user").parent().parent().hide();
+    	$("#create_date").attr({readonly:false,disabled:false});
+    	$("#create_date").parent().parent().hide();
+    	$("#update_user").attr({readonly:false,disabled:false});
+    	$("#update_user").parent().parent().hide();
+    	$("#update_date").attr({readonly:false,disabled:false});
+    	$("#update_date").parent().parent().hide();
+    	$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');
 }

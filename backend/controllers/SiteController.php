@@ -95,12 +95,12 @@ http://www.htmleaf.com/Demo/201502141380.html
 
     public function actionTest()
     {
-        exit('111');
+//         exit('111');
 //         session_start();
 //         print_r(Yii::$app->session);
 //         var_dump($_SESSION);
 //         var_dump(Yii::$app->user->identity->getSystemMenus());
-//         print_r(Yii::$app->user->identity->menus);
+        print_r(Yii::$app->user);
 //         print_r(Yii::$app->user->id);
 //         $password = '123456';
 //         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);

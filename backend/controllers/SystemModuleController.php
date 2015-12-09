@@ -37,7 +37,7 @@ class SystemModuleController extends BaseController
         $query = SystemModule::find();
         $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
         //$models = $query->orderBy('display_order')
-        $models = $query
+        $models = $query->orderBy('display_order')
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
@@ -69,6 +69,11 @@ class SystemModuleController extends BaseController
     {
         $model = new SystemModule();
         if ($model->load(Yii::$app->request->post())) {
+            $model->has_lef = 'n';
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -93,6 +98,8 @@ class SystemModuleController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);

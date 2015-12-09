@@ -40,7 +40,7 @@ class SystemFunction extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['code', 'func_name', 'module_id'], 'required'],
+            [['code', 'func_name', 'module_id', 'entry_url'], 'required'],
             [['module_id', 'display_order'], 'integer'],
             [['create_date', 'update_date'], 'safe'],
             [['code', 'entry_right_name', 'create_user', 'update_user'], 'string', 'max' => 50],
@@ -90,7 +90,7 @@ class SystemFunction extends \backend\models\BaseModel
     }
 
   /**
-     * 返回数据库字段信息
+     * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
      * inputtype - 对应控件类型，包含text,select,checkbox,radio,file,password
@@ -292,7 +292,7 @@ class SystemFunction extends \backend\models\BaseModel
                     ),
 		'entry_url' => array(
                         'name' => 'entry_url',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '入口地址',
 //                         'dbType' => "varchar(200)",
@@ -431,40 +431,5 @@ class SystemFunction extends \backend\models\BaseModel
 		        );
         
     }
-    
-/*
-'code'=>array(
-                'COLUMN_NAME'=>'code',
-                'COLUMN_DEFAULT'=>'',
-                'IS_NULLABLE'=>'NO',
-                'DATA_TYPE'=>'varchar',
-                'CHARACTER_MAXIMUM_LENGTH'=>'50',
-                'NUMERIC_PRECISION'=>'',
-                'NUMERIC_SCALE'=>'',
-                'COLUMN_TYPE'=>"varchar(50)",
-                'COLUMN_KEY'=>'MUL',
-                'COLUMN_COMMENT'=>array(
-                    'label'=>'广告代码',
-                    'inputtype'=>'select',
-                    'displaylist'=>true,
-                    'searchble'=>true,
-                    'readonly'=>false,
-                    'udc'=>'ad_code',
-                )
-            ),
-$allowNull	boolean	Whether this column can be null.	yii\db\ColumnSchema
-$autoIncrement	boolean	Whether this column is auto-incremental	yii\db\ColumnSchema
-$comment	string	Comment of this column.	yii\db\ColumnSchema
-$dbType	string	The DB type of this column.	yii\db\ColumnSchema
-$defaultValue	mixed	Default value of this column	yii\db\ColumnSchema
-$enumValues	array	Enumerable values.	yii\db\ColumnSchema
-$isPrimaryKey	boolean	Whether this column is a primary key	yii\db\ColumnSchema
-$name	string	Name of this column (without quotes).	yii\db\ColumnSchema
-$phpType	string	The PHP type of this column.	yii\db\ColumnSchema
-$precision	integer	Precision of the column data, if it is numeric.	yii\db\ColumnSchema
-$scale	integer	Scale of the column data, if it is numeric.	yii\db\ColumnSchema
-$size	integer	Display size of the column.	yii\db\ColumnSchema
-$type	string	Abstract type of this column.	yii\db\ColumnSchema
-$unsigned    
-*/
+ 
 }
