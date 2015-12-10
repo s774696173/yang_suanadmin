@@ -104,7 +104,7 @@ $this->title = 'My Yii Application';
 					<ul class="nav nav-pills nav-stacked main-menu">
 						<li class="nav-header">Main</li>
 
-						<li><a class="ajax-link" href="#"><i
+						<li><a class="ajax-link" href="index.php?r=site/index"><i
 								class="glyphicon glyphicon-home"></i>&nbsp;<span>首页</span></a>
 						</li>
 						<?php 
