@@ -108,31 +108,6 @@ foreach ($models as $model) {
 
 
 
-<div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
-			</div>
-			<div class="modal-body">
-			     <input type="hidden" id="select_role_id" />
-                <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-role/save"]); ?>                
-               <div id="treeview"/>
-                <?php ActiveForm::end(); ?>            
-            </div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
-					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-
-
 <div class="modal fade" id="edit_dialog" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -215,6 +190,31 @@ foreach ($models as $model) {
 		</div>
 	</div>
 </div>
+
+
+<!-- 分配权限 -->
+<div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+			     <input type="hidden" id="select_role_id" />
+                <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-role/save"]); ?>                
+               <div id="treeview"/>
+                <?php ActiveForm::end(); ?>            
+            </div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
+					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 分配权限结束 -->
 
 <script>
 $(function(){

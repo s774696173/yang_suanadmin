@@ -14,9 +14,10 @@ class SystemRoleRightService extends SystemRoleRight{
                 'create_date'=>$date, 'update_user'=>$userName, 'update_date'=>$date);
             $insertData[] = $data;
         }
-        $d = Yii::$app->db->createCommand()->delete($this->tableName(), "role_id = $roleId ")->execute();
+        
+        $d = $this->getDb()->createCommand()->delete($this->tableName(), "role_id = $roleId ")->execute();
         //print_r($d);
-        return Yii::$app->db->createCommand()
+        return $this->getDb()->createCommand()
         ->batchInsert($this->tableName(), [
             'role_id',
             'right_id',

@@ -219,13 +219,12 @@ class SystemRoleController extends BaseController
        
        if(count($rids) > 0){
            $systemRoleRightService = new SystemRoleRightService();
-           //print_r(Yii::$app->user->identity);
            $count = $systemRoleRightService->saveRights($rids, $roleId, Yii::$app->user->identity->uname);
            if($count > 0){
                echo json_encode(array('errno'=>0, 'data'=>$count, 'msg'=>'保存成功'));
                return;
            }
        }
-       echo json_encode(array('errno'=>2, 'data'=>$count, 'msg'=>'保存失败'));
+       echo json_encode(array('errno'=>2, 'data'=>'', 'msg'=>'保存失败'));
     }
 }

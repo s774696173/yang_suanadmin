@@ -37,7 +37,7 @@ class SystemRight extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['func_id'], 'required'],
+            [['func_id', 'right_name'], 'required'],
             [['func_id', 'display_order'], 'integer'],
             [['create_date', 'update_date'], 'safe'],
             [['right_name', 'display_label', 'des'], 'string', 'max' => 200],
@@ -83,7 +83,7 @@ class SystemRight extends \backend\models\BaseModel
     }
 
   /**
-     * 返回数据库字段信息
+     * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
      * inputtype - 对应控件类型，包含text,select,checkbox,radio,file,password
@@ -147,7 +147,7 @@ class SystemRight extends \backend\models\BaseModel
                     ),
 		'right_name' => array(
                         'name' => 'right_name',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '名称',
 //                         'dbType' => "varchar(200)",
@@ -355,6 +355,5 @@ class SystemRight extends \backend\models\BaseModel
 		        );
         
     }
-    
-
+ 
 }

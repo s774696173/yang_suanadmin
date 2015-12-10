@@ -53,15 +53,15 @@ $modelLabel = new \backend\models\SystemFunction();
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
+// 						      echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
+// 						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
+// 						      echo '<th>' . $modelLabel->getAttributeLabel('update_date'). '</th>';
 						      
 						      ?>
 						      <th>操作</th>
@@ -82,14 +82,14 @@ foreach ($models as $model) {
         echo '  <td>' . $model->display_order . '</td>';
         echo '  <td>' . $model->entry_right_name . '</td>';
         echo '  <td>' . $model->entry_url . '</td>';
-        echo '  <td>' . $model->has_lef . '</td>';
+//         echo '  <td>' . $model->has_lef . '</td>';
         echo '  <td>' . $model->create_user . '</td>';
         echo '  <td>' . $model->create_date . '</td>';
-        echo '  <td>' . $model->update_user . '</td>';
-        echo '  <td>' . $model->update_date . '</td>';
+//         echo '  <td>' . $model->update_user . '</td>';
+//         echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
-   
+    echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>权限管理</a>';
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';

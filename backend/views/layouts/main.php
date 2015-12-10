@@ -18,7 +18,7 @@ $this->title = 'My Yii Application';
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="index.html"> <img alt="Charisma Logo"
-			src="img/logo20.png" class="hidden-xs" /> <span>Charisma</span></a>
+			src="img/logo20.png" class="hidden-xs" /> <span>chadmin</span></a>
 
 		<!-- user dropdown starts -->
 		<div class="btn-group pull-right">
@@ -44,7 +44,7 @@ $this->title = 'My Yii Application';
 			<button class="btn btn-default dropdown-toggle"
 				data-toggle="dropdown">
 				<i class="glyphicon glyphicon-tint"></i><span
-					class="hidden-sm hidden-xs"> Change Theme / Skin</span> <span
+					class="hidden-sm hidden-xs"> 更换主题 / 皮肤</span> <span
 					class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" id="themes">
@@ -189,12 +189,12 @@ $this->title = 'My Yii Application';
 
 	<footer class="row">
 		<p class="col-md-9 col-sm-9 col-xs-12 copyright">
-			&copy; <a href="http://usman.it" target="_blank">Muhammad Usman</a>
+			&copy; <a href="http://usman.it" target="_blank">ChAdmin</a>
 			2012 - 2015
 		</p>
 
 		<p class="col-md-3 col-sm-3 col-xs-12 powered-by">
-			Powered by: <a href="http://usman.it/free-responsive-admin-template">Charisma</a>
+			Powered by: <a href="http://usman.it/free-responsive-admin-template">ChAdmin</a>
 		</p>
 	</footer>
 

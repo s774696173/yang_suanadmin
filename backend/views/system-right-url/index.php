@@ -19,9 +19,9 @@ $modelLabel = new \backend\models\SystemRightUrl();
 					<i class="glyphicon glyphicon-user"></i>访问URL
 				</h2>
 				<div class="box-icon">
-					<button id="create_btn" type="button"
+					<!-- <button id="create_btn" type="button"
 						class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
-					|
+					|  -->
 					<button id="delete_btn" type="button" class="btn btn-xs btn-danger">批量删除</button>
 				
 				</div>
@@ -89,7 +89,7 @@ foreach ($models as $model) {
     echo '  <td class="center">';
    
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-    echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+//     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
     echo '  </td>';
     echo '<tr/>';

@@ -100,7 +100,7 @@ http://www.htmleaf.com/Demo/201502141380.html
 //         print_r(Yii::$app->session);
 //         var_dump($_SESSION);
 //         var_dump(Yii::$app->user->identity->getSystemMenus());
-        print_r(Yii::$app->user);
+//         print_r(Yii::$app->user);
 //         print_r(Yii::$app->user->id);
 //         $password = '123456';
 //         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
@@ -116,6 +116,8 @@ http://www.htmleaf.com/Demo/201502141380.html
 
 //         print_r(Yii::$app->session['system_menus_156']);
 //         print_r(Yii::$app->session['system_rights_156']);
+        print_r(get_declared_classes());
+        print_r(get_class_methods('backend\controllers\SiteController'));
     }
     
     public function actionLogout()
