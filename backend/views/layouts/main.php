@@ -7,6 +7,38 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+
+$system_menus = Yii::$app->user->identity->getSystemMenus();
+$system_rights = Yii::$app->user->identity->getSystemRights();
+$funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$this->context->route] : ['entry_url'=>''];
+// Yii::$app->session['system_menus_'.$this->id];
+// Yii::$app->request->referrer 从referrer解析出路由地址
+// if(empty(Yii::$app->request->referrer) == false){
+//     $referrer = Yii::$app->request->referrer;
+//     var_dump($referrer);
+//     $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
+//     $index = strpos($referrer, 'r=');
+//     $referrer = 'site/index';
+//     if($index !== false){
+//         $referrer = substr($referrer, $index + 2);
+//         $index = strpos($referrer, '&');
+//         if($index !== false){
+//             $referrer = substr($referrer, 0, $index);
+//         }
+//     }
+//     var_dump($referrer);
+    
+//     if(isset($system_rights[$referrer]) == true){
+//         $funref = $system_rights[$referrer];
+//         $system_menus_current[] = ['url'=>Yii::$app->request->referrer,'id'=>$referrer, 'right_name'=>$funref['right_name']];
+//         Yii::$app->session['system_menus_current'] = $system_menus_current;
+//         var_dump($system_rights[$referrer]);
+//     }
+//     var_dump($system_menus_current);
+// }
+// else{
+//     Yii::$app->session['system_menus_current'] = null;
+// }
 ?>
 <!-- topbar starts -->
 <?php $this->beginContent('@backend/views/layouts/main_main.php');?>
@@ -104,18 +136,20 @@ $this->title = 'My Yii Application';
 					<ul class="nav nav-pills nav-stacked main-menu">
 						<li class="nav-header">Main</li>
 
-						<li><a class="ajax-link" href="index.php?r=site/index"><i
+						<li <?=(empty($funInfo['entry_url']) == true ? ' class="active"' : '' )?>>
+						  <a class="ajax-link" href="index.php?r=site/index"><i
 								class="glyphicon glyphicon-home"></i>&nbsp;<span>首页</span></a>
+								
 						</li>
 						<?php 
-						$system_menus = Yii::$app->user->identity->getSystemMenus();
+						
 						foreach($system_menus as $menu){
 						    echo '<li class="accordion">';
 						    echo '    <a href="#"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span>'.$menu['label'].'</span></a>';
 						    echo '    <ul class="nav nav-pills nav-stacked">';
 						    $funcList = $menu['funcList'];
 						    foreach($funcList as $fun){
-						        echo '    <li>
+						        echo '    <li ' .( $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '' ). '>
 			                                 <a href="'.Url::toRoute($fun['url']).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
 		                                  </li>';
 						    }
@@ -148,8 +182,24 @@ $this->title = 'My Yii Application';
 			<!-- content starts -->
 			<div>
 				<ul class="breadcrumb">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Dashboard</a></li>
+				    <?php
+				    if(isset($funInfo['module_name']) == true && isset($funInfo['func_name']) == true){
+                        echo '<li><a href="#">'.$funInfo['module_name'].'</a></li>';
+                        echo '<li><a href="'.Url::toRoute($funInfo['entry_url']).'">'.$funInfo['func_name'].'</a></li>';
+                        
+                        $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
+                        foreach($system_menus_current as $m){
+//                             $system_menus_current[] = ['url'=>Yii::$app->request->referrer,'id'=>$referrer, 'right_name'=>$funref['right_name']];
+                            echo '<li><a href="'.Url::toRoute($m['url']).'">'.$m['right_name'].'</a></li>';
+                        }
+				    }
+				    else{
+				        echo '<li><a href="#">首页</a></li>';
+				       
+				    }
+				    ?>
+					<!-- <li><a href="index.php?r=site/test&id=1">test</a></li>  -->
+					
 				</ul>
 			</div>
 			

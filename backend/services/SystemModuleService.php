@@ -43,11 +43,27 @@ class SystemModuleService extends BaseService
      */
     public function getUserUrls($userId = 0)
     {
-        $sql = "select url.* from system_right_url url
-				left outer join system_role_right rrt on url.right_id=rrt.right_id
-				left outer join system_user_role ru on ru.role_id=rrt.role_id
-				where ru.user_id = $userId
-				group by url.id ";
+        $sql = 'SELECT ru.id AS urlid,ru.url, ru.para_name, ru.para_value, rr.role_id, rr.right_id FROM
+        system_right_url ru LEFT JOIN system_role_right rr ON ru.right_id = rr.right_id
+        LEFT JOIN system_user_role ur ON rr.role_id = ur.role_id
+        WHERE ur.user_id = '.$userId;
+//         $sql = "select url.* from system_right_url url
+// 				left outer join system_role_right rrt on url.right_id=rrt.right_id
+// 				left outer join system_user_role ru on ru.role_id=rrt.role_id
+// 				where ru.user_id = $userId
+// 				group by url.id ";
+        $connection = Yii::$app->db;
+        $command=$connection->createCommand($sql);
+        $rows=$command->queryAll();
+        return $rows;
+    }
+    /**
+     * 获取所有系统功能
+     */
+    public function getAllFunctions(){
+        $sql = 'SELECT r.id AS right_id, r.func_id, r.right_name, f.entry_url, f.func_name, m.display_label 
+            FROM system_right r LEFT JOIN system_function f ON r.func_id = f.id 
+            LEFT JOIN system_module m ON f.module_id = m.id';
         $connection = Yii::$app->db;
         $command=$connection->createCommand($sql);
         $rows=$command->queryAll();

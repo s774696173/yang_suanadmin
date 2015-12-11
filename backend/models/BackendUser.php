@@ -186,8 +186,26 @@ class BackendUser extends ActiveRecord implements IdentityInterface
     {
         $systemModuleService = new SystemModuleService();
         $rightUrls = $systemModuleService->getUserUrls($this->id);
-        Yii::$app->session['system_rights_'.$this->id] = $rightUrls;
-        return $rightUrls;
+        $funcs = $systemModuleService->getAllFunctions();
+        $funcData = [];
+        foreach($funcs as $fun){
+//             SELECT r.id AS right_id, r.func_id, r.right_name, f.entry_url, f.func_name, m.display_label
+            $funcData[$fun['right_id']] = $fun;
+        }
+        $rightData = [];
+        foreach($rightUrls as $url){
+//             SELECT ru.id AS urlid,ru.url, ru.para_name, ru.para_value, rr.role_id, rr.right_id
+            $right_id = $url['right_id'];
+            
+            $fun = $funcData[$right_id];
+            $url['right_name'] = $fun['right_name'];
+            $url['entry_url'] = $fun['entry_url'];
+            $url['func_name'] = $fun['func_name'];
+            $url['module_name'] = $fun['display_label'];
+            $rightData[$url['para_name'].'/'.$url['para_value']] = $url;
+        }
+        Yii::$app->session['system_rights_'.$this->id] = $rightData;
+        return $rightData;
     }
 
 

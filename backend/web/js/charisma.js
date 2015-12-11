@@ -85,13 +85,13 @@ $(document)
 
 					}
 
-					//highlight current / active link
+					//highlight current / active link 设置选中高亮
+					
 					$('ul.main-menu li a').each(function() {
-						//console.log('===========', $($(this))[0].href, window.location, String(window.location));
 						if ($($(this))[0].href == String(window.location))
 							$(this).parent().addClass('active');
 					});
-
+					
 					//establish history variables
 					var History = window.History, // Note: We are using a capital H instead of a lower h
 					State = History.getState(), $log = $('#log');

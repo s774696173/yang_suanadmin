@@ -18,6 +18,13 @@ $modelLabel = new \backend\models\SystemRight();
 					<i class="glyphicon glyphicon-user"></i>权限管理
 				</h2>
 				<div class="box-icon">
+				    <?php 
+				        if(empty(Yii::$app->request->referrer) == false){
+				            //echo '<a href="'.Yii::$app->request->referrer.'" class="btn btn-xs btn-primary" style="width:50px;">返回</a>';
+				            echo '<button type="button" onclick="javascript:window.location.href=\''.Yii::$app->request->referrer.'\';"
+				                class="btn btn-xs btn-default">返回</button>';
+				        }
+				    ?>
 					<button id="create_btn" type="button"
 						class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
 					|
