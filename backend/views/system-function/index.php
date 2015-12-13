@@ -15,7 +15,7 @@ $modelLabel = new \backend\models\SystemFunction();
 		<div class="box-inner">
 			<div class="box-header well" data-original-title="">
 				<h2>
-					<i class="glyphicon glyphicon-user"></i>模块管理
+					<i class="glyphicon glyphicon-user"></i>功能管理
 				</h2>
 				<div class="box-icon">
 				    <?php 

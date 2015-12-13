@@ -10,35 +10,52 @@ $this->title = 'My Yii Application';
 
 $system_menus = Yii::$app->user->identity->getSystemMenus();
 $system_rights = Yii::$app->user->identity->getSystemRights();
-$funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$this->context->route] : ['entry_url'=>''];
-// Yii::$app->session['system_menus_'.$this->id];
-// Yii::$app->request->referrer 从referrer解析出路由地址
-// if(empty(Yii::$app->request->referrer) == false){
-//     $referrer = Yii::$app->request->referrer;
+$route = $this->context->route;
+$absoluteUrl = Yii::$app->request->absoluteUrl;
+$funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$route] : null;
+$otherMenu = true;
+
+// var_dump(Yii::$app->request->absoluteUrl);
+//检查是否为主菜单，主菜单不需要添加返回上一层菜单
+// var_dump($funInfo);
+if(isset($funInfo) == true && $funInfo['entry_url'] != $this->context->route){
+    $referrer = Yii::$app->request->referrer;
 //     var_dump($referrer);
-//     $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
-//     $index = strpos($referrer, 'r=');
-//     $referrer = 'site/index';
-//     if($index !== false){
-//         $referrer = substr($referrer, $index + 2);
-//         $index = strpos($referrer, '&');
+    if(empty($referrer) == false){
+        $referrer = urldecode($referrer);
+        //     var_dump($referrer);
+        $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
+//         $index = strpos($referrer, 'r=');
+//         $routeRef = 'site/index';
+//         //取出referrer的路由地址;
 //         if($index !== false){
-//             $referrer = substr($referrer, 0, $index);
+//             $routeRef = substr($referrer, $index + 2);
+//             $index = strpos($routeRef, '&');
+//             if($index !== false){
+//                 $routeRef = substr($routeRef, 0, $index);
+//             }
 //         }
-//     }
-//     var_dump($referrer);
     
-//     if(isset($system_rights[$referrer]) == true){
-//         $funref = $system_rights[$referrer];
-//         $system_menus_current[] = ['url'=>Yii::$app->request->referrer,'id'=>$referrer, 'right_name'=>$funref['right_name']];
-//         Yii::$app->session['system_menus_current'] = $system_menus_current;
-//         var_dump($system_rights[$referrer]);
-//     }
-//     var_dump($system_menus_current);
-// }
-// else{
-//     Yii::$app->session['system_menus_current'] = null;
-// }
+//         if(isset($system_rights[$routeRef]) == true){
+            //$funRef = $system_rights[$routeRef];
+            $funLast = count($system_menus_current) > 0 ? $system_menus_current[count($system_menus_current) - 1] : null;
+            // 检查当前url是否和前一个相同，判断是否刷新
+            if($funLast['route'] != $route){
+                $system_menus_current[] = ['url'=>$absoluteUrl,'route'=>$route, 'right_name'=>$funInfo['right_name']];
+                Yii::$app->session['system_menus_current'] = $system_menus_current;
+           }
+//         }
+    }
+    else{
+        $otherMenu = false;
+    }
+}
+else{
+    $otherMenu = false;
+}
+if($otherMenu == false){
+    Yii::$app->session['system_menus_current'] = null;
+}
 ?>
 <!-- topbar starts -->
 <?php $this->beginContent('@backend/views/layouts/main_main.php');?>
@@ -150,7 +167,7 @@ $funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights
 						    $funcList = $menu['funcList'];
 						    foreach($funcList as $fun){
 						        echo '    <li ' .( $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '' ). '>
-			                                 <a href="'.Url::toRoute($fun['url']).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
+			                                 <a href="'.Url::to([$fun['url']]).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
 		                                  </li>';
 						    }
 						    echo '    </ul>';
@@ -190,7 +207,7 @@ $funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights
                         $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
                         foreach($system_menus_current as $m){
 //                             $system_menus_current[] = ['url'=>Yii::$app->request->referrer,'id'=>$referrer, 'right_name'=>$funref['right_name']];
-                            echo '<li><a href="'.Url::toRoute($m['url']).'">'.$m['right_name'].'</a></li>';
+                            echo '<li><a href="'.$m['url'].'">'.$m['right_name'].'</a></li>';
                         }
 				    }
 				    else{
