@@ -33,7 +33,7 @@ $modelLabel = new \backend\models\SystemModule();
 					<thead>
 						<tr>
 						<?php
-						      echo '<th><label><input id="data_table_check" type="checkbox"></label></th>';
+						      echo '<th><input id="data_table_check" type="checkbox"></th>';
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('id'). '</th>';
 						      
@@ -67,17 +67,17 @@ $modelLabel = new \backend\models\SystemModule();
 foreach ($models as $model) {
     echo '<tr id="rowid_' . $model->id . '">';
     echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
-        echo '  <td>' . $model->id . '</td>';
-        echo '  <td>' . $model->code . '</td>';
-        echo '  <td>' . $model->display_label . '</td>';
-        //echo '  <td>' . $model->has_lef . '</td>';
-        echo '  <td>' . $model->des . '</td>';
-        //echo '  <td>' . $model->entry_url . '</td>';
-        echo '  <td>' . $model->display_order . '</td>';
-        echo '  <td>' . $model->create_user . '</td>';
-        echo '  <td>' . $model->create_date . '</td>';
-        //echo '  <td>' . $model->update_user . '</td>';
-        //echo '  <td>' . $model->update_date . '</td>';
+    echo '  <td class="center">' . $model->id . '</td>';
+    echo '  <td class="center">' . $model->code . '</td>';
+    echo '  <td class="center">' . $model->display_label . '</td>';
+    //echo '  <td>' . $model->has_lef . '</td>';
+    echo '  <td class="center">' . $model->des . '</td>';
+    //echo '  <td>' . $model->entry_url . '</td>';
+    echo '  <td class="center">' . $model->display_order . '</td>';
+    echo '  <td class="center">' . $model->create_user . '</td>';
+    echo '  <td class="center">' . $model->create_date . '</td>';
+    //echo '  <td>' . $model->update_user . '</td>';
+    //echo '  <td>' . $model->update_date . '</td>';
        
     echo '  <td class="center">';
     echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=system-function/index&id='. $model->id .'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>功能管理</a>';

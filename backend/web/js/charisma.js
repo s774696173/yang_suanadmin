@@ -11,14 +11,14 @@ $(document)
 					$.browser = {};
 					$.browser.msie = {};
 					switchTheme(currentTheme);
-					/*
+					
 					$('.navbar-toggle').click(function (e) {
 					    e.preventDefault();
 					    $('.nav-sm').html($('.navbar-collapse').html());
 					    $('.sidebar-nav').toggleClass('active');
 					    $(this).toggleClass('active');
 					});
-					 */
+					
 					var $sidebarNav = $('.sidebar-nav');
 
 					// Hide responsive navbar on clicking outside
@@ -82,11 +82,9 @@ $(document)
 						$('#toggle-fullscreen').hide();
 						$('.login-box').find('.input-large').removeClass(
 								'span10');
-
 					}
 
 					//highlight current / active link 设置选中高亮
-					
 					$('ul.main-menu li a').each(function() {
 						if ($($(this))[0].href == String(window.location))
 							$(this).parent().addClass('active');

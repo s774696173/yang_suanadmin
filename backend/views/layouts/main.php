@@ -15,36 +15,32 @@ $absoluteUrl = Yii::$app->request->absoluteUrl;
 $funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$route] : null;
 $otherMenu = true;
 
-// var_dump(Yii::$app->request->absoluteUrl);
 //检查是否为主菜单，主菜单不需要添加返回上一层菜单
-// var_dump($funInfo);
 if(isset($funInfo) == true && $funInfo['entry_url'] != $this->context->route){
     $referrer = Yii::$app->request->referrer;
-//     var_dump($referrer);
     if(empty($referrer) == false){
         $referrer = urldecode($referrer);
-        //     var_dump($referrer);
         $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
-//         $index = strpos($referrer, 'r=');
-//         $routeRef = 'site/index';
-//         //取出referrer的路由地址;
-//         if($index !== false){
-//             $routeRef = substr($referrer, $index + 2);
-//             $index = strpos($routeRef, '&');
-//             if($index !== false){
-//                 $routeRef = substr($routeRef, 0, $index);
-//             }
-//         }
-    
-//         if(isset($system_rights[$routeRef]) == true){
-            //$funRef = $system_rights[$routeRef];
+        //检查当前URL是否已经在导航菜单中
+        $inCurrent = false;
+        foreach($system_menus_current as $key=>$m){
+            if($inCurrent == true){
+                unset($system_menus_current[$key]);
+                
+            }
+            else if($m['route'] == $route){
+                $inCurrent = true;
+            }
+        }
+        if($inCurrent == false){
             $funLast = count($system_menus_current) > 0 ? $system_menus_current[count($system_menus_current) - 1] : null;
             // 检查当前url是否和前一个相同，判断是否刷新
             if($funLast['route'] != $route){
                 $system_menus_current[] = ['url'=>$absoluteUrl,'route'=>$route, 'right_name'=>$funInfo['right_name']];
-                Yii::$app->session['system_menus_current'] = $system_menus_current;
-           }
-//         }
+                
+            }
+        }
+        Yii::$app->session['system_menus_current'] = $system_menus_current;
     }
     else{
         $otherMenu = false;
@@ -66,7 +62,7 @@ if($otherMenu == false){
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="index.html"> <img alt="Charisma Logo"
+		<a class="navbar-brand" href="#"> <img alt="Charisma Logo"
 			src="img/logo20.png" class="hidden-xs" /> <span>chadmin</span></a>
 
 		<!-- user dropdown starts -->
@@ -78,7 +74,7 @@ if($otherMenu == false){
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a href="#">Profile</a></li>
+				<!-- <li><a href="#">Profile</a></li>  -->
 				<li class="divider"></li>
 				<?php 
 				    echo '<li><a href="'.Url::toRoute('site/logout').'">Logout</a></li>';

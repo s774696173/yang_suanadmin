@@ -8,11 +8,16 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'homeUrl'=>'site/index',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
 //         'user' => [
 //             'identityClass' => 'common\models\User',
             

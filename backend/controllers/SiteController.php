@@ -70,7 +70,7 @@ http://www.htmleaf.com/Demo/201502141380.html
         else{
             $menus = Yii::$app->user->identity->getSystemMenus();
             $sysInfo = [
-                ['name'=> '操作系统', 'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
+                ['name'=> '操作系统', 'value'=>php_uname('s')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
                 ['name'=>'PHP版本', 'value'=>phpversion()],
                 ['name'=>'Yii版本', 'value'=>Yii::getVersion()],
                 ['name'=>'数据库', 'value'=>$this->getDbVersion()],
