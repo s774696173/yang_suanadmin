@@ -445,7 +445,7 @@ function deleteAction(id){
 	}
 	if(ids.length > 0){
 		admin_tool.confirm('请确认是否删除', function(){
-			console.log(this);
+			//console.log(this);
 			///var csrf = $('meta[name="csrf-token"]').attr("content"); // "_csrf":csrf
 		    $.ajax({
 				   type: "GET",

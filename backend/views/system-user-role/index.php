@@ -114,7 +114,8 @@ foreach ($models as $model) {
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "system-user-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-user-role/save"]); ?>                
-                <input type="hidden" class="form-control" id="id" name="SystemUserRole[id]" >
+                    <input type="hidden" class="form-control" id="id" name="SystemUserRole[id]" >
+                    <input type="hidden" class="form-control" id="role_id" name="SystemUserRole[role_id]" value="<?=$roleId?>">
                     <div id="user_id_div" class="form-group">
     					<label for="user_id" class="col-sm-2 control-label">用户id</label>
     					<div class="col-sm-10">
@@ -123,7 +124,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-
+                    <!-- 
                     <div id="role_id_div" class="form-group">
     					<label for="role_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("role_id")?></label>
     					<div class="col-sm-10">
@@ -132,7 +133,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                     -->      
                     <div id="create_user_div" class="form-group">
     					<label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
     					<div class="col-sm-10">
@@ -186,47 +187,55 @@ function viewAction(id){
 
 function initEditSystemModule(data, type){
 	if(type == 'create'){
-				$("#id").val('');
-				$("#user_id").val('');
-				$("#role_id").val(<?=$roleId?>);
-				$("#role_id").attr({readonly:true});
-				$("#create_user").val('');
-				$("#create_user").attr({readonly:true,disabled:true});
-				$("#create_date").val('');
-				$("#create_date").attr({readonly:true,disabled:true});
-				$("#update_user").val('');
-				$("#update_user").attr({readonly:true,disabled:true});
-				$("#update_date").val('');
-				$("#update_date").attr({readonly:true,disabled:true});
-			}
-	else{
-				$("#id").val(data.id);
-	    		$("#user_id").val(data.user_id);
-	    		$("#role_id").val(data.role_id);
-	    		$("#create_user").val(data.create_user);
-	    		$("#create_date").val(data.create_date);
-	    		$("#update_user").val(data.update_user);
-	    		$("#update_date").val(data.update_date);
-	    	}
-	if(type == "view"){
-				$("#id").attr({readonly:true,disabled:true});
-        		$("#user_id").attr({readonly:true,disabled:true});
-        		$("#role_id").attr({readonly:true,disabled:true});
-        		$("#create_user").attr({readonly:true,disabled:true});
-        		$("#create_date").attr({readonly:true,disabled:true});
-        		$("#update_user").attr({readonly:true,disabled:true});
-        		$("#update_date").attr({readonly:true,disabled:true});
-        		$('#edit_dialog_ok').addClass('hidden');
+		$("#id").val('');
+		$("#user_id").val('');
+		//$("#role_id").val(<?=$roleId?>);
+		$("#role_id").attr({readonly:true});
+		$("#create_user").val('');
+		$("#create_user").attr({readonly:true,disabled:true});
+		$("#create_date").val('');
+		$("#create_date").attr({readonly:true,disabled:true});
+		$("#update_user").val('');
+		$("#update_user").attr({readonly:true,disabled:true});
+		$("#update_date").val('');
+		$("#update_date").attr({readonly:true,disabled:true});
 	}
 	else{
-				$("#id").attr({readonly:false,disabled:false});
-        		$("#user_id").attr({readonly:false,disabled:false});
-        		$("#role_id").attr({readonly:false,disabled:false});
-        		$("#create_user").attr({readonly:false,disabled:false});
-        		$("#create_date").attr({readonly:false,disabled:false});
-        		$("#update_user").attr({readonly:false,disabled:false});
-        		$("#update_date").attr({readonly:false,disabled:false});
-        		$('#edit_dialog_ok').removeClass('hidden');
+		$("#id").val(data.id);
+		$("#user_id").val(data.user_id);
+		//$("#role_id").val(data.role_id);
+		$("#create_user").val(data.create_user);
+		$("#create_date").val(data.create_date);
+		$("#update_user").val(data.update_user);
+		$("#update_date").val(data.update_date);
+	}
+	if(type == "view"){
+		$("#id").attr({readonly:true,disabled:true});
+		$("#user_id").attr({readonly:true,disabled:true});
+		$("#role_id").attr({readonly:true,disabled:true});
+		$("#create_user").attr({readonly:true,disabled:true});
+		$("#create_user").parent().parent().show();
+		$("#create_date").attr({readonly:true,disabled:true});
+		$("#create_date").parent().parent().show();
+		$("#update_user").attr({readonly:true,disabled:true});
+		$("#update_user").parent().parent().show();
+		$("#update_date").attr({readonly:true,disabled:true});
+		$("#update_date").parent().parent().show();
+		$('#edit_dialog_ok').addClass('hidden');
+	}
+	else{
+		$("#id").attr({readonly:false,disabled:false});
+		$("#user_id").attr({readonly:false,disabled:false});
+		$("#role_id").attr({readonly:false,disabled:false});
+		$("#create_user").attr({readonly:true,disabled:true});
+		$("#create_user").parent().parent().hide();
+		$("#create_date").attr({readonly:true,disabled:true});
+		$("#create_date").parent().parent().hide();
+		$("#update_user").attr({readonly:true,disabled:true});
+		$("#update_user").parent().parent().hide();
+		$("#update_date").attr({readonly:true,disabled:true});
+		$("#update_date").parent().parent().hide();
+		$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');
 }

@@ -12,40 +12,37 @@ class BaseController extends Controller
      */
     public function beforeAction($action)
     {
-       
         if (parent::beforeAction($action)) {
-            
-//             print_r($this->id);
-            //print_r($action->id);
-            //echo "<br/>";
-            //print_r($this->id);
-            $route = $this->route;
-            //$url = $this->id . '/' . $action->id;
-            // 检查是否已经登录
-            if(Yii::$app->user->isGuest){
-                $allowUrl = ['site/index'];   
-                if(in_array($route, $allowUrl) == false){
-                    $this->redirect(Url::toRoute('site/index'));
-                    //throw new BadRequestHttpException(Yii::t('yii', '没有权限访问'));
-                    // return false;
-                }
-            }
-            else{
+            if($this->verifyPermission($action) == true){
                 
-                // 检查是否有权限
-//                 $system_rights = Yii::$app->user->identity->getSystemRights();
-//                 if(empty($system_rights) == false || $route == Yii::$app->homeUrl){
-                    
-//                 }
-                //throw new ForbiddenHttpException(Yii::t('yii', '没有权限访问'));
+                return true;
             }
-            return true;
         }
-    
         return false;
     }
     
-
+    private function verifyPermission($action){
+        $route = $this->route;
+        // 检查是否已经登录
+        if(Yii::$app->user->isGuest){
+            $allowUrl = ['site/index'];
+            if(in_array($route, $allowUrl) == false){
+                $this->redirect(Url::toRoute('site/index'));
+            }
+        }
+        else{
+//             var_dump($route);
+            if($route != 'site/index' && $route != 'site/logout'){
+                $system_rights = Yii::$app->user->identity->getSystemRights();
+                if(empty($system_rights) == true || empty($system_rights[$route]) == true){
+                    //throw new ForbiddenHttpException(Yii::t('yii', '没有权限访问'));
+                    header("Content-type: text/html; charset=utf-8");
+                    exit('没有权限访问'.$route);
+                }
+            }
+        }
+        return true;
+    }
 }
 
 ?>
