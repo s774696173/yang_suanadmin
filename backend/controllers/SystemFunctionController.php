@@ -125,7 +125,6 @@ class SystemFunctionController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = SystemFunction::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }

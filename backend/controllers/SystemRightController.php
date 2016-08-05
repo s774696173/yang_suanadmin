@@ -57,7 +57,6 @@ class SystemRightController extends BaseController
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -130,7 +129,6 @@ class SystemRightController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = SystemRight::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
@@ -138,9 +136,6 @@ class SystemRightController extends BaseController
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
     }
 
     /**
@@ -168,13 +163,12 @@ class SystemRightController extends BaseController
         }
         $className = get_class($this);
         $mn = explode('\\', $className);
-        $name = array_pop($mn);
+        array_pop($mn);
         $classNameSpace = implode('\\', $mn);
         $dir = dirname(__FILE__);
         $classfiles = glob ( $dir . "/*Controller.php" );
         $controllerDatas = [];
         foreach($classfiles as $file){
-            $fileName = basename($file, '.php');
             $info = pathinfo($file);
             $controllerClass = $classNameSpace . '\\' . $info[ 'filename' ];
             $controllerDatas[$info[ 'filename' ]] = $controllerClass;

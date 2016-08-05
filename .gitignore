@@ -29,3 +29,5 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 .svn/
+.sonar/.sonartmp/caches/persistit_tempvol_5161417842659489665.tmp
+sonar-project.properties

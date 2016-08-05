@@ -22,13 +22,7 @@ class BackendUser extends ActiveRecord implements IdentityInterface
      */
     public static function validatePassword($user, $password)
     {
-//         $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
-        
-        if ($user != null && Yii::$app->getSecurity()->validatePassword($password, $user->password)) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($user != null && Yii::$app->getSecurity()->validatePassword($password, $user->password));
     }
 
     /**
@@ -44,14 +38,9 @@ class BackendUser extends ActiveRecord implements IdentityInterface
                 $user->initUserModuleList();
                 $user->initUserUrls();
                 return true;
-            } else {
-                return false;
             }
-            
-            return Yii::$app->user->login($user, $rememberMe ? 3600 * 24 * 30 : 0);
-        } else {
-            return false;
-        }
+        } 
+        return false;
     }
 
     /**
@@ -71,7 +60,6 @@ class BackendUser extends ActiveRecord implements IdentityInterface
   
     public static function findIdentity($id)
     {
-        //echo "<br/>findIdentity===$id================<br/>";
         return self::findOne([
             'id' => $id,
             'status' => self::STATUS_ACTIVE

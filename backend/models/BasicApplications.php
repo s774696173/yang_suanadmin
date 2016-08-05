@@ -69,7 +69,7 @@ class BasicApplications extends \yii\db\ActiveRecord
      * update_date: 修改时间。生成的代码自动赋值
      */
     public function getTableColumnInfo(){
-        $tableColumnInfo = array(
+        return array(
                      'id' => array(
                     'name' => 'id',
                     'allowNull' => '',
@@ -169,41 +169,5 @@ class BasicApplications extends \yii\db\ActiveRecord
                 );
         
     }
-    
-/*
-'code'=>array(
-                'COLUMN_NAME'=>'code',
-                'COLUMN_DEFAULT'=>'',
-                'IS_NULLABLE'=>'NO',
-                'DATA_TYPE'=>'varchar',
-                'CHARACTER_MAXIMUM_LENGTH'=>'50',
-                'NUMERIC_PRECISION'=>'',
-                'NUMERIC_SCALE'=>'',
-                'COLUMN_TYPE'=>"varchar(50)",
-                'COLUMN_KEY'=>'MUL',
-                'COLUMN_COMMENT'=>array(
-                    'label'=>'广告代码',
-                    'inputtype'=>'select',
-                    'displaylist'=>true,
-                    'searchble'=>true,
-                    'readonly'=>false,
-                    'udc'=>'ad_code',
-                )
-            ),
-                
-$allowNull	boolean	Whether this column can be null.	yii\db\ColumnSchema
-$autoIncrement	boolean	Whether this column is auto-incremental	yii\db\ColumnSchema
-$comment	string	Comment of this column.	yii\db\ColumnSchema
-$dbType	string	The DB type of this column.	yii\db\ColumnSchema
-$defaultValue	mixed	Default value of this column	yii\db\ColumnSchema
-$enumValues	array	Enumerable values.	yii\db\ColumnSchema
-$isPrimaryKey	boolean	Whether this column is a primary key	yii\db\ColumnSchema
-$name	string	Name of this column (without quotes).	yii\db\ColumnSchema
-$phpType	string	The PHP type of this column.	yii\db\ColumnSchema
-$precision	integer	Precision of the column data, if it is numeric.	yii\db\ColumnSchema
-$scale	integer	Scale of the column data, if it is numeric.	yii\db\ColumnSchema
-$size	integer	Display size of the column.	yii\db\ColumnSchema
-$type	string	Abstract type of this column.	yii\db\ColumnSchema
-$unsigned    
-*/
+  
 }

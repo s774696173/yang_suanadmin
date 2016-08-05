@@ -57,7 +57,6 @@ class SystemRoleController extends BaseController
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -120,17 +119,12 @@ class SystemRoleController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = SystemRole::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
-    
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
     }
 
     /**
@@ -148,7 +142,7 @@ class SystemRoleController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-                    //actionDelete
+    
     public function actionGetAllRights($roleId){
 
         $roleRights = SystemRoleRightService::findAll(['role_id'=>$roleId]);
@@ -157,11 +151,9 @@ class SystemRoleController extends BaseController
             $roleRightsData[$r->right_id] = $r->right_id;
         }
         $systemRightService = new SystemRightService();
-        //$roleRights = $systemRightService->findAll(array('role_id'=>$roleId));
         $rights = $systemRightService->getAllRight();
         $datas = array();
         foreach($rights as $r){
-            //echo json_encode($r)."\n";
             $mid = $r['mid'];
             $m_name = $r['m_name'];
             $fid = $r['fid'];
@@ -184,7 +176,6 @@ class SystemRoleController extends BaseController
             }
             $datas[$mid]['funs'][$fid]['rights'][$rid] = $rightData;
         }
-        $rightDatas = [];
         foreach($datas as $k=>$modules){
             $funs = $modules['funs'];
             foreach($funs as $f=>$fun){

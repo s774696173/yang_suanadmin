@@ -54,7 +54,6 @@ class SystemRightUrlController extends BaseController
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -117,7 +116,6 @@ class SystemRightUrlController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = SystemRightUrl::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
@@ -125,9 +123,6 @@ class SystemRightUrlController extends BaseController
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
     }
 
     /**

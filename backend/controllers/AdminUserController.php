@@ -54,7 +54,6 @@ class AdminUserController extends BaseController
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -69,7 +68,7 @@ class AdminUserController extends BaseController
     {
         $model = new AdminUser();
         if ($model->load(Yii::$app->request->post())) {
-            if($model->validate() == true && $model->save()){
+            if($model->validate() && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -117,7 +116,6 @@ class AdminUserController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = AdminUser::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
@@ -125,9 +123,6 @@ class AdminUserController extends BaseController
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
     }
 
     /**

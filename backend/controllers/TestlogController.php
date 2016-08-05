@@ -54,7 +54,6 @@ class TestlogController extends Controller
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -116,17 +115,12 @@ class TestlogController extends Controller
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $idsStr = implode(',', $ids);
             $c = Testlog::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
-    
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
     }
 
     /**

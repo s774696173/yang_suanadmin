@@ -20,13 +20,7 @@ class AdminLoginUser extends AdminUser implements IdentityInterface
      */
     public static function validatePassword($user, $password)
     {
-        if($user != null && $user->password == $password){
-            return true;
-        }
-        else{
-            return false;
-        }
-
+        return ($user != null && $user->password == $password);
     }
 
     /**
@@ -36,15 +30,9 @@ class AdminLoginUser extends AdminUser implements IdentityInterface
      */
     public function login($username, $password, $rememberMe)
     {
-//         var_dump($username);
         $user = self::findByUsername($username);
-//         var_dump($user);
-//         exit();
-        //var_dump($user->getAttributes());
         
         if (self::validatePassword($user, $password) == true) {
-//             $adminLoginUser = new AdminLoginUser();
-//             $adminLoginUser->setAttributes($user->getAttributes());
             $this->setAttributes($user->getAttributes());
             var_dump($this->getAttributes());
             return Yii::$app->admin_user->login($this, $rememberMe ? 3600 * 24 * 30 : 0);
@@ -91,10 +79,6 @@ class AdminLoginUser extends AdminUser implements IdentityInterface
      * @see \yii\web\IdentityInterface::getId()
      */
     public function getId(){
-//         echo "<<============";
-//         var_dump($this->getAttributes());
-//         echo "============>>";
-        
         return $this->uname;
     }
     

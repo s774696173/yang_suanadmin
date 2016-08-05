@@ -45,7 +45,7 @@ use yii\helpers\Html;
             		$('#confirm_content').text(content);
           			$('#confirm_dialog_ok').click(function(){
           				ok_fun();
-          				$('#confirm_dialog').modal('hide');
+          				$('#confirm_dialog').modal('hide'); 
           			});
           			$('#confirm_dialog').modal('show');
           		},
