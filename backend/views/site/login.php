@@ -39,7 +39,7 @@ use yii\bootstrap\ActiveForm;
 
 					<div class="input-prepend">
 						<label class="remember" for="remember"><input type="checkbox"
-							id="remember"> Remember me</label>
+							name="remember" id="remember" value="y"> Remember me</label>
 					</div>
 					<div class="clearfix"></div>
 

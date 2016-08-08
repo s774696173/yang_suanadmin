@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <head>
   
     <meta charset="utf-8">
-    <title>Free HTML5 Bootstrap Admin Template</title>
+    <title>21solr搜索管理后台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">

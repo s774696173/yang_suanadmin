@@ -15,6 +15,8 @@ use Yii;
  * @property integer $display_order
  * @property string $entry_right_name
  * @property string $entry_url
+ * @property string $controller
+ * @property string $action
  * @property string $has_lef
  * @property string $create_user
  * @property string $create_date
@@ -40,12 +42,13 @@ class SystemFunction extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['code', 'func_name', 'module_id', 'entry_url'], 'required'],
+            [['code', 'func_name', 'module_id', 'entry_url', 'controller', 'action'], 'required'],
             [['module_id', 'display_order'], 'integer'],
             [['create_date', 'update_date'], 'safe'],
-            [['code', 'entry_right_name', 'create_user', 'update_user'], 'string', 'max' => 50],
+            [['code', 'entry_right_name', 'action', 'create_user', 'update_user'], 'string', 'max' => 50],
             [['func_name', 'display_label', 'entry_url'], 'string', 'max' => 200],
             [['des'], 'string', 'max' => 400],
+            [['controller'], 'string', 'max' => 100],
             [['has_lef'], 'string', 'max' => 1]
         ];
     }
@@ -65,6 +68,8 @@ class SystemFunction extends \backend\models\BaseModel
             'display_order' => '显示顺序',
             'entry_right_name' => '入口地址名称',
             'entry_url' => '入口地址',
+            'controller' => '控制器ID',
+            'action' => '操作ID',
             'has_lef' => '是否有子',
             'create_user' => '创建人',
             'create_date' => '创建时间',
@@ -306,6 +311,52 @@ class SystemFunction extends \backend\models\BaseModel
                         'type' => 'string',
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('entry_url'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'controller' => array(
+                        'name' => 'controller',
+                        'allowNull' => false,
+//                         'autoIncrement' => false,
+//                         'comment' => '控制器ID',
+//                         'dbType' => "varchar(100)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '100',
+                        'scale' => '',
+                        'size' => '100',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('controller'),
+                        'inputtype' => 'text',
+                        'displaylist' => true,
+                        'searchble' => false,
+                        'readonly' => false,
+                        'order' => false,
+                        'udc'=>'',
+                    ),
+		'action' => array(
+                        'name' => 'action',
+                        'allowNull' => false,
+//                         'autoIncrement' => false,
+//                         'comment' => '操作ID',
+//                         'dbType' => "varchar(50)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '50',
+                        'scale' => '',
+                        'size' => '50',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('action'),
                         'inputtype' => 'text',
                         'displaylist' => true,
                         'searchble' => false,

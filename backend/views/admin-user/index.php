@@ -269,29 +269,47 @@ function initEditSystemModule(data, type){
     	$("#uname").attr({readonly:true,disabled:true});
     	$("#password").attr({readonly:true,disabled:true});
     	$("#auth_key").attr({readonly:true,disabled:true});
+    	$("#auth_key").parent().parent().show();
     	$("#last_ip").attr({readonly:true,disabled:true});
+    	$("#last_ip").parent().parent().show();
     	$("#is_online").attr({readonly:true,disabled:true});
+    	$("#is_online").parent().parent().show();
     	$("#domain_account").attr({readonly:true,disabled:true});
+    	$("#domain_account").parent().parent().show();
     	$("#status").attr({readonly:true,disabled:true});
+    	$("#status").parent().parent().show();
     	$("#create_user").attr({readonly:true,disabled:true});
+    	$("#create_user").parent().parent().show();
     	$("#create_date").attr({readonly:true,disabled:true});
+    	$("#create_date").parent().parent().show();
     	$("#update_user").attr({readonly:true,disabled:true});
+    	$("#update_user").parent().parent().show();
     	$("#update_date").attr({readonly:true,disabled:true});
+    	$("#update_date").parent().parent().show();
     	$('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
 		$("#id").attr({readonly:false,disabled:false});
     	$("#uname").attr({readonly:false,disabled:false});
     	$("#password").attr({readonly:false,disabled:false});
-    	$("#auth_key").attr({readonly:false,disabled:false});
-    	$("#last_ip").attr({readonly:false,disabled:false});
-    	$("#is_online").attr({readonly:false,disabled:false});
+    	$("#auth_key").attr({readonly:true,disabled:true});
+    	$("#auth_key").parent().parent().hide();
+    	$("#last_ip").attr({readonly:true,disabled:true});
+    	$("#last_ip").parent().parent().hide();
+    	$("#is_online").attr({readonly:true,disabled:true});
+    	$("#is_online").parent().parent().hide();
     	$("#domain_account").attr({readonly:false,disabled:false});
+    	$("#domain_account").parent().parent().hide();
     	$("#status").attr({readonly:false,disabled:false});
+    	$("#status").parent().parent().hide();
     	$("#create_user").attr({readonly:false,disabled:false});
+    	$("#create_user").parent().parent().hide();
     	$("#create_date").attr({readonly:false,disabled:false});
+    	$("#create_date").parent().parent().hide();
     	$("#update_user").attr({readonly:false,disabled:false});
+    	$("#update_user").parent().parent().hide();
     	$("#update_date").attr({readonly:false,disabled:false});
+    	$("#update_date").parent().parent().hide();
     	$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');
@@ -410,6 +428,7 @@ $('#admin-user-form').bind('submit', function(e) {
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
+        		window.location.reload();
         	}
         	else{
             	var json = value.data;

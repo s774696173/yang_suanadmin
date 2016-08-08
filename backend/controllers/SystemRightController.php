@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use backend\services\SystemRightUrlService;
+use backend\services\SystemFunctionService;
+use yii\log\Logger;
 /**
  * SystemRightController implements the CRUD actions for SystemRight model.
  */
@@ -58,8 +60,10 @@ class SystemRightController extends BaseController
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        echo json_encode($model->getAttributes());
-
+        $actions = $this->rightAction($model->id, $model->func_id);
+//         echo json_encode($model->getAttributes());
+        $result = ['model'=>$model->getAttributes(), 'actions'=>$actions];
+        echo json_encode($result);
     }
 
     /**
@@ -71,6 +75,7 @@ class SystemRightController extends BaseController
     {
         $model = new SystemRight();
         if ($model->load(Yii::$app->request->post())) {
+            $rightUrls = Yii::$app->request->post("rightUrls");
             $model->display_label = $model->right_name;
             $model->has_lef = 'n';
             $model->create_user = Yii::$app->user->identity->uname;
@@ -78,6 +83,8 @@ class SystemRightController extends BaseController
             $model->update_user = Yii::$app->user->identity->uname;
             $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
+                $systemRightUrlService = new SystemRightUrlService();
+                $c = $systemRightUrlService->saveRightUrls($rightUrls, $model->id, Yii::$app->user->identity->uname);
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -101,11 +108,19 @@ class SystemRightController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+            $rightUrls = Yii::$app->request->post("rightUrls");
+            //Yii::getLogger()->log("actionUpdate".json_encode($rightUrls), Logger::LEVEL_ERROR);
             $model->display_label = $model->right_name;
             $model->has_lef = 'n';
             $model->update_user = Yii::$app->user->identity->uname;
             $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
+                if(count($rightUrls) > 0){
+                    $systemRightUrlService = new SystemRightUrlService();
+                    $c = $systemRightUrlService->saveRightUrls($rightUrls, $id, Yii::$app->user->identity->uname);
+
+                }
+                
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -152,6 +167,74 @@ class SystemRightController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    public function rightAction($rightId, $func_id){
+        $systemRightUrls = SystemRightUrlService::findAll(['right_id'=>$rightId]);
+        $rightUrls = [];
+        foreach($systemRightUrls as $ru){
+            $url = $ru->para_name . '/' . $ru->para_value;
+            $rightUrls[$url] = true;
+        }
+        $fun = SystemFunctionService::findOne(array('id'=>$func_id));
+        $controllerDatas = [$fun->controller];
+        foreach($controllerDatas as $c){
+            if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
+                $controllerName = substr($c, 0, strlen($c) - 10);
+                $cUrl = Inflector::camel2id(StringHelper::basename($controllerName));
+                $methods = get_class_methods($c);
+                $rightTree = ['text'=>$c, 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'r'];
+                foreach($methods as $m){
+                    if($m != 'actions' && StringHelper::startsWith($m, 'action') !== false){
+                        $actionName = substr($m, 6, strlen($m));
+                        $aUrl = Inflector::camel2id($actionName);
+                        $actionTree = ['text'=>$aUrl . "&nbsp;&nbsp;($cUrl/$aUrl)", 'c'=>$cUrl, 'a'=>$aUrl, 'selectable'=>true, 'state'=>['checked'=>false], 'type'=>'a'];
+                        if(isset($rightUrls[$cUrl.'/'.$aUrl]) == true){
+                            $actionTree['state']['checked'] = true;
+                            $rightTree['state']['checked'] = true;
+                        }
+                        $rightTree['nodes'][] = $actionTree;
+                    }
+                }
+                $rightActionData[] = $rightTree;
+            }
+        }
+        return $rightActionData;
+    }
+    
+    public function actionRightAction($rightId, $func_id){
+        $data = $this->rightAction($rightId, $func_id);
+        echo json_encode($data);
+//         $systemRightUrls = SystemRightUrlService::findAll(['right_id'=>$rightId]);
+//         $rightUrls = [];
+//         foreach($systemRightUrls as $ru){
+//             $url = $ru->para_name . '/' . $ru->para_value;
+//             $rightUrls[$url] = true;
+//         }
+//         $fun = SystemFunctionService::findOne(array('id'=>$func_id));
+//         $controllerDatas = [$fun->controller];
+//         foreach($controllerDatas as $c){
+//             if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
+//                 $controllerName = substr($c, 0, strlen($c) - 10);
+//                 $cUrl = Inflector::camel2id(StringHelper::basename($controllerName));
+//                 $methods = get_class_methods($c);
+//                 $rightTree = ['text'=>$c, 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'r'];
+//                 foreach($methods as $m){
+//                     if($m != 'actions' && StringHelper::startsWith($m, 'action') !== false){
+//                         $actionName = substr($m, 6, strlen($m));
+//                         $aUrl = Inflector::camel2id($actionName);
+//                         $actionTree = ['text'=>$aUrl . "&nbsp;&nbsp;($cUrl/$aUrl)", 'c'=>$cUrl, 'a'=>$aUrl, 'selectable'=>true, 'state'=>['checked'=>false], 'type'=>'a'];
+//                         if(isset($rightUrls[$cUrl.'/'.$aUrl]) == true){
+//                             $actionTree['state']['checked'] = true;
+//                             $rightTree['state']['checked'] = true;
+//                         }
+//                         $rightTree['nodes'][] = $actionTree;
+//                     }
+//                 }
+//                 $rightActionData[] = $rightTree;
+//             }
+//         }
+//         echo json_encode($rightActionData);
     }
     
     public function actionRightUrl($rightId){

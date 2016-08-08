@@ -71,6 +71,11 @@ class SystemRoleController extends BaseController
     {
         $model = new SystemRole();
         if ($model->load(Yii::$app->request->post())) {
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
+            
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);

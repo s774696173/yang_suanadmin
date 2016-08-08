@@ -320,6 +320,7 @@ function deleteAction(id){
 						   $('#rowid_' + ids[i]).remove();
 					   }
 					   admin_tool.alert('msg_info', '删除成功', 'success');
+					   window.location.reload();
 				   }
 				});
 		});
@@ -373,6 +374,7 @@ $('#system-right-url-form').bind('submit', function(e) {
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
+        		window.location.reload();
         	}
         	else{
             	var json = value.data;

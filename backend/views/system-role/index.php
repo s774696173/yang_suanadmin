@@ -50,10 +50,10 @@ $modelLabel = new \backend\models\SystemRole();
 						      echo '<th>' . $modelLabel->getAttributeLabel('des'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
+// 						      echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
 						      
 						      
-						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
+// 						      echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
 						      
 						      
 						      echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
@@ -77,8 +77,8 @@ foreach ($models as $model) {
         echo '  <td>' . $model->code . '</td>';
         echo '  <td>' . $model->name . '</td>';
         echo '  <td>' . $model->des . '</td>';
-        echo '  <td>' . $model->create_user . '</td>';
-        echo '  <td>' . $model->create_date . '</td>';
+//         echo '  <td>' . $model->create_user . '</td>';
+//         echo '  <td>' . $model->create_date . '</td>';
         echo '  <td>' . $model->update_user . '</td>';
         echo '  <td>' . $model->update_date . '</td>';
        
@@ -357,9 +357,13 @@ function initEditSystemModule(data, type){
         		$("#name").attr({readonly:false,disabled:false});
         		$("#des").attr({readonly:false,disabled:false});
         		$("#create_user").attr({readonly:false,disabled:false});
+        		$("#create_user").parent().parent().hide();
         		$("#create_date").attr({readonly:false,disabled:false});
+        		$("#create_date").parent().parent().hide();
         		$("#update_user").attr({readonly:false,disabled:false});
+        		$("#update_user").parent().parent().hide();
         		$("#update_date").attr({readonly:false,disabled:false});
+        		$("#update_date").parent().parent().hide();
         		$('#edit_dialog_ok').removeClass('hidden');
 	}
 	$('#edit_dialog').modal('show');
@@ -425,6 +429,7 @@ function deleteAction(id){
 						   $('#rowid_' + ids[i]).remove();
 					   }
 					   admin_tool.alert('msg_info', '删除成功', 'success');
+					   window.location.reload();
 				   }
 				});
 		});
@@ -478,6 +483,7 @@ $('#system-role-form').bind('submit', function(e) {
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
+        		window.location.reload();
         	}
         	else{
             	var json = value.data;

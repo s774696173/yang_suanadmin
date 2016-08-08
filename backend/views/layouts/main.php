@@ -63,7 +63,7 @@ if($otherMenu == false){
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#"> <img alt="Charisma Logo"
-			src="img/logo20.png" class="hidden-xs" /> <span>chadmin</span></a>
+			src="img/logo20.png" class="hidden-xs" /> <span>21so</span></a>
 
 		<!-- user dropdown starts -->
 		<div class="btn-group pull-right">
@@ -252,12 +252,12 @@ if($otherMenu == false){
 
 	<footer class="row">
 		<p class="col-md-9 col-sm-9 col-xs-12 copyright">
-			&copy; <a href="http://usman.it" target="_blank">ChAdmin</a>
+			&copy; <a href="http://usman.it" target="_blank">21so</a>
 			2012 - 2015
 		</p>
 
 		<p class="col-md-3 col-sm-3 col-xs-12 powered-by">
-			Powered by: <a href="http://usman.it/free-responsive-admin-template">ChAdmin</a>
+			Powered by: <a href="http://usman.it/free-responsive-admin-template">21so</a>
 		</p>
 	</footer>
 

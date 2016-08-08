@@ -88,8 +88,8 @@ foreach ($models as $model) {
        
     echo '  <td class="center">';
     
-    echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right-url/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>action查看</a>';
-    echo '      <a id="view_btn" onclick="manageAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>action管理</a>';
+//     echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=system-right-url/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>action查看</a>';
+//     echo '      <a id="view_btn" onclick="manageAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>action管理</a>';
     echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
     echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
     echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -126,16 +126,7 @@ foreach ($models as $model) {
                 <?php $form = ActiveForm::begin(["id" => "system-right-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-right/save"]); ?>                
                     <input type="hidden" class="form-control" id="id" name="SystemRight[id]" >
                     <input type="hidden" class="form-control" id="func_id" name="SystemRight[func_id]" value="<?=$func_id?>">
-                    <!-- 
-                    <div id="func_id_div" class="form-group">
-    					<label for="func_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("func_id")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="func_id"
-    							name="SystemRight[func_id]" placeholder="必填">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                    -->     
+                   
                     <div id="right_name_div" class="form-group">
     					<label for="right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_name")?></label>
     					<div class="col-sm-10">
@@ -144,16 +135,7 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                    <!-- 
-                    <div id="display_label_div" class="form-group">
-    					<label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="display_label"
-    							name="SystemRight[display_label]" placeholder="">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                    -->
+                  
                     <div id="des_div" class="form-group">
     					<label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
     					<div class="col-sm-10">
@@ -162,6 +144,14 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
+                          
+                    <div id="actions_div" class="form-group">
+    					<label for="actions" class="col-sm-2 control-label">actions</label>
+    					<div class="col-sm-10">
+    						<div id="treeview"/>    	
+    					</div>
+    					<div class="clearfix"><br/></div>
+    				</div>          
                                     
                     <div id="display_order_div" class="form-group">
     					<label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
@@ -171,16 +161,9 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                    <!--               
-                    <div id="has_lef_div" class="form-group">
-    					<label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="has_lef"
-    							name="SystemRight[has_lef]" placeholder="必填">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                           -->            
+                            
+                        
+                        
                     <div id="create_user_div" class="form-group">
     					<label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
     					<div class="col-sm-10">
@@ -216,7 +199,8 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                			<?php ActiveForm::end(); ?>            </div>
+                	<?php ActiveForm::end(); ?>            
+                </div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
 					id="edit_dialog_ok" href="#" class="btn btn-primary">确定</a>
@@ -226,25 +210,25 @@ foreach ($models as $model) {
 </div>
 
 
-<div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3 class="modal-title" id="myModalLabel">Settings</h3>
-			</div>
-			<div class="modal-body">
-			   <input type="hidden" id="select_right_id" />
-               <div id="treeview"/>        
-            </div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
-					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a>
-			</div>
-		</div>
-	</div>
-</div>
+<!-- <div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog" -->
+<!-- 	aria-labelledby="myModalLabel" aria-hidden="true"> -->
+<!-- 	<div class="modal-dialog"> -->
+<!-- 		<div class="modal-content"> -->
+<!-- 			<div class="modal-header"> -->
+<!-- 				<button type="button" class="close" data-dismiss="modal">×</button> -->
+<!-- 				<h3 class="modal-title" id="myModalLabel">Settings</h3> -->
+<!-- 			</div> -->
+<!-- 			<div class="modal-body"> -->
+<!-- 			   <input type="hidden" id="select_right_id" /> -->
+<!--                <div id="treeview"/>         -->
+<!--             </div> -->
+<!-- 			<div class="modal-footer"> -->
+<!-- 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a -->
+<!-- 					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
 
 <script>
@@ -266,10 +250,12 @@ function changeCheckState(node, checked){
 }
 function manageAction(right_id){
 	$('#select_right_id').val(right_id);
+	var func_id = $("#func_id").val();
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=system-right/right-url",
-		   data: {'rightId':right_id},
+// 		   url: "index.php?r=system-right/right-url",
+		   url: "index.php?r=system-right/right-action",
+		   data: {'rightId':right_id, 'func_id':func_id},
 		   cache: false,
 		   dataType:"json",
 		   error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -298,8 +284,6 @@ function manageAction(right_id){
 $('#right_dialog_ok').click(function(){
 	var right_id = $('#select_right_id').val();
 	var checkNodes = $('#treeview').treeview('getChecked');
-// 	console.log(checkNodes);
-// 	return;
 	if(checkNodes.length > 0){
 		var rightUrls = [];
 		for(i = 0; i < checkNodes.length; i++){
@@ -328,7 +312,7 @@ $('#right_dialog_ok').click(function(){
 				   $('#tree_dialog').modal('hide');
 			   }
 			});
-// 		console.log('====',rids);
+
 	}
 });
 // 配置功能url结束
@@ -371,6 +355,7 @@ function initEditSystemModule(data, type){
     	$("#right_name").attr({readonly:true,disabled:true});
     	//$("#display_label").attr({readonly:true,disabled:true});
     	$("#des").attr({readonly:true,disabled:true});
+    	//$('#treeview').treeview('disableAll', { silent: true });
     	$("#display_order").attr({readonly:true,disabled:true});
     	$("#has_lef").attr({readonly:true,disabled:true});
     	$("#create_user").attr({readonly:true,disabled:true});
@@ -389,6 +374,7 @@ function initEditSystemModule(data, type){
     	$("#right_name").attr({readonly:false,disabled:false});
     	//$("#display_label").attr({readonly:false,disabled:false});
     	$("#des").attr({readonly:false,disabled:false});
+    	//$('#treeview').treeview('disableAll', { silent: false });
     	$("#display_order").attr({readonly:false,disabled:false});
     	$("#has_lef").attr({readonly:false,disabled:false});
     	$("#create_user").attr({readonly:false,disabled:false});
@@ -406,7 +392,6 @@ function initEditSystemModule(data, type){
 
 
 function initModel(id, type, fun){
-	
 	$.ajax({
 		   type: "GET",
 		   url: "index.php?r=system-right/view",
@@ -417,8 +402,19 @@ function initModel(id, type, fun){
 			    alert("出错了，" + textStatus);
 			},
 		   success: function(data){
-// 			   console.log(msg);
-			   initEditSystemModule(data, type);
+			   initEditSystemModule(data.model, type);
+			   $('#treeview').treeview({
+					data:data.actions,
+					showIcon: false,
+			        showCheckbox: true,
+			        levels: 2,
+			        onNodeChecked: function(event, node) {
+			          changeCheckState(node, true);
+			        },
+			        onNodeUnchecked: function (event, node) {
+			        	changeCheckState(node, false);
+			        }
+					});
 		   }
 		});
 }
@@ -461,6 +457,7 @@ function deleteAction(id){
 						   $('#rowid_' + ids[i]).remove();
 					   }
 					   admin_tool.alert('msg_info', '删除成功', 'success');
+					   window.location.reload();
 				   }
 				});
 		});
@@ -493,6 +490,36 @@ $('#edit_dialog_ok').click(function (e) {
 });
 $('#create_btn').click(function (e) {
     e.preventDefault();
+    //$('#select_right_id').val(right_id);
+	var func_id = $("#func_id").val();
+	$.ajax({
+		   type: "GET",
+// 		   url: "index.php?r=system-right/right-url",
+		   url: "index.php?r=system-right/right-action",
+		   data: {'rightId':0, 'func_id':func_id},
+		   cache: false,
+		   dataType:"json",
+		   error: function (xmlHttpRequest, textStatus, errorThrown) {
+			    alert("出错了，" + textStatus);
+			},
+		   success: function(data){
+			   //console.log(data);
+				$('#treeview').treeview({
+					data:data,
+					showIcon: false,
+			        showCheckbox: true,
+			        levels: 2,
+			        onNodeChecked: function(event, node) {
+			          //console.log('======',node);
+			          changeCheckState(node, true);
+			        },
+			        onNodeUnchecked: function (event, node) {
+			        	changeCheckState(node, false);
+			        }
+					});
+		   }
+		});
+    
     initEditSystemModule({}, 'create');
 });
 $('#delete_btn').click(function (e) {
@@ -502,18 +529,33 @@ $('#delete_btn').click(function (e) {
 
 $('#system-right-form').bind('submit', function(e) {
 	e.preventDefault();
+	var right_id = $('#select_right_id').val();
+	var checkNodes = $('#treeview').treeview('getChecked');
+	var rightUrls = [];
+	if(checkNodes.length > 0){
+		for(i = 0; i < checkNodes.length; i++){
+			var node = checkNodes[i];
+			if(node.type == 'a'){
+				var url = {'c':node.c, 'a':node.a};
+				rightUrls.push(url);
+			}
+		}
+	}
+	
 	var id = $("#id").val();
 	var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
     	url: "index.php?r=system-right/" + action,
+    	data: {"rightUrls":rightUrls},
     	success: function(value) 
     	{
     		//console.log(value);
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
+        		window.location.reload();
         	}
         	else{
             	var json = value.data;

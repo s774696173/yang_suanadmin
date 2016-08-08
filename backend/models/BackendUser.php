@@ -57,7 +57,6 @@ class BackendUser extends ActiveRecord implements IdentityInterface
         ]);
     }
 
-  
     public static function findIdentity($id)
     {
         return self::findOne([
@@ -184,13 +183,15 @@ class BackendUser extends ActiveRecord implements IdentityInterface
         foreach($rightUrls as $url){
 //             SELECT ru.id AS urlid,ru.url, ru.para_name, ru.para_value, rr.role_id, rr.right_id
             $right_id = $url['right_id'];
+            if(isset($funcData[$right_id])){
+                $fun = $funcData[$right_id];
+                $url['right_name'] = $fun['right_name'];
+                $url['entry_url'] = $fun['entry_url'];
+                $url['func_name'] = $fun['func_name'];
+                $url['module_name'] = $fun['display_label'];
+                $rightData[$url['para_name'].'/'.$url['para_value']] = $url;
+            }
             
-            $fun = $funcData[$right_id];
-            $url['right_name'] = $fun['right_name'];
-            $url['entry_url'] = $fun['entry_url'];
-            $url['func_name'] = $fun['func_name'];
-            $url['module_name'] = $fun['display_label'];
-            $rightData[$url['para_name'].'/'.$url['para_value']] = $url;
         }
         Yii::$app->session['system_rights_'.$this->id] = $rightData;
         return $rightData;
@@ -198,10 +199,16 @@ class BackendUser extends ActiveRecord implements IdentityInterface
 
 
     public function getSystemMenus(){
+        if(isset(Yii::$app->session['system_menus_'.$this->id]) == false){
+            $this->initUserModuleList();
+        }
         return Yii::$app->session['system_menus_'.$this->id];
     }
 
     public function getSystemRights(){
+        if(isset(Yii::$app->session['system_rights_'.$this->id]) == false){
+            $this->initUserUrls();
+        }
         return Yii::$app->session['system_rights_'.$this->id];
     }
     

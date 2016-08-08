@@ -5,6 +5,8 @@ use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
+use backend\models\SystemLog;
+use common\utils\CommonFun;
 class BaseController extends Controller
 {
     /**
@@ -31,15 +33,30 @@ class BaseController extends Controller
             }
         }
         else{
-//             var_dump($route);
-            if($route != 'site/index' && $route != 'site/logout'){
-                $system_rights = Yii::$app->user->identity->getSystemRights();
+            $system_rights = Yii::$app->user->identity->getSystemRights();
+            if($route != 'site/index' && $route != 'site/logout' && Yii::$app->user->identity->id != 156){
                 if(empty($system_rights) == true || empty($system_rights[$route]) == true){
                     //throw new ForbiddenHttpException(Yii::t('yii', '没有权限访问'));
                     header("Content-type: text/html; charset=utf-8");
                     exit('没有权限访问'.$route);
                 }
+                $rights = $system_rights[$route];
+                if($route != 'system-log/index'){
+                    $systemLog = new SystemLog();
+                    $systemLog->url = $route;
+                    $systemLog->controller_id = $action->controller->id;
+                    $systemLog->action_id = $action->id;
+                    $systemLog->module_name = $rights['module_name'];
+                    $systemLog->func_name = $rights['func_name'];
+                    $systemLog->right_name = $rights['right_name'];
+                    $systemLog->create_date = date('Y-m-d H:i:s');
+                    $systemLog->create_user = Yii::$app->user->identity->uname;
+                    $systemLog->client_ip = CommonFun::getClientIp();
+                    
+                    $systemLog->save();
+                }
             }
+           
         }
         return true;
     }

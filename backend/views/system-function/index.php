@@ -5,7 +5,7 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use backend\models\SystemFunction;
-
+use yii\helpers\StringHelper;
 $modelLabel = new \backend\models\SystemFunction();
 ?>
 
@@ -198,7 +198,34 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                                    
+                    <!--  -->    
+                    <div id="controller_div" class="form-group">
+    					<label for="controller" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("controller")?></label>
+    					<div class="col-sm-10">
+    						<select class="form-control" name="SystemFunction[controller]" id="controller">
+    						  <option>请选择</option>
+    						<?php 
+    						   
+    						  foreach($controllerData as $key=>$data){
+//     						      echo "<option value='{$key}'>". StringHelper::basename($key)."</option>";
+    						      echo "<option value='" . $key . "'>". $key."</option>";
+    						  }
+    						?>
+                    	   </select>
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+    				<div id="action_div" class="form-group">
+    					<label for="action" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("action")?></label>
+    					<div class="col-sm-10">
+    						<select class="form-control" name="SystemFunction[action]" id="action">
+    						  <option>请选择</option>
+    						
+                    	   </select>
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+                    <!--  -->
                     <div id="has_lef_div" class="form-group">
     					<label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
     					<div class="col-sm-10">
@@ -253,7 +280,7 @@ foreach ($models as $model) {
 </div>
 
 <script>
-
+window.controllerData = <?php echo json_encode($controllerData); ?>;
 function viewAction(id){
 	initModel(id, 'view', 'fun');
 }
@@ -286,6 +313,21 @@ function initEditSystemModule(data, type){
     	$("#display_order").val(data.display_order);
     	$("#entry_right_name").val(data.entry_right_name);
     	$("#entry_url").val(data.entry_url);
+    	$("#controller option").each(function(){
+        	var opt = $(this);
+    		if(opt.val() == data.controller){
+    			opt.attr('selected', true);
+    			opt.change();
+    			return false;
+    		}
+        	});
+        //$("#action").find("option[text='" + data.action + "']").attr("selected",true);
+        $("#action option").each(function(){
+        	if($(this).val() == data.action){
+    			$(this).attr('selected', true);
+    			return false;
+    		}
+            });
     	$("#has_lef").val(data.has_lef);
     	$("#create_user").val(data.create_user);
     	$("#create_date").val(data.create_date);
@@ -302,6 +344,8 @@ function initEditSystemModule(data, type){
     	$("#display_order").attr({readonly:true,disabled:true});
     	$("#entry_right_name").attr({readonly:true,disabled:true});
     	$("#entry_url").attr({readonly:true,disabled:true});
+    	$("#controller").attr({readonly:true,disabled:true});
+    	$("#action").attr({readonly:true,disabled:true});
     	$("#has_lef").attr({readonly:true,disabled:true});
     	$("#create_user").attr({readonly:true,disabled:true});
     	$("#create_date").attr({readonly:true,disabled:true});
@@ -319,7 +363,9 @@ function initEditSystemModule(data, type){
     	$("#display_order").attr({readonly:false,disabled:false});
     	$("#entry_right_name").attr({readonly:false,disabled:false});
     	$("#entry_right_name").parent().parent().hide();
-    	$("#entry_url").attr({readonly:false,disabled:false});
+    	$("#entry_url").attr({readonly:true,disabled:true});
+    	$("#controller").attr({readonly:false,disabled:false});
+    	$("#action").attr({readonly:false,disabled:false});
     	$("#has_lef").attr({readonly:false,disabled:false});
     	$("#has_lef").parent().parent().hide();
     	$("#create_user").attr({readonly:false,disabled:false});
@@ -379,7 +425,6 @@ function deleteAction(id){
 	}
 	if(ids.length > 0){
 		admin_tool.confirm('请确认是否删除', function(){
-			console.log(this);
 			///var csrf = $('meta[name="csrf-token"]').attr("content"); // "_csrf":csrf
 		    $.ajax({
 				   type: "GET",
@@ -395,6 +440,7 @@ function deleteAction(id){
 						   $('#rowid_' + ids[i]).remove();
 					   }
 					   admin_tool.alert('msg_info', '删除成功', 'success');
+					   window.location.reload();
 				   }
 				});
 		});
@@ -448,11 +494,11 @@ $('#system-function-form').bind('submit', function(e) {
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
+        		window.location.reload();
         	}
         	else{
             	var json = value.data;
         		for(var key in json){
-        			console.log(key+':'+json[key]);
         			$('#' + key).attr({'data-placement':'bottom', 'data-content':json[key], 'data-toggle':'popover'}).addClass('popover-show').popover('show');
         			
         		}
@@ -461,7 +507,25 @@ $('#system-function-form').bind('submit', function(e) {
     	}
     });
 });
-
+$("#controller").change(function(){
+    // 先清空第二个
+	var controller = $(this).val();
+// 	console.log("================" + controller);
+     $("#action").empty();
+     var option = $("<option>").html("请选择");
+     $("#action").append(option);
+    // 实际的应用中，这里的option一般都是用循环生成多个了
+     //var option = $("<option>").val(1).text("pxx");
+    // $("#action").append(option);
+     var actions = window.controllerData[controller];
+     var nodes = actions.nodes;
+     for(i = 0; i < nodes.length; i++){
+         var action = nodes[i];
+         var option = $("<option>").val(action.a).html(action.text);
+         $("#action").append(option);
+     }
+//      console.log("================", actions);
+});
 </script>
 
 
