@@ -68,6 +68,17 @@ class AdminUserController extends BaseController
     {
         $model = new AdminUser();
         if ($model->load(Yii::$app->request->post())) {
+            $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            $model->auth_key = Yii::$app->security->generateRandomString();;
+            $model->last_ip = '';//Yii::$app->user->identity->uname;
+            $model->is_online = 'n';//date('Y-m-d H:i:s');
+            $model->domain_account = '';//Yii::$app->user->identity->uname;
+            $model->status = 10;//date('Y-m-d H:i:s');
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
+            
             if($model->validate() && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);

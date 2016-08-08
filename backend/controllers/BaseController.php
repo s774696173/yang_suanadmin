@@ -34,8 +34,8 @@ class BaseController extends Controller
         }
         else{
             $system_rights = Yii::$app->user->identity->getSystemRights();
-            if($route != 'site/index' && $route != 'site/logout' && Yii::$app->user->identity->id != 156){
-                if(empty($system_rights) == true || empty($system_rights[$route]) == true){
+            if($route != 'site/index' && $route != 'site/logout'){
+                if(Yii::$app->user->identity->id != 156 && (empty($system_rights) == true || empty($system_rights[$route]) == true)){
                     //throw new ForbiddenHttpException(Yii::t('yii', '没有权限访问'));
                     header("Content-type: text/html; charset=utf-8");
                     exit('没有权限访问'.$route);
