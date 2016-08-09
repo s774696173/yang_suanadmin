@@ -69,6 +69,7 @@ http://www.htmleaf.com/Demo/201502141380.html
             return $this->render('login');
         }
         else{
+            $this->layout = "lte_main";
             $menus = Yii::$app->user->identity->getSystemMenus();
             $sysInfo = [
                 ['name'=> '操作系统', 'value'=>php_uname('s')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
@@ -82,7 +83,27 @@ http://www.htmleaf.com/Demo/201502141380.html
             ]);
         }
     }
-    
+    public function actionIndex2()
+    {
+        if(Yii::$app->user->isGuest){
+            $this->layout = "main_main";
+            //$this->layout = "lte_main_login";
+            return $this->render('login');
+        }
+        else{
+            $menus = Yii::$app->user->identity->getSystemMenus();
+            $sysInfo = [
+                ['name'=> '操作系统', 'value'=>php_uname('s')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
+                ['name'=>'PHP版本', 'value'=>phpversion()],
+                ['name'=>'Yii版本', 'value'=>Yii::getVersion()],
+                ['name'=>'数据库', 'value'=>$this->getDbVersion()],
+            ];
+            return $this->render('index2', [
+                'system_menus' => $menus,
+                'sysInfo'=>$sysInfo
+            ]);
+        }
+    }
 //     public $layout = "lte_main";
     public function actionLte()
     {

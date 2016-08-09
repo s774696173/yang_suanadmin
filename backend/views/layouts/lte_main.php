@@ -254,7 +254,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><?php echo Yii::$app->user->identity->uname;?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -310,7 +310,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><?php echo Yii::$app->user->identity->uname;?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -328,6 +328,34 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
+        <?php 
+						
+			foreach($system_menus as $menu){
+			    echo '<li class="treeview">'; // active 
+			    echo '   <a href="#">';
+			    echo '   <i class="fa fa-dashboard"></i> <span>Dashboard</span>';
+			    echo '   <span class="pull-right-container">';
+			    echo '       <i class="fa fa-angle-left pull-right"></i>';
+			    echo '   </span>';
+			    echo '   </a>';
+			    echo '   <ul class="treeview-menu">';
+			    echo '</li>';
+// 			    echo '<li class="accordion">';
+// 			    echo '    <a href="#"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span>'.$menu['label'].'</span></a>';
+// 			    echo '    <ul class="nav nav-pills nav-stacked">';
+// 			    $funcList = $menu['funcList'];
+// 			    foreach($funcList as $fun){
+// 			        echo '    <li ' .( $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '' ). '>
+//                                  <a href="'.Url::to([$fun['url']]).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
+//                               </li>';
+// 			    }
+// 			    echo '    </ul>';
+// 			    echo '</li>';
+			}
+						
+		?>
+        
+        <!-- 
         <li class="active treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -496,6 +524,7 @@
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        -->
       </ul>
     </section>
     <!-- /.sidebar -->
