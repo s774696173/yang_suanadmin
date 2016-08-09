@@ -81,7 +81,14 @@ http://www.htmleaf.com/Demo/201502141380.html
             ]);
         }
     }
-
+    
+//     public $layout = "lte_main";
+    public function actionLte()
+    {
+//         $this->layout = "main_main";
+        $this->layout = "lte_main";
+        return $this->render('lte');
+    }
 
     public function actionLogin()
     {

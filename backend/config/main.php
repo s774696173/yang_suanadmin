@@ -37,6 +37,7 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                    'logVars' => [],
                 ],
             ],
         ],

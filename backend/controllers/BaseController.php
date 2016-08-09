@@ -27,7 +27,7 @@ class BaseController extends Controller
         $route = $this->route;
         // 检查是否已经登录
         if(Yii::$app->user->isGuest){
-            $allowUrl = ['site/index'];
+            $allowUrl = ['site/index', 'site/lte'];
             if(in_array($route, $allowUrl) == false){
                 $this->redirect(Url::toRoute('site/index'));
             }
@@ -40,21 +40,21 @@ class BaseController extends Controller
                     header("Content-type: text/html; charset=utf-8");
                     exit('没有权限访问'.$route);
                 }
-                $rights = $system_rights[$route];
-                if($route != 'system-log/index'){
-                    $systemLog = new SystemLog();
-                    $systemLog->url = $route;
-                    $systemLog->controller_id = $action->controller->id;
-                    $systemLog->action_id = $action->id;
-                    $systemLog->module_name = $rights['module_name'];
-                    $systemLog->func_name = $rights['func_name'];
-                    $systemLog->right_name = $rights['right_name'];
-                    $systemLog->create_date = date('Y-m-d H:i:s');
-                    $systemLog->create_user = Yii::$app->user->identity->uname;
-                    $systemLog->client_ip = CommonFun::getClientIp();
+//                 $rights = $system_rights[$route];
+//                 if($route != 'system-log/index'){
+//                     $systemLog = new SystemLog();
+//                     $systemLog->url = $route;
+//                     $systemLog->controller_id = $action->controller->id;
+//                     $systemLog->action_id = $action->id;
+//                     $systemLog->module_name = $rights['module_name'];
+//                     $systemLog->func_name = $rights['func_name'];
+//                     $systemLog->right_name = $rights['right_name'];
+//                     $systemLog->create_date = date('Y-m-d H:i:s');
+//                     $systemLog->create_user = Yii::$app->user->identity->uname;
+//                     $systemLog->client_ip = CommonFun::getClientIp();
                     
-                    $systemLog->save();
-                }
+//                     $systemLog->save();
+//                 }
             }
            
         }
