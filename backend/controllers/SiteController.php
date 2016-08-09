@@ -64,7 +64,8 @@ http://www.htmleaf.com/Demo/201502141380.html
     public function actionIndex()
     {
         if(Yii::$app->user->isGuest){
-            $this->layout = "main_main";
+            //$this->layout = "main_main";
+            $this->layout = "lte_main_login";
             return $this->render('login');
         }
         else{
