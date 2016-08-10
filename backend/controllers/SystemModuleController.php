@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class SystemModuleController extends BaseController
 {
+	public $layout = "lte_main";
     /*
     public function behaviors()
     {
@@ -34,33 +35,45 @@ class SystemModuleController extends BaseController
      */
     public function actionIndex()
     {
-        $this->layout = "lte_main";
         $query = SystemModule::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '4', 'pageParam'=>'page']);
+         $querys = Yii::$app->request->get('query');
+        if(count($querys) > 0){
+            $condition = "";
+            $parame = array();
+            foreach($querys as $key=>$value){
+                $value = trim($value);
+                if(empty($value) == false){
+                    $parame[":{$key}"]=$value;
+                    if(empty($condition) == true){
+                        $condition = " {$key}=:{$key} ";
+                    }
+                    else{
+                        $condition = $condition . " AND {$key}=:{$key} ";
+                    }
+                }
+            }
+            if(count($parame) > 0){
+                $query = $query->where($condition, $parame);
+            }
+        }
         //$models = $query->orderBy('display_order')
-        $models = $query->orderBy('display_order')
+        $pagination = new Pagination([
+            'totalCount' =>$query->count(), 
+            'pageSize' => '10', 
+            'pageParam'=>'page', 
+            'pageSizeParam'=>'per-page']
+        );
+        $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'query'=>$querys,
         ]);
     }
-    public function actionIndex2()
-    {
-        $query = SystemModule::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
-        //$models = $query->orderBy('display_order')
-        $models = $query->orderBy('display_order')
-        ->offset($pagination->offset)
-        ->limit($pagination->limit)
-        ->all();
-        return $this->render('index2', [
-            'models'=>$models,
-            'pages'=>$pagination,
-        ]);
-    }
+
     /**
      * Displays a single SystemModule model.
      * @param integer $id
@@ -83,11 +96,6 @@ class SystemModuleController extends BaseController
     {
         $model = new SystemModule();
         if ($model->load(Yii::$app->request->post())) {
-            $model->has_lef = 'n';
-            $model->create_user = Yii::$app->user->identity->uname;
-            $model->create_date = date('Y-m-d H:i:s');
-            $model->update_user = Yii::$app->user->identity->uname;
-            $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -112,8 +120,6 @@ class SystemModuleController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-            $model->update_user = Yii::$app->user->identity->uname;
-            $model->update_date = date('Y-m-d H:i:s');
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -145,9 +151,7 @@ class SystemModuleController extends BaseController
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
+  
     }
 
     /**

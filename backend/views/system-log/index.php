@@ -10,18 +10,8 @@ $modelLabel = new \backend\models\SystemLog();
 
 <?php $this->beginBlock('header');  ?>
 <!-- <head></head>中代码块 -->
-<?php $this->endBlock(); ?><!-- Content Header (Page header) -->
-<section class="content-header">
-  <h1>
-    Data Tables
-    <small>advanced tables</small>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="#">Tables</a></li>
-    <li class="active">Data tables</li>
-  </ol>
-</section>
+<?php $this->endBlock(); ?>
+
 
 <!-- Main content -->
 <section class="content">
@@ -43,10 +33,9 @@ $modelLabel = new \backend\models\SystemLog();
         
         <div class="box-body">
           <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-            <!-- row start 搜索-->
+            <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-            	<!-- 查询search -->
                 <?php ActiveForm::begin(['id' => 'system-log-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=system-log/index']); ?>
      
                                                 
@@ -89,12 +78,13 @@ $modelLabel = new \backend\models\SystemLog();
                                 <div class="form-group" style="margin: 5px;"> 
                                   <label>时间:</label>
                                   <input type="text" class="form-control" id="query[create_date]" name="query[create_date]"  value="<?=isset($query["create_date"]) ? $query["create_date"] : "" ?>"> 
-                                </div>                                          
+                                </div>                                          <div class="form-group">
+              	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
+           	  </div>
                <?php ActiveForm::end(); ?> 
             </div>
-                    
           	</div>
-          	<!-- row end -->
+          	<!-- row end search -->
           	
           	<!-- row start -->
           	<div class="row">

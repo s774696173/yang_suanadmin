@@ -445,8 +445,6 @@ if($otherMenu == false){
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <?php 
-						//var_dump($system_menus);
-						//exit("==============");
 			foreach($system_menus as $menu){
 			    $funcList = $menu['funcList'];
 			    $isTreeView = count($funcList) > 0 ? "treeview" : "";
@@ -662,6 +660,33 @@ if($otherMenu == false){
   <!-- Content Wrapper. Contains page content -->
   
   <div class="content-wrapper">
+    <section class="content-header">
+      <h1> 数据列表 <small><?=$funInfo['func_name']?></small></h1>
+      <ol class="breadcrumb">
+        <li><a href="index.php?r=site/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <!-- 
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>  -->
+        <?php
+        if(isset($funInfo['module_name']) == true && isset($funInfo['func_name']) == true){
+            echo '<li><a href="#">'.$funInfo['module_name'].'</a></li>';
+            echo '<li><a href="'.Url::toRoute($funInfo['entry_url']).'">'.$funInfo['func_name'].'</a></li>';
+            //echo '<li><a href="#">'.$funInfo['module_name'].'</a></li>';
+            //echo '<li><a href="'.Url::toRoute($funInfo['entry_url']).'">'.$funInfo['func_name'].'</a></li>';
+            
+            //$system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
+            //foreach($system_menus_current as $m){
+            //    echo '<li><a href="'.$m['url'].'">'.$m['right_name'].'</a></li>';
+            //}
+        }
+        ?>
+      </ol>
+    </section>
+    
+      
+   
+    
+    
   <?= $content ?>
   
   </div>
