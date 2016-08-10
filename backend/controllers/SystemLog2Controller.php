@@ -15,7 +15,6 @@ use yii\filters\VerbFilter;
  */
 class SystemLogController extends BaseController
 {
-	public $layout = "lte_main";
     /*
     public function behaviors()
     {
@@ -57,15 +56,11 @@ class SystemLogController extends BaseController
             }
         }
         //$models = $query->orderBy('display_order')
-        $pagination = new Pagination([
-            'totalCount' =>$query->count(), 
-            'pageSize' => '10', 
-            'pageParam'=>'page', 
-            'pageSizeParam'=>'per-page']
-        );
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
+        ->orderBy(" id desc ")
         ->all();
         return $this->render('index', [
             'models'=>$models,

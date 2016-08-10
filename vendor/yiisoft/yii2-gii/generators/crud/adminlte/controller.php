@@ -46,6 +46,7 @@ use yii\filters\VerbFilter;
  */
 class <?= $controllerClass ?> extends BaseController
 {
+	public $layout = "lte_main";
     /*
     public function behaviors()
     {

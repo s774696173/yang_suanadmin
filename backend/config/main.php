@@ -59,13 +59,13 @@ if (YII_ENV_DEV) {
             'model' => [ // generator name
                 'class' => 'yii\gii\generators\model\GeneratorCommon', // generator class
                 'templates' => [ //setting for out templates
-                    'common' => '..\..\vendor\yiisoft\yii2-gii\generators\model\common', // template name => path to template
+                    'common' => '..\..\vendor\yiisoft\yii2-gii\generators\model\adminlte', // template name => path to template
                 ]
             ],
             'crud' => [
                 'class' => 'yii\gii\generators\crud\Generator', // generator class
                 'templates' => [ //setting for out templates
-                    'common' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\common', // template name => path to template
+                    'common' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\adminlte', // template name => path to template
                 ]
             ],
         ]

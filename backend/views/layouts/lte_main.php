@@ -89,12 +89,77 @@ if($otherMenu == false){
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <!-- jQuery 2.2.3 -->
+  <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+  <script>
+    $(function($){
+        window.admin_tool = function(){
+            return {
+            	confirm : function(content, ok_fun){
+            		$('#confirm_content').text(content);
+          			$('#confirm_dialog_ok').click(function(){
+          				ok_fun();
+          				$('#confirm_dialog').modal('hide'); 
+          			});
+          			$('#confirm_dialog').modal('show');
+          		},
+          		alert : function(id, msg, type){
+              		var alert_type = '';
+              		switch(type){
+              			case 'success':
+              				alert_type = 'alert-success';
+                  			break;
+              			case 'warning':
+              				alert_type = 'alert-warning';
+                  			break;
+              			case 'danger':
+              				alert_type = 'alert-danger';
+                  			break;
+                  		default:
+                  			alert_type = 'alert-info';
+              		}
+              		$('#' + id).html('<div class="alert ' + alert_type + ' alert-dismissable">'
+                      		+ '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + msg + '</div>');
+          		}
+            };
+        }();
+
+        // 全选
+        $('#data_table_check').click( function() {
+            var b = this.checked;
+        	$('#data_table tbody :checkbox').each(function(i){
+        		this.checked = b;
+        	});
+        });
+        
+  	});
+    </script>
   
 <?php if(isset($this->blocks['header']) == true):?>
 <?= $this->blocks['header'] ?>
 <?php endif;?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+<div class="modal fade" id="confirm_dialog" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>请确认</h3>
+			</div>
+			<div id="confirm_content" class="modal-body">
+                
+            </div>
+			<div class="modal-footer">
+				<a id="confirm_dialog_cancel" href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
+					id="confirm_dialog_ok" href="#" class="btn btn-primary">确定</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <div class="wrapper">
 
   <header class="main-header">
@@ -805,8 +870,9 @@ if($otherMenu == false){
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+<script src="plugins/form/jquery.form.min.js"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>  -->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

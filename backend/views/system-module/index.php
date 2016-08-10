@@ -74,36 +74,36 @@ $modelLabel = new \backend\models\SystemModule();
           	<!-- row start -->
           	<div class="row">
           	<div class="col-sm-12">
-          	<table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+          	<table id="data_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="data_table_info">
             <thead>
             <tr role="row">
             
             <?php
 						      echo '<th><input id="data_table_check" type="checkbox"></th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
 						      //echo '<th>' . $modelLabel->getAttributeLabel('id'). '</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('code'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('code').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('code').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('display_label'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_label').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_label').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('has_lef'). '</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('des'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('des').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('des').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('entry_url'). '</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('display_order'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_order').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_order').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('create_user'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('create_date'). '</th>';
-						      echo '<th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
+						      echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
 						      
 						      //echo '<th>' . $modelLabel->getAttributeLabel('update_user'). '</th>';
 						      
@@ -111,7 +111,7 @@ $modelLabel = new \backend\models\SystemModule();
 						      
 						      ?>
 						      <!-- <th>操作</th>  -->
-                              <th tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" >操作</th>
+                              <th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >操作</th>
             
             
             
@@ -194,7 +194,7 @@ $modelLabel = new \backend\models\SystemModule();
           <!-- row start -->
           <div class="row">
           	<div class="col-sm-5">
-            	<div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+            	<div class="dataTables_info" id="data_table_info" role="status" aria-live="polite">
             		<div class="infos">
             		从 <?= $pages->getPage() * $pages->getPageSize() + 1 ?>
             		到 <?= ($pageCount = ($pages->getPage() + 1) * $pages->getPageSize()) < $pages->totalCount ?  $pageCount : $pages->totalCount?>
@@ -205,7 +205,7 @@ $modelLabel = new \backend\models\SystemModule();
           	
           		
           	
-              	<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+              	<div class="dataTables_paginate paging_simple_numbers" id="data_table_paginate">
 
               	<?= LinkPager::widget([
               	    "pagination" => $pages,
@@ -231,7 +231,62 @@ $modelLabel = new \backend\models\SystemModule();
 </section>
 <!-- /.content -->
 
-
+<div class="modal fade" id="edit_dialog" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+                <?php $form = ActiveForm::begin(["id" => "system-module-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-module/save"]); ?>                
+                <input type="hidden" class="form-control" id="id" name="SystemModule[id]" >
+                                    
+                    <div id="code_div" class="form-group">
+    					<label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
+    					<div class="col-sm-10">
+    						<input type="text" class="form-control" id="code"
+    							name="SystemModule[code]" placeholder="必填">
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+                                    
+                    <div id="display_label_div" class="form-group">
+    					<label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
+    					<div class="col-sm-10">
+    						<input type="text" class="form-control" id="display_label"
+    							name="SystemModule[display_label]" placeholder="">
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+                     
+                    <div id="des_div" class="form-group">
+    					<label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
+    					<div class="col-sm-10">
+    						<input type="text" class="form-control" id="des"
+    							name="SystemModule[des]" placeholder="">
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+                       
+                    <div id="display_order_div" class="form-group">
+    					<label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
+    					<div class="col-sm-10">
+    						<input type="text" class="form-control" id="display_order"
+    							name="SystemModule[display_order]" placeholder="">
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>
+                  
+                			<?php ActiveForm::end(); ?>            </div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
+					id="edit_dialog_ok" href="#" class="btn btn-primary">确定</a>
+			</div>
+		</div>
+	</div>
+</div>
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
@@ -439,7 +494,7 @@ $modelLabel = new \backend\models\SystemModule();
 
 
  
-  $(function () {
+//   $(function () {
 //     $('#example1').DataTable({
 //       "paging": true,
 //       "lengthChange": false,
@@ -448,6 +503,6 @@ $modelLabel = new \backend\models\SystemModule();
 //       "info": true,
 //       "autoWidth": false
 //     });
-  });
+//   });
 </script>
 <?php $this->endBlock(); ?>
