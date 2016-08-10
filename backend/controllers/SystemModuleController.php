@@ -34,8 +34,9 @@ class SystemModuleController extends BaseController
      */
     public function actionIndex()
     {
+        $this->layout = "lte_main";
         $query = SystemModule::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '4', 'pageParam'=>'page']);
         //$models = $query->orderBy('display_order')
         $models = $query->orderBy('display_order')
         ->offset($pagination->offset)
@@ -46,7 +47,20 @@ class SystemModuleController extends BaseController
             'pages'=>$pagination,
         ]);
     }
-
+    public function actionIndex2()
+    {
+        $query = SystemModule::find();
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
+        //$models = $query->orderBy('display_order')
+        $models = $query->orderBy('display_order')
+        ->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+        return $this->render('index2', [
+            'models'=>$models,
+            'pages'=>$pagination,
+        ]);
+    }
     /**
      * Displays a single SystemModule model.
      * @param integer $id

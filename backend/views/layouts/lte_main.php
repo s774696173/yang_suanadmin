@@ -1,3 +1,55 @@
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->title = 'My Yii Application';
+
+$system_menus = Yii::$app->user->identity->getSystemMenus();
+$system_rights = Yii::$app->user->identity->getSystemRights();
+$route = $this->context->route;
+$absoluteUrl = Yii::$app->request->absoluteUrl;
+$funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$route] : null;
+$otherMenu = true;
+
+//检查是否为主菜单，主菜单不需要添加返回上一层菜单
+if(isset($funInfo) == true && $funInfo['entry_url'] != $this->context->route){
+    $referrer = Yii::$app->request->referrer;
+    if(empty($referrer) == false){
+        $referrer = urldecode($referrer);
+        $system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
+        //检查当前URL是否已经在导航菜单中
+        $inCurrent = false;
+        foreach($system_menus_current as $key=>$m){
+            if($inCurrent == true){
+                unset($system_menus_current[$key]);
+
+            }
+            else if($m['route'] == $route){
+                $inCurrent = true;
+            }
+        }
+        if($inCurrent == false){
+            $funLast = count($system_menus_current) > 0 ? $system_menus_current[count($system_menus_current) - 1] : null;
+            // 检查当前url是否和前一个相同，判断是否刷新
+            if($funLast['route'] != $route){
+                $system_menus_current[] = ['url'=>$absoluteUrl,'route'=>$route, 'right_name'=>$funInfo['right_name']];
+
+            }
+        }
+        Yii::$app->session['system_menus_current'] = $system_menus_current;
+    }
+    else{
+        $otherMenu = false;
+    }
+}
+else{
+    $otherMenu = false;
+}
+if($otherMenu == false){
+    Yii::$app->session['system_menus_current'] = null;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +61,9 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="libs/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="libs/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -29,13 +81,18 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  
+<?php if(isset($this->blocks['header']) == true):?>
+<?= $this->blocks['header'] ?>
+<?php endif;?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -58,6 +115,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
+          <!-- 
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
@@ -66,9 +124,8 @@
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li><!-- start message -->
+                  <li>
                     <a href="#">
                       <div class="pull-left">
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
@@ -80,7 +137,6 @@
                       <p>Why not buy a new awesome theme?</p>
                     </a>
                   </li>
-                  <!-- end message -->
                   <li>
                     <a href="#">
                       <div class="pull-left">
@@ -134,7 +190,6 @@
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
           </li>
-          <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
@@ -143,7 +198,6 @@
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
                     <a href="#">
@@ -176,7 +230,6 @@
               <li class="footer"><a href="#">View all</a></li>
             </ul>
           </li>
-          <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
@@ -185,9 +238,8 @@
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
               <li>
-                <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li><!-- Task item -->
+                  <li>
                     <a href="#">
                       <h3>
                         Design some buttons
@@ -200,8 +252,7 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  <li>
                     <a href="#">
                       <h3>
                         Create a nice theme
@@ -214,8 +265,7 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  <li>
                     <a href="#">
                       <h3>
                         Some task I need to do
@@ -228,8 +278,7 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  <li>
                     <a href="#">
                       <h3>
                         Make beautiful transitions
@@ -242,7 +291,6 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
                 </ul>
               </li>
               <li class="footer">
@@ -250,6 +298,7 @@
               </li>
             </ul>
           </li>
+ 			-->
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -315,6 +364,7 @@
         </div>
       </div>
       <!-- search form -->
+      <!-- 
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -324,35 +374,49 @@
               </span>
         </div>
       </form>
+       -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <?php 
-						
+						//var_dump($system_menus);
+						//exit("==============");
 			foreach($system_menus as $menu){
-			    echo '<li class="treeview">'; // active 
+			    $funcList = $menu['funcList'];
+			    $isTreeView = count($funcList) > 0 ? "treeview" : "";
+			    echo '<li class="'. $isTreeView .'">'; // active 
 			    echo '   <a href="#">';
-			    echo '   <i class="fa fa-dashboard"></i> <span>Dashboard</span>';
+			    echo '   <i class="fa fa-dashboard"></i> <span>'. $menu['label'] .'</span>';
 			    echo '   <span class="pull-right-container">';
 			    echo '       <i class="fa fa-angle-left pull-right"></i>';
 			    echo '   </span>';
 			    echo '   </a>';
-			    echo '   <ul class="treeview-menu">';
+			   // echo '   <ul class="treeview-menu">';
+			   if($isTreeView != ""){
+			       echo '<ul class="treeview-menu">';
+			       foreach($funcList as $fun){
+			           $isActive = $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '';
+			           echo '<li'. $isActive .'><a href="'.Url::to([$fun['url']]).'"><i class="fa fa-circle-o"></i>'. $fun['label'] .'</a></li>';
+			       }
+			       echo '</ul>';
+			   }
 			    echo '</li>';
-// 			    echo '<li class="accordion">';
-// 			    echo '    <a href="#"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span>'.$menu['label'].'</span></a>';
-// 			    echo '    <ul class="nav nav-pills nav-stacked">';
-// 			    $funcList = $menu['funcList'];
-// 			    foreach($funcList as $fun){
-// 			        echo '    <li ' .( $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '' ). '>
-//                                  <a href="'.Url::to([$fun['url']]).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
-//                               </li>';
-// 			    }
-// 			    echo '    </ul>';
-// 			    echo '</li>';
+
 			}
 						
+			
+			// 			    echo '<li class="accordion">';
+			// 			    echo '    <a href="#"><i class="glyphicon glyphicon-plus"></i>&nbsp;<span>'.$menu['label'].'</span></a>';
+			// 			    echo '    <ul class="nav nav-pills nav-stacked">';
+			// 			    $funcList = $menu['funcList'];
+			// 			    foreach($funcList as $fun){
+			// 			        echo '    <li ' .( $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '' ). '>
+			//                                  <a href="'.Url::to([$fun['url']]).'"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>'.$fun['label'].'</span></a>
+			//                               </li>';
+			// 			    }
+			// 			    echo '    </ul>';
+			// 			    echo '</li>';
 		?>
         
         <!-- 
@@ -744,15 +808,15 @@
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>  -->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-  $.widget.bridge('uibutton', $.ui.button);
+ // $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="libs/raphael-min.js"></script>
 <script src="plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
@@ -761,8 +825,9 @@
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="plugins/knob/jquery.knob.js"></script>
+ 
 <!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="libs/moment.min.js"></script>
 <script src="plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -772,11 +837,18 @@
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="plugins/fastclick/fastclick.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+
 </body>
+
+<?php if(isset($this->blocks['footer']) == true):?>
+<?= $this->blocks['footer'] ?>
+<?php endif;?>
 </html>
