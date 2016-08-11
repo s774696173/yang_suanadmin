@@ -4,17 +4,18 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\SystemModule;
+use backend\models\AdminMenu;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SystemModuleController implements the CRUD actions for SystemModule model.
+ * AdminMenuController implements the CRUD actions for AdminMenu model.
  */
-class SystemModuleController extends BaseController
+class AdminMenuController extends BaseController
 {
+	public $layout = "lte_main";
     /*
     public function behaviors()
     {
@@ -29,26 +30,52 @@ class SystemModuleController extends BaseController
     }
     */
     /**
-     * Lists all SystemModule models.
+     * Lists all AdminMenu models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $query = SystemModule::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
+        $query = AdminMenu::find();
+         $querys = Yii::$app->request->get('query');
+        if(count($querys) > 0){
+            $condition = "";
+            $parame = array();
+            foreach($querys as $key=>$value){
+                $value = trim($value);
+                if(empty($value) == false){
+                    $parame[":{$key}"]=$value;
+                    if(empty($condition) == true){
+                        $condition = " {$key}=:{$key} ";
+                    }
+                    else{
+                        $condition = $condition . " AND {$key}=:{$key} ";
+                    }
+                }
+            }
+            if(count($parame) > 0){
+                $query = $query->where($condition, $parame);
+            }
+        }
         //$models = $query->orderBy('display_order')
-        $models = $query->orderBy('display_order')
+        $pagination = new Pagination([
+            'totalCount' =>$query->count(), 
+            'pageSize' => '10', 
+            'pageParam'=>'page', 
+            'pageSizeParam'=>'per-page']
+        );
+        $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'query'=>$querys,
         ]);
     }
 
     /**
-     * Displays a single SystemModule model.
+     * Displays a single AdminMenu model.
      * @param integer $id
      * @return mixed
      */
@@ -61,20 +88,22 @@ class SystemModuleController extends BaseController
     }
 
     /**
-     * Creates a new SystemModule model.
+     * Creates a new AdminMenu model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new SystemModule();
+        $model = new AdminMenu();
         if ($model->load(Yii::$app->request->post())) {
-            $model->has_lef = 'n';
-            $model->create_user = Yii::$app->user->identity->uname;
-            $model->create_date = date('Y-m-d H:i:s');
-            $model->update_user = Yii::$app->user->identity->uname;
-            $model->update_date = date('Y-m-d H:i:s');
-            if($model->validate() == true && $model->save()){
+        
+              if(empty($model->has_lef) == true){
+                  $model->has_lef = 'n';
+              }
+              $model->create_user = Yii::$app->user->identity->uname;
+              $model->create_date = date('Y-m-d H:i:s');
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->update_date = date('Y-m-d H:i:s');            if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -89,7 +118,7 @@ class SystemModuleController extends BaseController
     }
 
     /**
-     * Updates an existing SystemModule model.
+     * Updates an existing AdminMenu model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,8 +127,11 @@ class SystemModuleController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-            $model->update_user = Yii::$app->user->identity->uname;
-            $model->update_date = date('Y-m-d H:i:s');
+        
+              $model->has_lef = 'n';
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->update_date = date('Y-m-d H:i:s');        
+        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -116,7 +148,7 @@ class SystemModuleController extends BaseController
     }
 
     /**
-     * Deletes an existing SystemModule model.
+     * Deletes an existing AdminMenu model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -124,28 +156,26 @@ class SystemModuleController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = SystemModule::deleteAll(['in', 'id', $ids]);
+            $c = AdminMenu::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-        //$this->findModel($id)->delete();
-
-        //return $this->redirect(['index']);
+  
     }
 
     /**
-     * Finds the SystemModule model based on its primary key value.
+     * Finds the AdminMenu model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return SystemModule the loaded model
+     * @return AdminMenu the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = SystemModule::findOne($id)) !== null) {
+        if (($model = AdminMenu::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
