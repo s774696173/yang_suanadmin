@@ -53,20 +53,17 @@ $modelLabel = new \<?=$modelClass?>();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?="<?php ActiveForm::begin(['id' => '".Inflector::camel2id(StringHelper::basename($controllerName))."-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=".Inflector::camel2id(StringHelper::basename($controllerName))."/index']); ?>\n"?>     
-                <?php
-                    $labels = $model->attributeLabels();
-                    if(count($labels) > 0){
-                        foreach($labels as $field => $label){
-                            ?>
-                                <?= "\n" ?>
-                                <?= '<div class="form-group" style="margin: 5px;">'; ?> 
-                                <?= '  <label>'.$label.':</label>'."\n"; ?>
-                                <?= '  <input type="text" class="form-control" id="query['.$field.']" name="query['.$field.']"  value="<?=isset($query["'.$field.'"]) ? $query["'.$field.'"] : "" ?>">'; ?> 
-                                <?= '</div>'; ?>
-                            <?php
+                <?="<?php ActiveForm::begin(['id' => '".Inflector::camel2id(StringHelper::basename($controllerName))."-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=".Inflector::camel2id(StringHelper::basename($controllerName))."/index']); ?>"?>     
+                <?php foreach($tableColumnInfo as $key=>$column){
+                        if($column['isSearch'] === true){
+                            echo "\n";
+                            echo "                  <div class=\"form-group\" style=\"margin: 5px;\">\n";
+                            echo "                      <label><?=\$modelLabel->getAttributeLabel('$key')?>:</label>\n";
+                            echo "                      <input type=\"text\" class=\"form-control\" id=\"query[$key]\" name=\"query[$key]\"  value=\"<?=isset(\$query[\"$key\"]) ? \$query[\"$key\"] : \"\" ?>\">\n";
+                            echo "                  </div>\n";
                         }
                     }
+                
                     ?>
               <div class="form-group">
               	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
@@ -85,10 +82,14 @@ $modelLabel = new \<?=$modelClass?>();
             
             <?="<?php \n"?>
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
-		      <?php foreach($tableColumnInfo as $key=>$column){?>      
-		      	echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('<?=$key?>').'</th>';
-				//		      echo '<th>' . $modelLabel->getAttributeLabel('<?=$key?>'). '</th>';
-			  <?php }?>      
+<?php 
+foreach($tableColumnInfo as $key=>$column){
+if($column['isDisplay'] == true){
+echo "              echo '<th class=\"sorting\" tabindex=\"0\" aria-controls=\"data_table\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" >'.\$modelLabel->getAttributeLabel('$key').'</th>';\n";
+}
+
+}
+?>         
 			?>
 	
             <th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >操作</th>
@@ -101,12 +102,17 @@ $modelLabel = new \<?=$modelClass?>();
             foreach ($models as $model) {
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
-                <?php foreach($tableColumnInfo as $key=>$column){?>
-                echo '  <td>' . $model-><?=$key ?> . '</td>';
-                <?php }?>
-               
+<?php 
+foreach($tableColumnInfo as $key=>$column){
+    if($column['isDisplay'] === true){
+        echo "                echo '  <td>' . \$model->$key . '</td>';\n";
+    }
+    else{
+        echo "                //echo '  <td>' . \$model->$key . '</td>';\n";
+    }
+}
+?>
                 echo '  <td class="center">';
-               
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -170,23 +176,29 @@ $modelLabel = new \<?=$modelClass?>();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?='<?php $form = ActiveForm::begin(["id" => "'.Inflector::camel2id(StringHelper::basename($controllerName)).'-form", "class"=>"form-horizontal", "action"=>"index.php?r='.Inflector::camel2id(StringHelper::basename($controllerName)).'/save"]); ?>'?>                
-                <input type="hidden" class="form-control" id="id" name="<?=$modelName?>[id]" >
-                                    
+                <?='<?php $form = ActiveForm::begin(["id" => "'.Inflector::camel2id(StringHelper::basename($controllerName)).'-form", "class"=>"form-horizontal", "action"=>"index.php?r='.Inflector::camel2id(StringHelper::basename($controllerName)).'/save"]); ?>'?>                      
                  <?php foreach($tableColumnInfo as $key=>$column){
-                    if(strtolower($key) == 'id'){
-                        continue;
-                    }?>
+                    echo "\n";
+                    $isNeed = $column['allowNull'] == false ? '必填' : '';
+                    echo '          <div id="'.$key.'_div" class="form-group">'."\n";
+                    echo '              <label for="'.$key.'" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("'.$key.'")?></label>'."\n";
+                    echo '              <div class="col-sm-10">'."\n";
+                    switch($column['inputType']){
+                        case 'hidden':
+                            echo '          <input type="hidden" class="form-control" id="id" name="'.$modelName.'['.$key.']" />'."\n";
+                            break;
+                        case 'text':
+                            echo '                  <input type="text" class="form-control" id="'.$key.'" name="'.$modelName.'['.$key.']" placeholder="'.$isNeed . '" />'."\n";
+                            break;
+                    }
                     
-                    <div id="<?=$key?>_div" class="form-group">
-    					<label for="<?=$key?>" class="col-sm-2 control-label"><?='<?php echo $modelLabel->getAttributeLabel("'.$key.'")?>'?></label>
-    					<div class="col-sm-10">
-    						<input type="text" class="form-control" id="<?=$key?>"
-    							name="<?=$modelName.'['.$key.']'?>" placeholder="<?=$column['allowNull'] == false ? '必填' : ''?>">
-    					</div>
-    					<div class="clearfix"></div>
-    				</div>
-                <?php }?>
+                    echo '              </div>'."\n";
+                    echo '              <div class="clearfix"></div>'."\n";
+                    echo '          </div>'."\n";
+                 }
+                 ?>
+                    
+
 			<?= "<?php ActiveForm::end(); ?>" ?>          
                 </div>
 			<div class="modal-footer">
@@ -207,31 +219,47 @@ $modelLabel = new \<?=$modelClass?>();
 	}
 
  function initEditSystemModule(data, type){
-		if(type == 'create'){
-		<?php foreach($tableColumnInfo as $key=>$column){?>
-		$("#<?=$key?>").val('');
-		<?php }?>
-		
-		}
-		else{
-		<?php foreach($tableColumnInfo as $key=>$column){?>
-		$("#<?=$key?>").val(data.<?=$key?>);
-	    <?php }?>
-		}
-		if(type == "view"){
-		<?php foreach($tableColumnInfo as $key=>$column){?>
-		$("#<?=$key?>").attr({readonly:true,disabled:true});
-	    <?php }?>
-		$('#edit_dialog_ok').addClass('hidden');
-		}
-		else{
-		<?php foreach($tableColumnInfo as $key=>$column){?>
-		$("#<?=$key?>").attr({readonly:false,disabled:false});
-	    <?php }?>
+	if(type == 'create'){
+	<?php foreach($tableColumnInfo as $key=>$column){?>
+	$("#<?=$key?>").val('');
+	<?php }?>
+	
+	}
+	else{
+	<?php foreach($tableColumnInfo as $key=>$column){?>
+	$("#<?=$key?>").val(data.<?=$key?>);
+    <?php }?>
+	}
+	if(type == "view"){
+<?php 
+
+foreach($tableColumnInfo as $key=>$column){
+    echo '      $("#'.$key.'").attr({readonly:true,disabled:true});'."\n";
+    if($column['isEdit'] === false){
+    echo '      $("#'.$key.'").parent().parent().show();'."\n";
+    
+    }
+}
+
+?>
+	$('#edit_dialog_ok').addClass('hidden');
+	}
+	else{
+<?php 
+//var_dump($tableColumnInfo);
+foreach($tableColumnInfo as $key=>$column){
+    echo '      $("#'.$key.'").attr({readonly:false,disabled:false});'."\n";
+    if($column['isEdit'] === false){
+    echo '      $("#'.$key.'").parent().parent().hide();'."\n";
+    //var_dump($column);
+    }
+}
+//exit();
+?>
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
 		$('#edit_dialog').modal('show');
-	}
+}
 
 function initModel(id, type, fun){
 	
@@ -273,7 +301,6 @@ function deleteAction(id){
 	}
 	if(ids.length > 0){
 		admin_tool.confirm('请确认是否删除', function(){
-			///var csrf = $('meta[name="csrf-token"]').attr("content"); // "_csrf":csrf
 		    $.ajax({
 				   type: "GET",
 				   url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/delete",

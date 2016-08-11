@@ -104,11 +104,11 @@ class <?= $className ?> extends \backend\models\BaseModel
      * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
-     * inputtype - 对应控件类型，包含text,select,checkbox,radio,file,password
-     * displaylist - 是否显示在列表，默认不显示，两个值true、false。影响到列表的列
-     * searchble - 是否可以搜索,默认不搜索，两个值true、false。影响到按那些条件搜索。
-     * readonly - 是否只读,默认不是只读，两个值true、false。如果为只读，新建时则不显示；修改时，显示，但不能进行修改。
-     * order - 是否排序字段。,默认不排序，两个值true、false。如果为true, 将自动产生在列表页排序中
+     * inputType 控件类型, 包含text,select,checkbox,radio,file,password,hidden
+     * isEdit   是否允许编辑，如果允许编辑将在添加和修改时输入
+     * isSearch 是否允许搜索
+     * isDisplay 是否在列表中显示
+     * isOrder 是否排序
      * udc - udc code，inputtype为select,checkbox,radio三个值时用到。
      * 特别字段：
      * id：主键。必须含有主键，统一都是id
@@ -122,16 +122,17 @@ class <?= $className ?> extends \backend\models\BaseModel
                 $allowNull = $column->allowNull == true ? 'true' : 'false';
                 $autoIncrement = $column->autoIncrement == true ? 'true' : 'false';
                 $isPrimaryKey = $column->isPrimaryKey == true ? 'true' : 'false';
+                $inputtype = $column->isPrimaryKey == true ? 'hidden' : 'text';
                 $unsigned = $column->unsigned == true ? 'true' : 'false';
                 $searchble = $column->isPrimaryKey == true ? 'true' : 'false'; // 默认下只有主键提供搜索
-                
+                //$defaultValue = $column->phpType == 'string' ? '"'.$column->defaultValue.'"' : $column->defaultValue;
                  echo "'{$column->name}' => array(
                         'name' => '{$column->name}',
                         'allowNull' => {$allowNull},
 //                         'autoIncrement' => {$autoIncrement},
 //                         'comment' => '{$column->comment}',
 //                         'dbType' => \"{$column->dbType}\",
-                        'defaultValue' => '{$column->defaultValue}',
+                        'defaultValue' => '$column->defaultValue',
                         'enumValues' => ". json_encode($column->enumValues).",
                         'isPrimaryKey' => {$isPrimaryKey},
                         'phpType' => '{$column->phpType}',
@@ -141,12 +142,12 @@ class <?= $className ?> extends \backend\models\BaseModel
                         'type' => '{$column->type}',
                         'unsigned' => $unsigned,
                         'label'=>\$this->getAttributeLabel('{$column->name}'),
-                        'inputtype' => 'text',
-                        'displaylist' => true,
-                        'searchble' => $searchble,
-                        'readonly' => false,
-                        'order' => false,
-                        'udc'=>'',
+                        'inputType' => '$inputtype',
+                        'isEdit' => true,
+                        'isSearch' => $searchble,
+                        'isDisplay' => true,
+                        'isSort' => true,
+//                         'udc'=>'',
                     ),\n\t\t" ;
              } 
          ?>

@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * SystemLogController implements the CRUD actions for SystemLog model.
  */
-class SystemLogController extends BaseController
+class SystemLog2Controller extends BaseController
 {
     /*
     public function behaviors()

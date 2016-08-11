@@ -16,7 +16,8 @@ $searchModelClass = StringHelper::basename($generator->searchModelClass);
 if ($modelClass === $searchModelClass) {
     $searchModelAlias = $searchModelClass . 'Search';
 }
-
+$model = new $generator->modelClass;
+$tableColumnInfo = $model->getTableColumnInfo();
 /* @var $class ActiveRecordInterface */
 $class = $generator->modelClass;
 $pks = $class::primaryKey();
@@ -127,6 +128,31 @@ class <?= $controllerClass ?> extends BaseController
     {
         $model = new <?= $modelClass ?>();
         if ($model->load(Yii::$app->request->post())) {
+        <?php 
+        echo "\n";
+foreach($tableColumnInfo as $key=>$column){
+    if(empty($column['defaultValue']) == false){
+        $defaultValue = $column['phpType'] == 'string' ? "'{$column['defaultValue']}'" : $column['defaultValue'];
+        echo "              if(empty(\$model->$key) == true){\n";
+        echo "                  \$model->$key = ".$defaultValue.";\n";
+        echo "              }\n";
+    }
+    switch($key){
+        case 'create_user':
+            echo "              \$model->create_user = Yii::\$app->user->identity->uname;\n";
+            break;
+        case 'create_date':
+            echo "              \$model->create_date = date('Y-m-d H:i:s');\n";
+            break;
+        case 'update_user':
+            echo "              \$model->update_user = Yii::\$app->user->identity->uname;\n";
+            break;
+        case 'update_date':
+            echo "              \$model->update_date = date('Y-m-d H:i:s');";
+            break;
+    }
+}
+        ?>
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -151,6 +177,25 @@ class <?= $controllerClass ?> extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+        <?php 
+                    echo "\n";
+            foreach($tableColumnInfo as $key=>$column){
+                if(empty($column['defaultValue']) == false){
+                    $defaultValue = $column['phpType'] == 'string' ? "'{$column['defaultValue']}'" : $column['defaultValue'];
+                    echo "              \$model->$key = ".$defaultValue.";\n";
+                }
+                switch($key){
+                    case 'update_user':
+                        echo "              \$model->update_user = Yii::\$app->user->identity->uname;\n";
+                        break;
+                    case 'update_date':
+                        echo "              \$model->update_date = date('Y-m-d H:i:s');";
+                        break;
+                }
+            }
+        ?>
+        
+        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
