@@ -41,6 +41,11 @@ $modelLabel = new \backend\models\AdminMenu();
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
                   </div>
+
+                  <div class="form-group" style="margin: 5px;">
+                      <label><?=$modelLabel->getAttributeLabel('entry_url')?>:</label>
+                      <input type="text" class="form-control" id="query[entry_url]" name="query[entry_url]"  value="<?=isset($query["entry_url"]) ? $query["entry_url"] : "" ?>">
+                  </div>
               <div class="form-group">
               	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
            	  </div>
@@ -63,15 +68,9 @@ $modelLabel = new \backend\models\AdminMenu();
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('menu_name').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('module_id').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_label').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('des').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_order').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('entry_right_name').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('entry_url').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('has_lef').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
          
@@ -92,18 +91,19 @@ $modelLabel = new \backend\models\AdminMenu();
                 echo '  <td>' . $model->menu_name . '</td>';
                 echo '  <td>' . $model->module_id . '</td>';
                 echo '  <td>' . $model->display_label . '</td>';
-                echo '  <td>' . $model->des . '</td>';
+                //echo '  <td>' . $model->des . '</td>';
                 echo '  <td>' . $model->display_order . '</td>';
                 echo '  <td>' . $model->entry_right_name . '</td>';
                 echo '  <td>' . $model->entry_url . '</td>';
-                echo '  <td>' . $model->action . '</td>';
-                echo '  <td>' . $model->controller . '</td>';
-                echo '  <td>' . $model->has_lef . '</td>';
-                echo '  <td>' . $model->create_user . '</td>';
-                echo '  <td>' . $model->create_date . '</td>';
+                //echo '  <td>' . $model->action . '</td>';
+                //echo '  <td>' . $model->controller . '</td>';
+                //echo '  <td>' . $model->has_lef . '</td>';
+                //echo '  <td>' . $model->create_user . '</td>';
+                //echo '  <td>' . $model->create_date . '</td>';
                 echo '  <td>' . $model->update_user . '</td>';
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
+                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-right/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>路由管理</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -166,14 +166,9 @@ $modelLabel = new \backend\models\AdminMenu();
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-menu-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-menu/save"]); ?>                      
-                 
-          <div id="id_div" class="form-group">
-              <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
-              <div class="col-sm-10">
-          <input type="hidden" class="form-control" id="id" name="AdminMenu[id]" />
-              </div>
-              <div class="clearfix"></div>
-          </div>
+                 <input type="hidden" class="form-control" id="id" name="AdminMenu[id]" />
+                 <input type="hidden" class="form-control" id="module_id" name="AdminMenu[module_id]" value="<?=$module_id?>">                    
+          
 
           <div id="code_div" class="form-group">
               <label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
@@ -190,7 +185,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
-
+<!-- 
           <div id="module_id_div" class="form-group">
               <label for="module_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("module_id")?></label>
               <div class="col-sm-10">
@@ -198,7 +193,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
-
+ -->
           <div id="display_label_div" class="form-group">
               <label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
               <div class="col-sm-10">
@@ -239,18 +234,28 @@ $modelLabel = new \backend\models\AdminMenu();
               <div class="clearfix"></div>
           </div>
 
-          <div id="action_div" class="form-group">
-              <label for="action" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("action")?></label>
-              <div class="col-sm-10">
-                  <input type="text" class="form-control" id="action" name="AdminMenu[action]" placeholder="必填" />
-              </div>
-              <div class="clearfix"></div>
-          </div>
-
           <div id="controller_div" class="form-group">
               <label for="controller" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("controller")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="controller" name="AdminMenu[controller]" placeholder="必填" />
+              	<select class="form-control" name="AdminMenu[controller]" id="controller">
+					<option>请选择</option>
+    				<?php 	   
+					  foreach($controllerData as $key=>$data){
+					      echo "<option value='" . $key . "'>". $key."</option>";
+					  }
+					?>
+        	    </select>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          
+          <div id="action_div" class="form-group">
+              <label for="action" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("action")?></label>
+              <div class="col-sm-10">
+              <select class="form-control" name="AdminMenu[action]" id="action">
+    			<option>请选择</option>
+              </select>
+<!-- <input type="text" class="form-control" id="action" name="AdminMenu[action]" placeholder="必填" />  -->
               </div>
               <div class="clearfix"></div>
           </div>
@@ -308,6 +313,7 @@ $modelLabel = new \backend\models\AdminMenu();
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
+ window.controllerData = <?php echo json_encode($controllerData); ?>;
  function searchAction(){
 		$('#admin-menu-search-form').submit();
 	}
@@ -320,7 +326,7 @@ $modelLabel = new \backend\models\AdminMenu();
 		$("#id").val('');
 		$("#code").val('');
 		$("#menu_name").val('');
-		$("#module_id").val('');
+// 		$("#module_id").val('');
 		$("#display_label").val('');
 		$("#des").val('');
 		$("#display_order").val('');
@@ -366,10 +372,15 @@ $modelLabel = new \backend\models\AdminMenu();
       $("#action").attr({readonly:true,disabled:true});
       $("#controller").attr({readonly:true,disabled:true});
       $("#has_lef").attr({readonly:true,disabled:true});
+      $("#has_lef").parent().parent().show();
       $("#create_user").attr({readonly:true,disabled:true});
+      $("#create_user").parent().parent().show();
       $("#create_date").attr({readonly:true,disabled:true});
+      $("#create_date").parent().parent().show();
       $("#update_user").attr({readonly:true,disabled:true});
+      $("#update_user").parent().parent().show();
       $("#update_date").attr({readonly:true,disabled:true});
+      $("#update_date").parent().parent().show();
 	$('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
@@ -381,14 +392,20 @@ $modelLabel = new \backend\models\AdminMenu();
       $("#des").attr({readonly:false,disabled:false});
       $("#display_order").attr({readonly:false,disabled:false});
       $("#entry_right_name").attr({readonly:false,disabled:false});
-      $("#entry_url").attr({readonly:false,disabled:false});
+      $("#entry_url").attr({readonly:true,disabled:true});
+//       $("#entry_url").attr({readonly:false,disabled:false});
       $("#action").attr({readonly:false,disabled:false});
       $("#controller").attr({readonly:false,disabled:false});
       $("#has_lef").attr({readonly:false,disabled:false});
+      $("#has_lef").parent().parent().hide();
       $("#create_user").attr({readonly:false,disabled:false});
+      $("#create_user").parent().parent().hide();
       $("#create_date").attr({readonly:false,disabled:false});
+      $("#create_date").parent().parent().hide();
       $("#update_user").attr({readonly:false,disabled:false});
+      $("#update_user").parent().parent().hide();
       $("#update_date").attr({readonly:false,disabled:false});
+      $("#update_date").parent().parent().hide();
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
 		$('#edit_dialog').modal('show');
@@ -518,7 +535,25 @@ $('#admin-menu-form').bind('submit', function(e) {
     	}
     });
 });
-
+$("#controller").change(function(){
+    // 先清空第二个
+	var controller = $(this).val();
+// 	console.log("================" + controller);
+     $("#action").empty();
+     var option = $("<option>").html("请选择");
+     $("#action").append(option);
+    // 实际的应用中，这里的option一般都是用循环生成多个了
+     //var option = $("<option>").val(1).text("pxx");
+    // $("#action").append(option);
+     var actions = window.controllerData[controller];
+     var nodes = actions.nodes;
+     for(i = 0; i < nodes.length; i++){
+         var action = nodes[i];
+         var option = $("<option>").val(action.a).html(action.text);
+         $("#action").append(option);
+     }
+//      console.log("================", actions);
+});
  
 </script>
 <?php $this->endBlock(); ?>

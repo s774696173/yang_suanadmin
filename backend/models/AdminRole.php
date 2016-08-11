@@ -4,32 +4,27 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "admin_user".
+ * This is the model class for table "admin_role".
  *
- * @property string $id
- * @property string $uname
- * @property string $password
- * @property string $auth_key
- * @property string $last_ip
- * @property string $is_online
- * @property string $domain_account
- * @property integer $status
+ * @property integer $id
+ * @property string $code
+ * @property string $name
+ * @property string $des
  * @property string $create_user
  * @property string $create_date
  * @property string $update_user
  * @property string $update_date
  *
  * @property AdminUserRole[] $adminUserRoles
- * @property SystemUserRole[] $systemUserRoles
  */
-class AdminUser extends BackendUser
+class AdminRole extends \backend\models\BaseModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'admin_user';
+        return 'admin_role';
     }
 
     /**
@@ -38,14 +33,10 @@ class AdminUser extends BackendUser
     public function rules()
     {
         return [
-            [['uname', 'password', 'create_user', 'create_date', 'update_user', 'update_date'], 'required'],
-            [['status'], 'integer'],
+            [['code', 'name'], 'required'],
             [['create_date', 'update_date'], 'safe'],
-            [['uname', 'domain_account', 'create_user'], 'string', 'max' => 100],
-            [['password'], 'string', 'max' => 200],
-            [['auth_key', 'last_ip'], 'string', 'max' => 50],
-            [['is_online'], 'string', 'max' => 1],
-            [['update_user'], 'string', 'max' => 101]
+            [['code', 'name', 'create_user', 'update_user'], 'string', 'max' => 50],
+            [['des'], 'string', 'max' => 400]
         ];
     }
 
@@ -55,14 +46,10 @@ class AdminUser extends BackendUser
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uname' => '用户名',
-            'password' => '密码',
-            'auth_key' => '自动登录key',
-            'last_ip' => '最近一次登录ip',
-            'is_online' => '是否在线',
-            'domain_account' => '域账号',
-            'status' => '状态',
+            'id' => '主键',
+            'code' => '角色编号',
+            'name' => '角色名称',
+            'des' => '角色描述',
             'create_user' => '创建人',
             'create_date' => '创建时间',
             'update_user' => '更新人',
@@ -75,15 +62,7 @@ class AdminUser extends BackendUser
      */
     public function getAdminUserRoles()
     {
-        return $this->hasMany(AdminUserRole::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSystemUserRoles()
-    {
-        return $this->hasMany(SystemUserRole::className(), ['user_id' => 'id']);
+        return $this->hasMany(AdminUserRole::className(), ['role_id' => 'id']);
     }
 
   /**
@@ -107,17 +86,17 @@ class AdminUser extends BackendUser
                         'name' => 'id',
                         'allowNull' => false,
 //                         'autoIncrement' => true,
-//                         'comment' => '',
-//                         'dbType' => "bigint(20) unsigned",
+//                         'comment' => '主键',
+//                         'dbType' => "int(11)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => true,
-                        'phpType' => 'string',
-                        'precision' => '20',
+                        'phpType' => 'integer',
+                        'precision' => '11',
                         'scale' => '',
-                        'size' => '20',
-                        'type' => 'bigint',
-                        'unsigned' => true,
+                        'size' => '11',
+                        'type' => 'integer',
+                        'unsigned' => false,
                         'label'=>$this->getAttributeLabel('id'),
                         'inputType' => 'hidden',
                         'isEdit' => true,
@@ -126,57 +105,11 @@ class AdminUser extends BackendUser
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'uname' => array(
-                        'name' => 'uname',
+		'code' => array(
+                        'name' => 'code',
                         'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '用户名',
-//                         'dbType' => "varchar(100)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '100',
-                        'scale' => '',
-                        'size' => '100',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('uname'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'password' => array(
-                        'name' => 'password',
-                        'allowNull' => false,
-//                         'autoIncrement' => false,
-//                         'comment' => '密码',
-//                         'dbType' => "varchar(200)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '200',
-                        'scale' => '',
-                        'size' => '200',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('password'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'auth_key' => array(
-                        'name' => 'auth_key',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '自动登录key',
+//                         'comment' => '角色编号',
 //                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -187,7 +120,7 @@ class AdminUser extends BackendUser
                         'size' => '50',
                         'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('auth_key'),
+                        'label'=>$this->getAttributeLabel('code'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
@@ -195,11 +128,11 @@ class AdminUser extends BackendUser
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'last_ip' => array(
-                        'name' => 'last_ip',
-                        'allowNull' => true,
+		'name' => array(
+                        'name' => 'name',
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '最近一次登录ip',
+//                         'comment' => '角色名称',
 //                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -210,7 +143,7 @@ class AdminUser extends BackendUser
                         'size' => '50',
                         'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('last_ip'),
+                        'label'=>$this->getAttributeLabel('name'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
@@ -218,68 +151,22 @@ class AdminUser extends BackendUser
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'is_online' => array(
-                        'name' => 'is_online',
+		'des' => array(
+                        'name' => 'des',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '是否在线',
-//                         'dbType' => "char(1)",
-                        'defaultValue' => 'n',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '1',
-                        'scale' => '',
-                        'size' => '1',
-                        'type' => 'char',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('is_online'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'domain_account' => array(
-                        'name' => 'domain_account',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '域账号',
-//                         'dbType' => "varchar(100)",
+//                         'comment' => '角色描述',
+//                         'dbType' => "varchar(400)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '100',
+                        'precision' => '400',
                         'scale' => '',
-                        'size' => '100',
+                        'size' => '400',
                         'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('domain_account'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'status' => array(
-                        'name' => 'status',
-                        'allowNull' => false,
-//                         'autoIncrement' => false,
-//                         'comment' => '状态',
-//                         'dbType' => "smallint(6)",
-                        'defaultValue' => '10',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'integer',
-                        'precision' => '6',
-                        'scale' => '',
-                        'size' => '6',
-                        'type' => 'smallint',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('status'),
+                        'label'=>$this->getAttributeLabel('des'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
@@ -289,17 +176,17 @@ class AdminUser extends BackendUser
                     ),
 		'create_user' => array(
                         'name' => 'create_user',
-                        'allowNull' => false,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '创建人',
-//                         'dbType' => "varchar(100)",
+//                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '100',
+                        'precision' => '50',
                         'scale' => '',
-                        'size' => '100',
+                        'size' => '50',
                         'type' => 'string',
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('create_user'),
@@ -312,7 +199,7 @@ class AdminUser extends BackendUser
                     ),
 		'create_date' => array(
                         'name' => 'create_date',
-                        'allowNull' => false,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '创建时间',
 //                         'dbType' => "datetime",
@@ -335,17 +222,17 @@ class AdminUser extends BackendUser
                     ),
 		'update_user' => array(
                         'name' => 'update_user',
-                        'allowNull' => false,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '更新人',
-//                         'dbType' => "varchar(101)",
+//                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '101',
+                        'precision' => '50',
                         'scale' => '',
-                        'size' => '101',
+                        'size' => '50',
                         'type' => 'string',
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('update_user'),
@@ -358,7 +245,7 @@ class AdminUser extends BackendUser
                     ),
 		'update_date' => array(
                         'name' => 'update_date',
-                        'allowNull' => false,
+                        'allowNull' => true,
 //                         'autoIncrement' => false,
 //                         'comment' => '更新时间',
 //                         'dbType' => "datetime",

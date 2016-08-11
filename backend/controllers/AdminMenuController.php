@@ -9,6 +9,10 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+
+
 
 /**
  * AdminMenuController implements the CRUD actions for AdminMenu model.
@@ -16,26 +20,21 @@ use yii\filters\VerbFilter;
 class AdminMenuController extends BaseController
 {
 	public $layout = "lte_main";
-    /*
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-    */
+
     /**
      * Lists all AdminMenu models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
-        $query = AdminMenu::find();
+        $controllers = $this->getAllController();
+        $controllerData = array();
+        foreach($controllers as $c){
+            $controllerData[$c['text']] = $c;
+        
+        }
+        
+        $query = AdminMenu::find()->andWhere(['module_id'=>$id]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -71,6 +70,8 @@ class AdminMenuController extends BaseController
             'models'=>$models,
             'pages'=>$pagination,
             'query'=>$querys,
+            'module_id'=>$id,
+            'controllerData'=>$controllerData,
         ]);
     }
 
@@ -100,6 +101,8 @@ class AdminMenuController extends BaseController
               if(empty($model->has_lef) == true){
                   $model->has_lef = 'n';
               }
+              $controllerName = substr($model->controller, 0, strlen($model->controller) - 10);
+              $model->entry_url = Inflector::camel2id(StringHelper::basename($controllerName)) . '/' .$model->action;
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
               $model->update_user = Yii::$app->user->identity->uname;
@@ -180,5 +183,43 @@ class AdminMenuController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    private function getAllController(){
+        $className = get_class($this);
+        $mn = explode('\\', $className);
+        array_pop($mn);
+        $classNameSpace = implode('\\', $mn);
+        $dir = dirname(__FILE__);
+        $classfiles = glob ( $dir . "/*Controller.php" );
+        $controllerDatas = [];
+        foreach($classfiles as $file){
+            $info = pathinfo($file);
+            $controllerClass = $classNameSpace . '\\' . $info[ 'filename' ];
+            $controllerDatas[$info[ 'filename' ]] = $controllerClass;
+        }
+        $rightActionData = [];
+        foreach($controllerDatas as $c){
+            if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
+                $controllerName = substr($c, 0, strlen($c) - 10);
+                $cUrl = Inflector::camel2id(StringHelper::basename($controllerName));
+                $methods = get_class_methods($c);
+                $rightTree = ['text'=>$c, 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'r'];
+                foreach($methods as $m){
+                    if($m != 'actions' && StringHelper::startsWith($m, 'action') !== false){
+                        $actionName = substr($m, 6, strlen($m));
+                        $aUrl = Inflector::camel2id($actionName);
+                        $actionTree = ['text'=>$aUrl . "&nbsp;&nbsp;($cUrl/$aUrl)", 'c'=>$cUrl, 'a'=>$aUrl, 'selectable'=>true, 'state'=>['checked'=>false], 'type'=>'a'];
+                        if(isset($rightUrls[$cUrl.'/'.$aUrl]) == true){
+                            $actionTree['state']['checked'] = true;
+                            $rightTree['state']['checked'] = true;
+                        }
+                        $rightTree['nodes'][] = $actionTree;
+                    }
+                }
+                $rightActionData[] = $rightTree;
+            }
+        }
+        return $rightActionData;
     }
 }

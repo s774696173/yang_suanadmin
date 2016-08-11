@@ -178,6 +178,7 @@ class SystemRightController extends BaseController
         }
         $fun = SystemFunctionService::findOne(array('id'=>$func_id));
         $controllerDatas = [$fun->controller];
+        $rightActionData = [];
         foreach($controllerDatas as $c){
             if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
                 $controllerName = substr($c, 0, strlen($c) - 10);

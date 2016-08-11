@@ -13,9 +13,8 @@ use yii\filters\VerbFilter;
 /**
  * AdminUserController implements the CRUD actions for AdminUser model.
  */
-class AdminUserController extends BaseController
+class AdminUser2Controller extends BaseController
 {
-	public $layout = "lte_main";
     /*
     public function behaviors()
     {
@@ -36,33 +35,8 @@ class AdminUserController extends BaseController
     public function actionIndex()
     {
         $query = AdminUser::find();
-         $querys = Yii::$app->request->get('query');
-        if(count($querys) > 0){
-            $condition = "";
-            $parame = array();
-            foreach($querys as $key=>$value){
-                $value = trim($value);
-                if(empty($value) == false){
-                    $parame[":{$key}"]=$value;
-                    if(empty($condition) == true){
-                        $condition = " {$key}=:{$key} ";
-                    }
-                    else{
-                        $condition = $condition . " AND {$key}=:{$key} ";
-                    }
-                }
-            }
-            if(count($parame) > 0){
-                $query = $query->where($condition, $parame);
-            }
-        }
+        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
         //$models = $query->orderBy('display_order')
-        $pagination = new Pagination([
-            'totalCount' =>$query->count(), 
-            'pageSize' => '10', 
-            'pageParam'=>'page', 
-            'pageSizeParam'=>'per-page']
-        );
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
@@ -70,7 +44,6 @@ class AdminUserController extends BaseController
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
-            'query'=>$querys,
         ]);
     }
 
@@ -81,7 +54,6 @@ class AdminUserController extends BaseController
      */
     public function actionView($id)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 
@@ -96,17 +68,18 @@ class AdminUserController extends BaseController
     {
         $model = new AdminUser();
         if ($model->load(Yii::$app->request->post())) {
-        
-              if(empty($model->is_online) == true){
-                  $model->is_online = 'n';
-              }
-              if(empty($model->status) == true){
-                  $model->status = 10;
-              }
-              $model->create_user = Yii::$app->user->identity->uname;
-              $model->create_date = date('Y-m-d H:i:s');
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');            if($model->validate() == true && $model->save()){
+            $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            $model->auth_key = Yii::$app->security->generateRandomString();;
+            $model->last_ip = '';//Yii::$app->user->identity->uname;
+            $model->is_online = 'n';//date('Y-m-d H:i:s');
+            $model->domain_account = '';//Yii::$app->user->identity->uname;
+            $model->status = 10;//date('Y-m-d H:i:s');
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');
+            
+            if($model->validate() && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -130,12 +103,6 @@ class AdminUserController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-        
-              $model->is_online = 'n';
-              $model->status = 10;
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');        
-        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -167,7 +134,6 @@ class AdminUserController extends BaseController
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
-  
     }
 
     /**

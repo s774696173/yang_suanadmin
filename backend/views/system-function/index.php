@@ -510,13 +510,10 @@ $('#system-function-form').bind('submit', function(e) {
 $("#controller").change(function(){
     // 先清空第二个
 	var controller = $(this).val();
-// 	console.log("================" + controller);
      $("#action").empty();
      var option = $("<option>").html("请选择");
      $("#action").append(option);
     // 实际的应用中，这里的option一般都是用循环生成多个了
-     //var option = $("<option>").val(1).text("pxx");
-    // $("#action").append(option);
      var actions = window.controllerData[controller];
      var nodes = actions.nodes;
      for(i = 0; i < nodes.length; i++){
@@ -524,7 +521,6 @@ $("#controller").change(function(){
          var option = $("<option>").val(action.a).html(action.text);
          $("#action").append(option);
      }
-//      console.log("================", actions);
 });
 </script>
 
