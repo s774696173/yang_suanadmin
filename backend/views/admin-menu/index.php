@@ -19,7 +19,7 @@ $modelLabel = new \backend\models\AdminMenu();
       <div class="box">
       
         <div class="box-header">
-          <h3 class="box-title">数据列表</h3>
+          <h3 class="box-title">子菜单管理</h3>
           <div class="box-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <button id="create_btn" type="button" class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>

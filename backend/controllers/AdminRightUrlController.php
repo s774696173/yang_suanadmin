@@ -4,29 +4,38 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\AdminRight;
+use backend\models\AdminRightUrl;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\StringHelper;
-use yii\helpers\Inflector;
-use backend\services\AdminRightUrlService;
-use backend\services\AdminMenuService;
+
 /**
- * AdminRightController implements the CRUD actions for AdminRight model.
+ * AdminRightUrlController implements the CRUD actions for AdminRightUrl model.
  */
-class AdminRightController extends BaseController
+class AdminRightUrlController extends BaseController
 {
 	public $layout = "lte_main";
-   
+    /*
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+    */
     /**
-     * Lists all AdminRight models.
+     * Lists all AdminRightUrl models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
-        $query = AdminRight::find()->andWhere(['menu_id' => $id]);
+        $query = AdminRightUrl::find();
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -62,47 +71,36 @@ class AdminRightController extends BaseController
             'models'=>$models,
             'pages'=>$pagination,
             'query'=>$querys,
-            'menu_id'=>$id
         ]);
     }
 
     /**
-     * Displays a single AdminRight model.
+     * Displays a single AdminRightUrl model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
+        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
-        $actions = $this->rightAction($model->id, $model->menu_id);
-        $result = ['model'=>$model->getAttributes(), 'actions'=>$actions];
-        echo json_encode($result);
+        echo json_encode($model->getAttributes());
 
     }
 
     /**
-     * Creates a new AdminRight model.
+     * Creates a new AdminRightUrl model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdminRight();
+        $model = new AdminRightUrl();
         if ($model->load(Yii::$app->request->post())) {
-              $rightUrls = Yii::$app->request->post("rightUrls");
-              $model->display_label = $model->right_name;
-              if(empty($model->has_lef) == true){
-                  $model->has_lef = 'n';
-              }
+        
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
               $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');            
-              if($model->validate() == true && $model->save()){
-                if(count($rightUrls) > 0){
-                    $adminRightUrlService = new AdminRightUrlService();
-                    $c = $adminRightUrlService->saveRightUrls($rightUrls, $model->id, Yii::$app->user->identity->uname);
-                }
+              $model->update_date = date('Y-m-d H:i:s');            if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -110,7 +108,6 @@ class AdminRightController extends BaseController
                 $msg = array('errno'=>2, 'data'=>$model->getErrors());
                 echo json_encode($msg);
             }
-            
         } else {
             $msg = array('errno'=>2, 'msg'=>'数据出错');
             echo json_encode($msg);
@@ -118,7 +115,7 @@ class AdminRightController extends BaseController
     }
 
     /**
-     * Updates an existing AdminRight model.
+     * Updates an existing AdminRightUrl model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -127,17 +124,11 @@ class AdminRightController extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-              $rightUrls = Yii::$app->request->post("rightUrls");
-              //$model->has_lef = 'n';
+        
               $model->update_user = Yii::$app->user->identity->uname;
               $model->update_date = date('Y-m-d H:i:s');        
         
             if($model->validate() == true && $model->save()){
-                if(count($rightUrls) > 0){
-                    $adminRightUrlService = new AdminRightUrlService();
-                    $c = $adminRightUrlService->saveRightUrls($rightUrls, $id, Yii::$app->user->identity->uname);
-                }
-                
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -153,7 +144,7 @@ class AdminRightController extends BaseController
     }
 
     /**
-     * Deletes an existing AdminRight model.
+     * Deletes an existing AdminRightUrl model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -161,7 +152,7 @@ class AdminRightController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = AdminRight::deleteAll(['in', 'id', $ids]);
+            $c = AdminRightUrl::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
@@ -172,59 +163,18 @@ class AdminRightController extends BaseController
     }
 
     /**
-     * Finds the AdminRight model based on its primary key value.
+     * Finds the AdminRightUrl model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AdminRight the loaded model
+     * @return AdminRightUrl the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdminRight::findOne($id)) !== null) {
+        if (($model = AdminRightUrl::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
-    public function actionRightAction($rightId, $menu_id){
-        $data = $this->rightAction($rightId, $menu_id);
-        echo json_encode($data);
-      
-    }
-    
-    private function rightAction($rightId, $menu_id){
-        $systemRightUrls = AdminRightUrlService::findAll(['right_id'=>$rightId]);
-        $rightUrls = [];
-        foreach($systemRightUrls as $ru){
-            $url = $ru->para_name . '/' . $ru->para_value;
-            $rightUrls[$url] = true;
-        }
-        $fun = AdminMenuService::findOne(array('id'=>$menu_id));
-//         var_dump($fun);
-//         exit();
-        $controllerDatas = [$fun->controller];
-        foreach($controllerDatas as $c){
-            if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
-                $controllerName = substr($c, 0, strlen($c) - 10);
-                $cUrl = Inflector::camel2id(StringHelper::basename($controllerName));
-                $methods = get_class_methods($c);
-                $rightTree = ['text'=>$c, 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'r'];
-                foreach($methods as $m){
-                    if($m != 'actions' && StringHelper::startsWith($m, 'action') !== false){
-                        $actionName = substr($m, 6, strlen($m));
-                        $aUrl = Inflector::camel2id($actionName);
-                        $actionTree = ['text'=>$aUrl . "&nbsp;&nbsp;($cUrl/$aUrl)", 'c'=>$cUrl, 'a'=>$aUrl, 'selectable'=>true, 'state'=>['checked'=>false], 'type'=>'a'];
-                        if(isset($rightUrls[$cUrl.'/'.$aUrl]) == true){
-                            $actionTree['state']['checked'] = true;
-                            $rightTree['state']['checked'] = true;
-                        }
-                        $rightTree['nodes'][] = $actionTree;
-                    }
-                }
-                $rightActionData[] = $rightTree;
-            }
-        }
-        return $rightActionData;
     }
 }

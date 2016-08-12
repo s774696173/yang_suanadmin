@@ -5,7 +5,7 @@ $params = array_merge(
 );
 
 $config = [
-    'id' => 'app-backend',
+    'id' => 'pfast-backend',
 //     'homeUrl'=>'site/index',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',

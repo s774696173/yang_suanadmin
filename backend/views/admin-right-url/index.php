@@ -3,14 +3,13 @@
 use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
-use backend\models\AdminRight;
+use backend\models\AdminRightUrl;
 
-$modelLabel = new \backend\models\AdminRight();
+$modelLabel = new \backend\models\AdminRightUrl();
 ?>
 
 <?php $this->beginBlock('header');  ?>
- <!-- <head></head>中代码块 -->
-  <script src="plugins/treeview/bootstrap-treeview.min.js"></script>
+<!-- <head></head>中代码块 -->
 <?php $this->endBlock(); ?>
 
 <!-- Main content -->
@@ -20,7 +19,7 @@ $modelLabel = new \backend\models\AdminRight();
       <div class="box">
       
         <div class="box-header">
-          <h3 class="box-title">路由管理</h3>
+          <h3 class="box-title">数据列表</h3>
           <div class="box-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <button id="create_btn" type="button" class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
@@ -36,13 +35,8 @@ $modelLabel = new \backend\models\AdminRight();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-right-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-right/index']); ?>     
+                <?php ActiveForm::begin(['id' => 'admin-right-url-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-right-url/index']); ?>     
                 
-                  <div class="form-group" style="margin: 5px;">
-                      <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
-                      <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
-                  </div>
-                  
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
@@ -65,11 +59,12 @@ $modelLabel = new \backend\models\AdminRight();
             <?php 
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
-//               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('menu_id').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('right_name').'</th>';
-//               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_label').'</th>';
-//               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('des').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('display_order').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('right_id').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('url').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('para_name').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('para_value').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
          
@@ -86,14 +81,12 @@ $modelLabel = new \backend\models\AdminRight();
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
                 echo '  <td>' . $model->id . '</td>';
-//                 echo '  <td>' . $model->menu_id . '</td>';
-                echo '  <td>' . $model->right_name . '</td>';
-//                 echo '  <td>' . $model->display_label . '</td>';
-//                 echo '  <td>' . $model->des . '</td>';
-                echo '  <td>' . $model->display_order . '</td>';
-                //echo '  <td>' . $model->has_lef . '</td>';
-                //echo '  <td>' . $model->create_user . '</td>';
-                //echo '  <td>' . $model->create_date . '</td>';
+                echo '  <td>' . $model->right_id . '</td>';
+                echo '  <td>' . $model->url . '</td>';
+                echo '  <td>' . $model->para_name . '</td>';
+                echo '  <td>' . $model->para_value . '</td>';
+                echo '  <td>' . $model->create_user . '</td>';
+                echo '  <td>' . $model->create_date . '</td>';
                 echo '  <td>' . $model->update_user . '</td>';
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
@@ -146,9 +139,6 @@ $modelLabel = new \backend\models\AdminRight();
     <!-- /.col -->
   </div>
   <!-- /.row -->
-
-	
-
 </section>
 <!-- /.content -->
 
@@ -161,56 +151,44 @@ $modelLabel = new \backend\models\AdminRight();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "admin-right-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-right/save"]); ?>                      
-                 <input type="hidden" class="form-control" id="id" name="AdminRight[id]" />
-          		 <input type="hidden" class="form-control" id="menu_id" name="AdminRight[menu_id]" value="<?=$menu_id?>" />
-
-         
-
-          <div id="right_name_div" class="form-group">
-              <label for="right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_name")?></label>
+                <?php $form = ActiveForm::begin(["id" => "admin-right-url-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-right-url/save"]); ?>                      
+                 
+          <div id="id_div" class="form-group">
+              <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="right_name" name="AdminRight[right_name]" placeholder="必填" />
+          <input type="hidden" class="form-control" id="id" name="AdminRightUrl[id]" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-          <div id="display_label_div" class="form-group">
-              <label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
+          <div id="right_id_div" class="form-group">
+              <label for="right_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="display_label" name="AdminRight[display_label]" placeholder="" />
+                  <input type="text" class="form-control" id="right_id" name="AdminRightUrl[right_id]" placeholder="必填" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-          <div id="des_div" class="form-group">
-              <label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
+          <div id="url_div" class="form-group">
+              <label for="url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("url")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="des" name="AdminRight[des]" placeholder="" />
+                  <input type="text" class="form-control" id="url" name="AdminRightUrl[url]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-          <div id="display_order_div" class="form-group">
-              <label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
+          <div id="para_name_div" class="form-group">
+              <label for="para_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("para_name")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="display_order" name="AdminRight[display_order]" placeholder="" />
+                  <input type="text" class="form-control" id="para_name" name="AdminRightUrl[para_name]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-		 	<div id="actions_div" class="form-group">
-				<label for="actions" class="col-sm-2 control-label">actions</label>
-				<div class="col-sm-10">
-					<div id="treeview"/>    	
-				</div>
-				<div class="clearfix"><br/></div>
-			</div>  
-
-          <div id="has_lef_div" class="form-group">
-              <label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
+          <div id="para_value_div" class="form-group">
+              <label for="para_value" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("para_value")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="has_lef" name="AdminRight[has_lef]" placeholder="必填" />
+                  <input type="text" class="form-control" id="para_value" name="AdminRightUrl[para_value]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -218,7 +196,7 @@ $modelLabel = new \backend\models\AdminRight();
           <div id="create_user_div" class="form-group">
               <label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="create_user" name="AdminRight[create_user]" placeholder="" />
+                  <input type="text" class="form-control" id="create_user" name="AdminRightUrl[create_user]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -226,7 +204,7 @@ $modelLabel = new \backend\models\AdminRight();
           <div id="create_date_div" class="form-group">
               <label for="create_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_date")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="create_date" name="AdminRight[create_date]" placeholder="" />
+                  <input type="text" class="form-control" id="create_date" name="AdminRightUrl[create_date]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -234,7 +212,7 @@ $modelLabel = new \backend\models\AdminRight();
           <div id="update_user_div" class="form-group">
               <label for="update_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_user")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="update_user" name="AdminRight[update_user]" placeholder="" />
+                  <input type="text" class="form-control" id="update_user" name="AdminRightUrl[update_user]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -242,7 +220,7 @@ $modelLabel = new \backend\models\AdminRight();
           <div id="update_date_div" class="form-group">
               <label for="update_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_date")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="update_date" name="AdminRight[update_date]" placeholder="" />
+                  <input type="text" class="form-control" id="update_date" name="AdminRightUrl[update_date]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -261,7 +239,7 @@ $modelLabel = new \backend\models\AdminRight();
 <!-- <body></body>后代码块 -->
  <script>
  function searchAction(){
-		$('#admin-right-search-form').submit();
+		$('#admin-right-url-search-form').submit();
 	}
  function viewAction(id){
 		initModel(id, 'view', 'fun');
@@ -270,12 +248,10 @@ $modelLabel = new \backend\models\AdminRight();
  function initEditSystemModule(data, type){
 	if(type == 'create'){
 		$("#id").val('');
-// 		$("#menu_id").val('');
-		$("#right_name").val('');
-		$("#display_label").val('');
-		$("#des").val('');
-		$("#display_order").val('');
-		$("#has_lef").val('');
+		$("#right_id").val('');
+		$("#url").val('');
+		$("#para_name").val('');
+		$("#para_value").val('');
 		$("#create_user").val('');
 		$("#create_date").val('');
 		$("#update_user").val('');
@@ -284,12 +260,10 @@ $modelLabel = new \backend\models\AdminRight();
 	}
 	else{
 		$("#id").val(data.id);
-    	$("#menu_id").val(data.menu_id);
-    	$("#right_name").val(data.right_name);
-    	$("#display_label").val(data.display_label);
-    	$("#des").val(data.des);
-    	$("#display_order").val(data.display_order);
-    	$("#has_lef").val(data.has_lef);
+    	$("#right_id").val(data.right_id);
+    	$("#url").val(data.url);
+    	$("#para_name").val(data.para_name);
+    	$("#para_value").val(data.para_value);
     	$("#create_user").val(data.create_user);
     	$("#create_date").val(data.create_date);
     	$("#update_user").val(data.update_user);
@@ -297,40 +271,26 @@ $modelLabel = new \backend\models\AdminRight();
     	}
 	if(type == "view"){
       $("#id").attr({readonly:true,disabled:true});
-      $("#right_name").attr({readonly:true,disabled:true});
-      $("#display_label").attr({readonly:true,disabled:true});
-      $("#display_label").parent().parent().show();
-      $("#des").attr({readonly:true,disabled:true});
-      $("#display_order").attr({readonly:true,disabled:true});
-      $("#has_lef").attr({readonly:true,disabled:true});
-      $("#has_lef").parent().parent().show();
+      $("#right_id").attr({readonly:true,disabled:true});
+      $("#url").attr({readonly:true,disabled:true});
+      $("#para_name").attr({readonly:true,disabled:true});
+      $("#para_value").attr({readonly:true,disabled:true});
       $("#create_user").attr({readonly:true,disabled:true});
-      $("#create_user").parent().parent().show();
       $("#create_date").attr({readonly:true,disabled:true});
-      $("#create_date").parent().parent().show();
       $("#update_user").attr({readonly:true,disabled:true});
-      $("#update_user").parent().parent().show();
       $("#update_date").attr({readonly:true,disabled:true});
-      $("#update_date").parent().parent().show();
 	$('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
       $("#id").attr({readonly:false,disabled:false});
-      $("#right_name").attr({readonly:false,disabled:false});
-      $("#display_label").attr({readonly:false,disabled:false});
-      $("#display_label").parent().parent().hide();
-      $("#des").attr({readonly:false,disabled:false});
-      $("#display_order").attr({readonly:false,disabled:false});
-      $("#has_lef").attr({readonly:false,disabled:false});
-      $("#has_lef").parent().parent().hide();
+      $("#right_id").attr({readonly:false,disabled:false});
+      $("#url").attr({readonly:false,disabled:false});
+      $("#para_name").attr({readonly:false,disabled:false});
+      $("#para_value").attr({readonly:false,disabled:false});
       $("#create_user").attr({readonly:false,disabled:false});
-      $("#create_user").parent().parent().hide();
       $("#create_date").attr({readonly:false,disabled:false});
-      $("#create_date").parent().parent().hide();
       $("#update_user").attr({readonly:false,disabled:false});
-      $("#update_user").parent().parent().hide();
       $("#update_date").attr({readonly:false,disabled:false});
-      $("#update_date").parent().parent().hide();
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
 		$('#edit_dialog').modal('show');
@@ -340,7 +300,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-right/view",
+		   url: "index.php?r=admin-right-url/view",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -348,19 +308,7 @@ function initModel(id, type, fun){
 			    alert("出错了，" + textStatus);
 			},
 		   success: function(data){
-			   initEditSystemModule(data.model, type);
-			   $('#treeview').treeview({
-					data:data.actions,
-					showIcon: false,
-			        showCheckbox: true,
-			        levels: 2,
-			        onNodeChecked: function(event, node) {
-			          changeCheckState(node, true);
-			        },
-			        onNodeUnchecked: function (event, node) {
-			        	changeCheckState(node, false);
-			        }
-				});
+			   initEditSystemModule(data, type);
 		   }
 		});
 }
@@ -390,7 +338,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-right/delete",
+				   url: "index.php?r=admin-right-url/delete",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -433,38 +381,11 @@ function getSelectedIdValues(formId)
 
 $('#edit_dialog_ok').click(function (e) {
     e.preventDefault();
-	$('#admin-right-form').submit();
+	$('#admin-right-url-form').submit();
 });
 
 $('#create_btn').click(function (e) {
     e.preventDefault();
-    var menu_id = $("#menu_id").val();
-	$.ajax({
-		   type: "GET",
-		   url: "index.php?r=admin-right/right-action",
-		   data: {'rightId':0, 'menu_id':menu_id},
-		   cache: false,
-		   dataType:"json",
-		   error: function (xmlHttpRequest, textStatus, errorThrown) {
-			    alert("出错了，" + textStatus);
-			},
-		   success: function(data){
-			   //console.log(data);
-				$('#treeview').treeview({
-					data:data,
-					showIcon: false,
-			        showCheckbox: true,
-			        levels: 2,
-			        onNodeChecked: function(event, node) {
-			          //console.log('======',node);
-			          changeCheckState(node, true);
-			        },
-			        onNodeUnchecked: function (event, node) {
-			        	changeCheckState(node, false);
-			        }
-					});
-		   }
-		});
     initEditSystemModule({}, 'create');
 });
 
@@ -473,28 +394,14 @@ $('#delete_btn').click(function (e) {
     deleteAction('');
 });
 
-$('#admin-right-form').bind('submit', function(e) {
+$('#admin-right-url-form').bind('submit', function(e) {
 	e.preventDefault();
-	
-	var checkNodes = $('#treeview').treeview('getChecked');
-	var rightUrls = [];
-	if(checkNodes.length > 0){
-		for(i = 0; i < checkNodes.length; i++){
-			var node = checkNodes[i];
-			if(node.type == 'a'){
-				var url = {'c':node.c, 'a':node.a};
-				rightUrls.push(url);
-			}
-		}
-	}
-	
 	var id = $("#id").val();
 	var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-right/" + action,
-    	data: {"rightUrls":rightUrls},
+    	url: "index.php?r=admin-right-url/" + action,
     	success: function(value) 
     	{
         	if(value.errno == 0){
@@ -514,23 +421,6 @@ $('#admin-right-form').bind('submit', function(e) {
     });
 });
 
-
-//配置功能url
-function changeCheckState(node, checked){
-	if(!!node.nodes == true){
-		var nodes = node.nodes;
-		for(var i = 0; i < nodes.length; i++){
-			var node1 = nodes[i];
-			if(checked == true){
-				$('#treeview').treeview('checkNode', [ node1.nodeId, { silent: true } ]);
-			}
-			else{
-				$('#treeview').treeview('uncheckNode', [ node1.nodeId, { silent: true } ]);
-			}
-			changeCheckState(node1, checked);
-		}
-	}
-}
-
+ 
 </script>
 <?php $this->endBlock(); ?>
