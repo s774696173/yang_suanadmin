@@ -4,16 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\AdminRole;
+use backend\models\AdminUserRole;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminRoleController implements the CRUD actions for AdminRole model.
+ * AdminUserRoleController implements the CRUD actions for AdminUserRole model.
  */
-class AdminRoleController extends BaseController
+class AdminUserRoleController extends BaseController
 {
 	public $layout = "lte_main";
     /*
@@ -30,12 +30,12 @@ class AdminRoleController extends BaseController
     }
     */
     /**
-     * Lists all AdminRole models.
+     * Lists all AdminUserRole models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $query = AdminRole::find();
+        $query = AdminUserRole::find();
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -75,7 +75,7 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Displays a single AdminRole model.
+     * Displays a single AdminUserRole model.
      * @param integer $id
      * @return mixed
      */
@@ -88,13 +88,13 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Creates a new AdminRole model.
+     * Creates a new AdminUserRole model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdminRole();
+        $model = new AdminUserRole();
         if ($model->load(Yii::$app->request->post())) {
         
               $model->create_user = Yii::$app->user->identity->uname;
@@ -116,7 +116,7 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Updates an existing AdminRole model.
+     * Updates an existing AdminUserRole model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -145,7 +145,7 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Deletes an existing AdminRole model.
+     * Deletes an existing AdminUserRole model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -153,7 +153,7 @@ class AdminRoleController extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = AdminRole::deleteAll(['in', 'id', $ids]);
+            $c = AdminUserRole::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
@@ -164,15 +164,15 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Finds the AdminRole model based on its primary key value.
+     * Finds the AdminUserRole model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return AdminRole the loaded model
+     * @return AdminUserRole the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdminRole::findOne($id)) !== null) {
+        if (($model = AdminUserRole::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

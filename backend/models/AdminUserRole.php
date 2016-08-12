@@ -4,27 +4,27 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "admin_role".
+ * This is the model class for table "admin_user_role".
  *
  * @property integer $id
- * @property string $code
- * @property string $name
- * @property string $des
+ * @property string $user_id
+ * @property integer $role_id
  * @property string $create_user
  * @property string $create_date
  * @property string $update_user
  * @property string $update_date
  *
- * @property AdminUserRole[] $adminUserRoles
+ * @property AdminUser $user
+ * @property AdminRole $role
  */
-class AdminRole extends \backend\models\BaseModel
+class AdminUserRole extends \backend\models\BaseModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'admin_role';
+        return 'admin_user_role';
     }
 
     /**
@@ -33,10 +33,10 @@ class AdminRole extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['code', 'name'], 'required'],
+            [['user_id', 'role_id'], 'required'],
+            [['user_id', 'role_id'], 'integer'],
             [['create_date', 'update_date'], 'safe'],
-            [['code', 'name', 'create_user', 'update_user'], 'string', 'max' => 50],
-            [['des'], 'string', 'max' => 400]
+            [['create_user', 'update_user'], 'string', 'max' => 50]
         ];
     }
 
@@ -47,22 +47,29 @@ class AdminRole extends \backend\models\BaseModel
     {
         return [
             'id' => '主键',
-            'code' => '角色编号',
-            'name' => '角色名称',
-            'des' => '角色描述',
+            'user_id' => '用户',
+            'role_id' => '角色',
             'create_user' => '创建人',
             'create_date' => '创建时间',
-            'update_user' => '更新人',
-            'update_date' => '更新时间',
+            'update_user' => '修改人',
+            'update_date' => '修改时间',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAdminUserRoles()
+    public function getUser()
     {
-        return $this->hasMany(AdminUserRole::className(), ['role_id' => 'id']);
+        return $this->hasOne(AdminUser::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole()
+    {
+        return $this->hasOne(AdminRole::className(), ['id' => 'role_id']);
     }
 
   /**
@@ -105,22 +112,22 @@ class AdminRole extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'code' => array(
-                        'name' => 'code',
+		'user_id' => array(
+                        'name' => 'user_id',
                         'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '角色编号',
-//                         'dbType' => "varchar(50)",
+//                         'comment' => '用户',
+//                         'dbType' => "bigint(20) unsigned",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '50',
+                        'precision' => '20',
                         'scale' => '',
-                        'size' => '50',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('code'),
+                        'size' => '20',
+                        'type' => 'bigint',
+                        'unsigned' => true,
+                        'label'=>$this->getAttributeLabel('user_id'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
@@ -128,49 +135,26 @@ class AdminRole extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'name' => array(
-                        'name' => 'name',
+		'role_id' => array(
+                        'name' => 'role_id',
                         'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '角色名称',
-//                         'dbType' => "varchar(50)",
+//                         'comment' => '角色',
+//                         'dbType' => "int(11)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '50',
+                        'phpType' => 'integer',
+                        'precision' => '11',
                         'scale' => '',
-                        'size' => '50',
-                        'type' => 'string',
+                        'size' => '11',
+                        'type' => 'integer',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('name'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => true,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'des' => array(
-                        'name' => 'des',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '角色描述',
-//                         'dbType' => "varchar(400)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '400',
-                        'scale' => '',
-                        'size' => '400',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('des'),
+                        'label'=>$this->getAttributeLabel('role_id'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
-                        'isDisplay' => false,
+                        'isDisplay' => true,
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
@@ -191,9 +175,9 @@ class AdminRole extends \backend\models\BaseModel
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('create_user'),
                         'inputType' => 'text',
-                        'isEdit' => false,
+                        'isEdit' => true,
                         'isSearch' => false,
-                        'isDisplay' => false,
+                        'isDisplay' => true,
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
@@ -214,9 +198,9 @@ class AdminRole extends \backend\models\BaseModel
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('create_date'),
                         'inputType' => 'text',
-                        'isEdit' => false,
+                        'isEdit' => true,
                         'isSearch' => false,
-                        'isDisplay' => false,
+                        'isDisplay' => true,
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
@@ -224,7 +208,7 @@ class AdminRole extends \backend\models\BaseModel
                         'name' => 'update_user',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '更新人',
+//                         'comment' => '修改人',
 //                         'dbType' => "varchar(50)",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -237,7 +221,7 @@ class AdminRole extends \backend\models\BaseModel
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('update_user'),
                         'inputType' => 'text',
-                        'isEdit' => false,
+                        'isEdit' => true,
                         'isSearch' => false,
                         'isDisplay' => true,
                         'isSort' => true,
@@ -247,7 +231,7 @@ class AdminRole extends \backend\models\BaseModel
                         'name' => 'update_date',
                         'allowNull' => true,
 //                         'autoIncrement' => false,
-//                         'comment' => '更新时间',
+//                         'comment' => '修改时间',
 //                         'dbType' => "datetime",
                         'defaultValue' => '',
                         'enumValues' => null,
@@ -260,7 +244,7 @@ class AdminRole extends \backend\models\BaseModel
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('update_date'),
                         'inputType' => 'text',
-                        'isEdit' => false,
+                        'isEdit' => true,
                         'isSearch' => false,
                         'isDisplay' => true,
                         'isSort' => true,

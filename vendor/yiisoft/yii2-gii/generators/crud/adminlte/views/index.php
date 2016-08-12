@@ -98,7 +98,6 @@ echo "              echo '<th class=\"sorting\" tabindex=\"0\" aria-controls=\"d
             <tbody>
             
             <?= "<?php\n" ?>
-            $row = 0;
             foreach ($models as $model) {
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
@@ -117,7 +116,7 @@ foreach($tableColumnInfo as $key=>$column){
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
                 echo '  </td>';
-                echo '<tr/>';
+                echo '</tr>';
             }
             
             ?>
@@ -180,21 +179,25 @@ foreach($tableColumnInfo as $key=>$column){
                  <?php foreach($tableColumnInfo as $key=>$column){
                     echo "\n";
                     $isNeed = $column['allowNull'] == false ? '必填' : '';
-                    echo '          <div id="'.$key.'_div" class="form-group">'."\n";
-                    echo '              <label for="'.$key.'" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("'.$key.'")?></label>'."\n";
-                    echo '              <div class="col-sm-10">'."\n";
+                    //$widget = '';
+                    $widget = '          <div id="'.$key.'_div" class="form-group">'."\n";
+                    $widget.= '              <label for="'.$key.'" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("'.$key.'")?></label>'."\n";
+                    $widget.= '              <div class="col-sm-10">'."\n";
+                    $widget.= '==widget==';
+                    $widget.= '              </div>'."\n";
+                    $widget.= '              <div class="clearfix"></div>'."\n";
+                    $widget.= '          </div>'."\n";
+                    
                     switch($column['inputType']){
                         case 'hidden':
-                            echo '          <input type="hidden" class="form-control" id="id" name="'.$modelName.'['.$key.']" />'."\n";
+                            $inputWidget = '          <input type="hidden" class="form-control" id="id" name="'.$modelName.'['.$key.']" />'."\n";
+                            echo $inputWidget;
                             break;
                         case 'text':
-                            echo '                  <input type="text" class="form-control" id="'.$key.'" name="'.$modelName.'['.$key.']" placeholder="'.$isNeed . '" />'."\n";
+                            $inputWidget = '                  <input type="text" class="form-control" id="'.$key.'" name="'.$modelName.'['.$key.']" placeholder="'.$isNeed . '" />'."\n";
+                            echo str_replace('==widget==', $inputWidget, $widget);
                             break;
                     }
-                    
-                    echo '              </div>'."\n";
-                    echo '              <div class="clearfix"></div>'."\n";
-                    echo '          </div>'."\n";
                  }
                  ?>
                     

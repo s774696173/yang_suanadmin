@@ -4,16 +4,16 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\AdminRole;
+use backend\models\AdminLog;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminRoleController implements the CRUD actions for AdminRole model.
+ * AdminLogController implements the CRUD actions for AdminLog model.
  */
-class AdminRoleController extends BaseController
+class AdminLogController extends BaseController
 {
 	public $layout = "lte_main";
     /*
@@ -30,12 +30,12 @@ class AdminRoleController extends BaseController
     }
     */
     /**
-     * Lists all AdminRole models.
+     * Lists all AdminLog models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $query = AdminRole::find();
+        $query = AdminLog::find();
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -75,8 +75,8 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Displays a single AdminRole model.
-     * @param integer $id
+     * Displays a single AdminLog model.
+     * @param string $id
      * @return mixed
      */
     public function actionView($id)
@@ -88,19 +88,18 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Creates a new AdminRole model.
+     * Creates a new AdminLog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdminRole();
+        $model = new AdminLog();
         if ($model->load(Yii::$app->request->post())) {
         
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');        
+        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -116,9 +115,9 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Updates an existing AdminRole model.
+     * Updates an existing AdminLog model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -126,8 +125,7 @@ class AdminRoleController extends BaseController
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');        
+        
         
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
@@ -145,15 +143,15 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Deletes an existing AdminRole model.
+     * Deletes an existing AdminLog model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = AdminRole::deleteAll(['in', 'id', $ids]);
+            $c = AdminLog::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
@@ -164,15 +162,15 @@ class AdminRoleController extends BaseController
     }
 
     /**
-     * Finds the AdminRole model based on its primary key value.
+     * Finds the AdminLog model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return AdminRole the loaded model
+     * @param string $id
+     * @return AdminLog the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdminRole::findOne($id)) !== null) {
+        if (($model = AdminLog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

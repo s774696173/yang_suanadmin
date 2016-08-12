@@ -14,12 +14,25 @@ use yii\helpers\Inflector;
 use backend\services\AdminRightUrlService;
 use backend\services\AdminMenuService;
 /**
+/**
  * AdminRightController implements the CRUD actions for AdminRight model.
  */
 class AdminRightController extends BaseController
 {
 	public $layout = "lte_main";
-   
+    /*
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+    */
     /**
      * Lists all AdminRight models.
      * @return mixed
@@ -73,11 +86,11 @@ class AdminRightController extends BaseController
      */
     public function actionView($id)
     {
+        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         $actions = $this->rightAction($model->id, $model->menu_id);
         $result = ['model'=>$model->getAttributes(), 'actions'=>$actions];
         echo json_encode($result);
-
     }
 
     /**
@@ -99,18 +112,17 @@ class AdminRightController extends BaseController
               $model->update_user = Yii::$app->user->identity->uname;
               $model->update_date = date('Y-m-d H:i:s');            
               if($model->validate() == true && $model->save()){
-                if(count($rightUrls) > 0){
-                    $adminRightUrlService = new AdminRightUrlService();
-                    $c = $adminRightUrlService->saveRightUrls($rightUrls, $model->id, Yii::$app->user->identity->uname);
-                }
-                $msg = array('errno'=>0, 'msg'=>'保存成功');
-                echo json_encode($msg);
+                  if(count($rightUrls) > 0){
+                      $adminRightUrlService = new AdminRightUrlService();
+                      $c = $adminRightUrlService->saveRightUrls($rightUrls, $model->id, Yii::$app->user->identity->uname);
+                  }
+                  $msg = array('errno'=>0, 'msg'=>'保存成功');
+                  echo json_encode($msg);
             }
             else{
                 $msg = array('errno'=>2, 'data'=>$model->getErrors());
                 echo json_encode($msg);
             }
-            
         } else {
             $msg = array('errno'=>2, 'msg'=>'数据出错');
             echo json_encode($msg);
@@ -128,16 +140,13 @@ class AdminRightController extends BaseController
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
               $rightUrls = Yii::$app->request->post("rightUrls");
-              //$model->has_lef = 'n';
+              $model->has_lef = 'n';
               $model->update_user = Yii::$app->user->identity->uname;
               $model->update_date = date('Y-m-d H:i:s');        
         
             if($model->validate() == true && $model->save()){
-                if(count($rightUrls) > 0){
-                    $adminRightUrlService = new AdminRightUrlService();
-                    $c = $adminRightUrlService->saveRightUrls($rightUrls, $id, Yii::$app->user->identity->uname);
-                }
-                
+                $adminRightUrlService = new AdminRightUrlService();
+                $c = $adminRightUrlService->saveRightUrls($rightUrls, $id, Yii::$app->user->identity->uname);
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -187,10 +196,12 @@ class AdminRightController extends BaseController
         }
     }
     
+    
+
     public function actionRightAction($rightId, $menu_id){
         $data = $this->rightAction($rightId, $menu_id);
         echo json_encode($data);
-      
+    
     }
     
     private function rightAction($rightId, $menu_id){
@@ -201,8 +212,8 @@ class AdminRightController extends BaseController
             $rightUrls[$url] = true;
         }
         $fun = AdminMenuService::findOne(array('id'=>$menu_id));
-//         var_dump($fun);
-//         exit();
+        //         var_dump($fun);
+        //         exit();
         $controllerDatas = [$fun->controller];
         foreach($controllerDatas as $c){
             if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){

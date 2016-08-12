@@ -153,6 +153,7 @@ foreach($tableColumnInfo as $key=>$column){
     }
 }
         ?>
+        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);

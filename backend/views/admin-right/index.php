@@ -9,8 +9,7 @@ $modelLabel = new \backend\models\AdminRight();
 ?>
 
 <?php $this->beginBlock('header');  ?>
- <!-- <head></head>中代码块 -->
-  <script src="plugins/treeview/bootstrap-treeview.min.js"></script>
+<!-- <head></head>中代码块 -->
 <?php $this->endBlock(); ?>
 
 <!-- Main content -->
@@ -38,11 +37,6 @@ $modelLabel = new \backend\models\AdminRight();
           	<div class="col-sm-12">
                 <?php ActiveForm::begin(['id' => 'admin-right-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-right/index']); ?>     
                 
-                  <div class="form-group" style="margin: 5px;">
-                      <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
-                      <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
-                  </div>
-                  
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
@@ -146,9 +140,6 @@ $modelLabel = new \backend\models\AdminRight();
     <!-- /.col -->
   </div>
   <!-- /.row -->
-
-	
-
 </section>
 <!-- /.content -->
 
@@ -162,11 +153,10 @@ $modelLabel = new \backend\models\AdminRight();
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-right-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-right/save"]); ?>                      
+                 
                  <input type="hidden" class="form-control" id="id" name="AdminRight[id]" />
           		 <input type="hidden" class="form-control" id="menu_id" name="AdminRight[menu_id]" value="<?=$menu_id?>" />
-
-         
-
+                 
           <div id="right_name_div" class="form-group">
               <label for="right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_name")?></label>
               <div class="col-sm-10">
@@ -199,13 +189,14 @@ $modelLabel = new \backend\models\AdminRight();
               <div class="clearfix"></div>
           </div>
 
-		 	<div id="actions_div" class="form-group">
-				<label for="actions" class="col-sm-2 control-label">actions</label>
-				<div class="col-sm-10">
-					<div id="treeview"/>    	
-				</div>
-				<div class="clearfix"><br/></div>
-			</div>  
+			<div id="actions_div" class="form-group">
+    			<label for="actions" class="col-sm-2 control-label">路由地址</label>
+    			<div class="col-sm-10">
+    				<div id="treeview"  >	
+    				</div>
+    			</div>
+    			<div class="clearfix"><br/></div>
+    		</div>  
 
           <div id="has_lef_div" class="form-group">
               <label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
@@ -297,6 +288,7 @@ $modelLabel = new \backend\models\AdminRight();
     	}
 	if(type == "view"){
       $("#id").attr({readonly:true,disabled:true});
+//       $("#menu_id").attr({readonly:true,disabled:true});
       $("#right_name").attr({readonly:true,disabled:true});
       $("#display_label").attr({readonly:true,disabled:true});
       $("#display_label").parent().parent().show();
@@ -316,6 +308,7 @@ $modelLabel = new \backend\models\AdminRight();
 	}
 	else{
       $("#id").attr({readonly:false,disabled:false});
+//       $("#menu_id").attr({readonly:false,disabled:false});
       $("#right_name").attr({readonly:false,disabled:false});
       $("#display_label").attr({readonly:false,disabled:false});
       $("#display_label").parent().parent().hide();
@@ -475,7 +468,7 @@ $('#delete_btn').click(function (e) {
 
 $('#admin-right-form').bind('submit', function(e) {
 	e.preventDefault();
-	
+
 	var checkNodes = $('#treeview').treeview('getChecked');
 	var rightUrls = [];
 	if(checkNodes.length > 0){
@@ -514,7 +507,6 @@ $('#admin-right-form').bind('submit', function(e) {
     });
 });
 
-
 //配置功能url
 function changeCheckState(node, checked){
 	if(!!node.nodes == true){
@@ -531,6 +523,6 @@ function changeCheckState(node, checked){
 		}
 	}
 }
-
+ 
 </script>
 <?php $this->endBlock(); ?>

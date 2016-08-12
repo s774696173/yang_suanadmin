@@ -3,9 +3,9 @@
 use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
-use backend\models\AdminRole;
+use backend\models\AdminLog;
 
-$modelLabel = new \backend\models\AdminRole();
+$modelLabel = new \backend\models\AdminLog();
 ?>
 
 <?php $this->beginBlock('header');  ?>
@@ -35,16 +35,11 @@ $modelLabel = new \backend\models\AdminRole();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-role-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-role/index']); ?>     
+                <?php ActiveForm::begin(['id' => 'admin-log-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-log/index']); ?>     
                 
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
-                  </div>
-
-                  <div class="form-group" style="margin: 5px;">
-                      <label><?=$modelLabel->getAttributeLabel('name')?>:</label>
-                      <input type="text" class="form-control" id="query[name]" name="query[name]"  value="<?=isset($query["name"]) ? $query["name"] : "" ?>">
                   </div>
               <div class="form-group">
               	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
@@ -64,10 +59,15 @@ $modelLabel = new \backend\models\AdminRole();
             <?php 
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('code').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('name').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller_id').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action_id').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('url').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('module_name').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('func_name').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('right_name').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('client_ip').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
          
 			?>
 	
@@ -77,25 +77,26 @@ $modelLabel = new \backend\models\AdminRole();
             <tbody>
             
             <?php
+            $row = 0;
             foreach ($models as $model) {
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
                 echo '  <td>' . $model->id . '</td>';
-                echo '  <td>' . $model->code . '</td>';
-                echo '  <td>' . $model->name . '</td>';
-                //echo '  <td>' . $model->des . '</td>';
-                //echo '  <td>' . $model->create_user . '</td>';
-                //echo '  <td>' . $model->create_date . '</td>';
-                echo '  <td>' . $model->update_user . '</td>';
-                echo '  <td>' . $model->update_date . '</td>';
+                echo '  <td>' . $model->controller_id . '</td>';
+                echo '  <td>' . $model->action_id . '</td>';
+                echo '  <td>' . $model->url . '</td>';
+                echo '  <td>' . $model->module_name . '</td>';
+                echo '  <td>' . $model->func_name . '</td>';
+                echo '  <td>' . $model->right_name . '</td>';
+                echo '  <td>' . $model->client_ip . '</td>';
+                echo '  <td>' . $model->create_user . '</td>';
+                echo '  <td>' . $model->create_date . '</td>';
                 echo '  <td class="center">';
-                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-user-role/index&roleId='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配用户</a>';
-                echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
                 echo '  </td>';
-                echo '</tr>';
+                echo '<tr/>';
             }
             
             ?>
@@ -152,30 +153,68 @@ $modelLabel = new \backend\models\AdminRole();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "admin-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-role/save"]); ?>                      
+                <?php $form = ActiveForm::begin(["id" => "admin-log-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-log/save"]); ?>                      
                  
-          <input type="hidden" class="form-control" id="id" name="AdminRole[id]" />
-
-          <div id="code_div" class="form-group">
-              <label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
+          <div id="id_div" class="form-group">
+              <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="code" name="AdminRole[code]" placeholder="必填" />
+          <input type="hidden" class="form-control" id="id" name="AdminLog[id]" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-          <div id="name_div" class="form-group">
-              <label for="name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("name")?></label>
+          <div id="controller_id_div" class="form-group">
+              <label for="controller_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("controller_id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="name" name="AdminRole[name]" placeholder="必填" />
+                  <input type="text" class="form-control" id="controller_id" name="AdminLog[controller_id]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-          <div id="des_div" class="form-group">
-              <label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
+          <div id="action_id_div" class="form-group">
+              <label for="action_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("action_id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="des" name="AdminRole[des]" placeholder="" />
+                  <input type="text" class="form-control" id="action_id" name="AdminLog[action_id]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="url_div" class="form-group">
+              <label for="url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("url")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="url" name="AdminLog[url]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="module_name_div" class="form-group">
+              <label for="module_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("module_name")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="module_name" name="AdminLog[module_name]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="func_name_div" class="form-group">
+              <label for="func_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("func_name")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="func_name" name="AdminLog[func_name]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="right_name_div" class="form-group">
+              <label for="right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("right_name")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="right_name" name="AdminLog[right_name]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="client_ip_div" class="form-group">
+              <label for="client_ip" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("client_ip")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="client_ip" name="AdminLog[client_ip]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -183,7 +222,7 @@ $modelLabel = new \backend\models\AdminRole();
           <div id="create_user_div" class="form-group">
               <label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="create_user" name="AdminRole[create_user]" placeholder="" />
+                  <input type="text" class="form-control" id="create_user" name="AdminLog[create_user]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -191,23 +230,7 @@ $modelLabel = new \backend\models\AdminRole();
           <div id="create_date_div" class="form-group">
               <label for="create_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_date")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="create_date" name="AdminRole[create_date]" placeholder="" />
-              </div>
-              <div class="clearfix"></div>
-          </div>
-
-          <div id="update_user_div" class="form-group">
-              <label for="update_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_user")?></label>
-              <div class="col-sm-10">
-                  <input type="text" class="form-control" id="update_user" name="AdminRole[update_user]" placeholder="" />
-              </div>
-              <div class="clearfix"></div>
-          </div>
-
-          <div id="update_date_div" class="form-group">
-              <label for="update_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_date")?></label>
-              <div class="col-sm-10">
-                  <input type="text" class="form-control" id="update_date" name="AdminRole[update_date]" placeholder="" />
+                  <input type="text" class="form-control" id="create_date" name="AdminLog[create_date]" placeholder="" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -226,7 +249,7 @@ $modelLabel = new \backend\models\AdminRole();
 <!-- <body></body>后代码块 -->
  <script>
  function searchAction(){
-		$('#admin-role-search-form').submit();
+		$('#admin-log-search-form').submit();
 	}
  function viewAction(id){
 		initModel(id, 'view', 'fun');
@@ -235,53 +258,53 @@ $modelLabel = new \backend\models\AdminRole();
  function initEditSystemModule(data, type){
 	if(type == 'create'){
 		$("#id").val('');
-		$("#code").val('');
-		$("#name").val('');
-		$("#des").val('');
+		$("#controller_id").val('');
+		$("#action_id").val('');
+		$("#url").val('');
+		$("#module_name").val('');
+		$("#func_name").val('');
+		$("#right_name").val('');
+		$("#client_ip").val('');
 		$("#create_user").val('');
 		$("#create_date").val('');
-		$("#update_user").val('');
-		$("#update_date").val('');
 		
 	}
 	else{
 		$("#id").val(data.id);
-    	$("#code").val(data.code);
-    	$("#name").val(data.name);
-    	$("#des").val(data.des);
+    	$("#controller_id").val(data.controller_id);
+    	$("#action_id").val(data.action_id);
+    	$("#url").val(data.url);
+    	$("#module_name").val(data.module_name);
+    	$("#func_name").val(data.func_name);
+    	$("#right_name").val(data.right_name);
+    	$("#client_ip").val(data.client_ip);
     	$("#create_user").val(data.create_user);
     	$("#create_date").val(data.create_date);
-    	$("#update_user").val(data.update_user);
-    	$("#update_date").val(data.update_date);
     	}
 	if(type == "view"){
       $("#id").attr({readonly:true,disabled:true});
-      $("#code").attr({readonly:true,disabled:true});
-      $("#name").attr({readonly:true,disabled:true});
-      $("#des").attr({readonly:true,disabled:true});
+      $("#controller_id").attr({readonly:true,disabled:true});
+      $("#action_id").attr({readonly:true,disabled:true});
+      $("#url").attr({readonly:true,disabled:true});
+      $("#module_name").attr({readonly:true,disabled:true});
+      $("#func_name").attr({readonly:true,disabled:true});
+      $("#right_name").attr({readonly:true,disabled:true});
+      $("#client_ip").attr({readonly:true,disabled:true});
       $("#create_user").attr({readonly:true,disabled:true});
-      $("#create_user").parent().parent().show();
       $("#create_date").attr({readonly:true,disabled:true});
-      $("#create_date").parent().parent().show();
-      $("#update_user").attr({readonly:true,disabled:true});
-      $("#update_user").parent().parent().show();
-      $("#update_date").attr({readonly:true,disabled:true});
-      $("#update_date").parent().parent().show();
 	$('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
       $("#id").attr({readonly:false,disabled:false});
-      $("#code").attr({readonly:false,disabled:false});
-      $("#name").attr({readonly:false,disabled:false});
-      $("#des").attr({readonly:false,disabled:false});
+      $("#controller_id").attr({readonly:false,disabled:false});
+      $("#action_id").attr({readonly:false,disabled:false});
+      $("#url").attr({readonly:false,disabled:false});
+      $("#module_name").attr({readonly:false,disabled:false});
+      $("#func_name").attr({readonly:false,disabled:false});
+      $("#right_name").attr({readonly:false,disabled:false});
+      $("#client_ip").attr({readonly:false,disabled:false});
       $("#create_user").attr({readonly:false,disabled:false});
-      $("#create_user").parent().parent().hide();
       $("#create_date").attr({readonly:false,disabled:false});
-      $("#create_date").parent().parent().hide();
-      $("#update_user").attr({readonly:false,disabled:false});
-      $("#update_user").parent().parent().hide();
-      $("#update_date").attr({readonly:false,disabled:false});
-      $("#update_date").parent().parent().hide();
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
 		$('#edit_dialog').modal('show');
@@ -291,7 +314,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-role/view",
+		   url: "index.php?r=admin-log/view",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -329,7 +352,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-role/delete",
+				   url: "index.php?r=admin-log/delete",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -372,7 +395,7 @@ function getSelectedIdValues(formId)
 
 $('#edit_dialog_ok').click(function (e) {
     e.preventDefault();
-	$('#admin-role-form').submit();
+	$('#admin-log-form').submit();
 });
 
 $('#create_btn').click(function (e) {
@@ -385,14 +408,14 @@ $('#delete_btn').click(function (e) {
     deleteAction('');
 });
 
-$('#admin-role-form').bind('submit', function(e) {
+$('#admin-log-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
 	var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-role/" + action,
+    	url: "index.php?r=admin-log/" + action,
     	success: function(value) 
     	{
         	if(value.errno == 0){
