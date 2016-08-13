@@ -189,6 +189,22 @@ $modelLabel = new \backend\models\AdminRight();
               <div class="clearfix"></div>
           </div>
 
+			<div id="controller_div" class="form-group">
+    			<label for="controller" class="col-sm-2 control-label">控制器ID</label>
+    			<div class="col-sm-10">
+    				<select class="form-control" name="SystemFunction[controller]" id="controller">
+    				  <option>请选择</option>
+    				<?php 
+    				   
+    				  foreach($controllerData as $key=>$data){
+    				      echo "<option value='" . $key . "'>". $key."</option>";
+    				  }
+    				?>
+            	   </select>
+    			</div>
+    			<div class="clearfix"></div>
+    		</div>
+
 			<div id="actions_div" class="form-group">
     			<label for="actions" class="col-sm-2 control-label">路由地址</label>
     			<div class="col-sm-10">
@@ -279,6 +295,14 @@ $modelLabel = new \backend\models\AdminRight();
     	$("#right_name").val(data.right_name);
     	$("#display_label").val(data.display_label);
     	$("#des").val(data.des);
+    	$("#controller option").each(function(){
+        	var opt = $(this);
+    		if(opt.val() == data.controller){
+    			opt.attr('selected', true);
+    			opt.change();
+    			return false;
+    		}
+        });
     	$("#display_order").val(data.display_order);
     	$("#has_lef").val(data.has_lef);
     	$("#create_user").val(data.create_user);
@@ -523,6 +547,32 @@ function changeCheckState(node, checked){
 		}
 	}
 }
- 
+
+$("#controller").change(function(){
+    // 先清空第二个
+	var controller = $(this).val();
+     $("#action").empty();
+     var option = $("<option>").html("请选择");
+     $("#action").append(option);
+    // 实际的应用中，这里的option一般都是用循环生成多个了
+     var actions = window.controllerData[controller];
+     var nodes = actions.nodes;
+     var rightTree = {'text':controller, 'selectable':false, 'state':{'checked':false}, 'type':'r'};
+     rightTree['nodes'] = nodes;
+     
+     $('#treeview').treeview({
+		data: [rightTree],
+		showIcon: false,
+        showCheckbox: true,
+        levels: 2,
+        onNodeChecked: function(event, node) {
+          changeCheckState(node, true);
+        },
+        onNodeUnchecked: function (event, node) {
+        	changeCheckState(node, false);
+        }
+	});
+     
+});
 </script>
 <?php $this->endBlock(); ?>

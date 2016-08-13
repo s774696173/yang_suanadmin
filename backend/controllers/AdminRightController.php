@@ -71,9 +71,15 @@ class AdminRightController extends BaseController
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
+        $controllers = $this->getAllController();
+        $controllerData = array();
+        foreach($controllers as $c){
+            $controllerData[$c['text']] = $c;
+        }
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'controllerData'=>$controllerData,
             'query'=>$querys,
             'menu_id'=>$id
         ]);

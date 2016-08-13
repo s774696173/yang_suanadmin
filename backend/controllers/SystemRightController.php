@@ -45,9 +45,16 @@ class SystemRightController extends BaseController
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();
+        $controllers = $this->getAllController();
+        $controllerData = array();
+        foreach($controllers as $c){
+            $controllerData[$c['text']] = $c;
+        }
+        //var_dump($controllerData);
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'controllerData'=>$controllerData,
             'func_id'=>$id
         ]);
     }
@@ -61,7 +68,6 @@ class SystemRightController extends BaseController
     {
         $model = $this->findModel($id);
         $actions = $this->rightAction($model->id, $model->func_id);
-//         echo json_encode($model->getAttributes());
         $result = ['model'=>$model->getAttributes(), 'actions'=>$actions];
         echo json_encode($result);
     }
@@ -206,36 +212,6 @@ class SystemRightController extends BaseController
     public function actionRightAction($rightId, $func_id){
         $data = $this->rightAction($rightId, $func_id);
         echo json_encode($data);
-//         $systemRightUrls = SystemRightUrlService::findAll(['right_id'=>$rightId]);
-//         $rightUrls = [];
-//         foreach($systemRightUrls as $ru){
-//             $url = $ru->para_name . '/' . $ru->para_value;
-//             $rightUrls[$url] = true;
-//         }
-//         $fun = SystemFunctionService::findOne(array('id'=>$func_id));
-//         $controllerDatas = [$fun->controller];
-//         foreach($controllerDatas as $c){
-//             if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
-//                 $controllerName = substr($c, 0, strlen($c) - 10);
-//                 $cUrl = Inflector::camel2id(StringHelper::basename($controllerName));
-//                 $methods = get_class_methods($c);
-//                 $rightTree = ['text'=>$c, 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'r'];
-//                 foreach($methods as $m){
-//                     if($m != 'actions' && StringHelper::startsWith($m, 'action') !== false){
-//                         $actionName = substr($m, 6, strlen($m));
-//                         $aUrl = Inflector::camel2id($actionName);
-//                         $actionTree = ['text'=>$aUrl . "&nbsp;&nbsp;($cUrl/$aUrl)", 'c'=>$cUrl, 'a'=>$aUrl, 'selectable'=>true, 'state'=>['checked'=>false], 'type'=>'a'];
-//                         if(isset($rightUrls[$cUrl.'/'.$aUrl]) == true){
-//                             $actionTree['state']['checked'] = true;
-//                             $rightTree['state']['checked'] = true;
-//                         }
-//                         $rightTree['nodes'][] = $actionTree;
-//                     }
-//                 }
-//                 $rightActionData[] = $rightTree;
-//             }
-//         }
-//         echo json_encode($rightActionData);
     }
     
     public function actionRightUrl($rightId){

@@ -90,7 +90,7 @@ $modelLabel = new \backend\models\AdminRole();
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
                 echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-user-role/index&roleId='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配用户</a>';
-                echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
+                echo '      <a id="view_btn" onclick="rightAction('.$model->id.')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -222,9 +222,127 @@ $modelLabel = new \backend\models\AdminRole();
 		</div>
 	</div>
 </div>
+
+<!-- 分配权限 -->
+<div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h3>Settings</h3>
+			</div>
+			<div class="modal-body">
+			     <input type="hidden" id="select_role_id" />
+                <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-role/save"]); ?>                
+               <div id="treeview"></div>
+                <?php ActiveForm::end(); ?>            
+            </div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
+					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 分配权限结束 -->
+
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
+ // 分配权限
+ $(function(){
+	// 树节点 http://www.htmleaf.com/jQuery/Menu-Navigation/201502141379.html
+	$('#user_btn').click(function(){
+		$('#tree_dialog').modal('show');
+	});
+
+	$('#right_btn').click(function(){
+		
+	});
+});
+function changeCheckState(node, checked){
+	if(!!node.nodes == true){
+		var nodes = node.nodes;
+		for(var i = 0; i < nodes.length; i++){
+			var node1 = nodes[i];
+			if(checked == true){
+				$('#treeview').treeview('checkNode', [ node1.nodeId, { silent: true } ]);
+			}
+			else{
+				$('#treeview').treeview('uncheckNode', [ node1.nodeId, { silent: true } ]);
+			}
+			changeCheckState(node1, checked);
+		}
+	}
+}
+
+function rightAction(roleId){
+	$('#select_role_id').val(roleId);
+	$.ajax({
+		   type: "GET",
+		   url: "index.php?r=admin-role/get-all-rights",
+		   data: {'roleId':roleId},
+		   cache: false,
+		   dataType:"json",
+		   error: function (xmlHttpRequest, textStatus, errorThrown) {
+			    alert("出错了，" + textStatus);
+			},
+		   success: function(data){
+				$('#treeview').treeview({
+					data:data,
+					showIcon: false,
+			        showCheckbox: true,
+			        onNodeChecked: function(event, node) {
+			          //console.log('======',node);
+			          changeCheckState(node, true);
+			        },
+			        onNodeUnchecked: function (event, node) {
+			        	changeCheckState(node, false);
+			        }
+					});
+		   }
+		});
+	$('#tree_dialog').modal('show');
+}
+
+$('#right_dialog_ok').click(function(){
+	var role_id = $('#select_role_id').val();
+	var checkNodes = $('#treeview').treeview('getChecked');
+	if(checkNodes.length > 0){
+		var rids = [];
+		for(i = 0; i < checkNodes.length; i++){
+			var node = checkNodes[i];
+			if(node.type == 'r'){
+				rids.push(node.rid);
+			}
+		}
+		$.ajax({
+			   type: "GET",
+			   url: "index.php?r=admin-role/save-rights",
+			   data: {"rids":rids, 'roleId':role_id},
+			   cache: false,
+			   dataType:"json",
+			   error: function (xmlHttpRequest, textStatus, errorThrown) {
+				    alert("出错了，" + textStatus);
+				},
+			   success: function(data){
+				   if(data.errno == 0){
+					   admin_tool.alert('msg_info', '保存成功', 'success');
+				   }
+				   else{
+					   admin_tool.alert('msg_info', '保存失败', 'error');
+				   }
+				   $('#tree_dialog').modal('hide');
+//	 			   console.log(msg);
+				   //initEditSystemModule(data, type);
+			   }
+			});
+// 		console.log('====',rids);
+	}
+});
+//分配权限
+
  function searchAction(){
 		$('#admin-role-search-form').submit();
 	}
@@ -369,6 +487,7 @@ function getSelectedIdValues(formId)
 	 });
 	return value;
 }
+
 
 $('#edit_dialog_ok').click(function (e) {
     e.preventDefault();

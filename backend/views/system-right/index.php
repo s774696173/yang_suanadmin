@@ -144,7 +144,23 @@ foreach ($models as $model) {
     					</div>
     					<div class="clearfix"></div>
     				</div>
-                          
+    				
+                    <div id="controller_div" class="form-group">
+    					<label for="controller" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("controller")?></label>
+    					<div class="col-sm-10">
+    						<select class="form-control" name="SystemFunction[controller]" id="controller">
+    						  <option>请选择</option>
+    						<?php 
+    						   
+    						  foreach($controllerData as $key=>$data){
+    						      echo "<option value='" . $key . "'>". $key."</option>";
+    						  }
+    						?>
+                    	   </select>
+    					</div>
+    					<div class="clearfix"></div>
+    				</div>      
+    				
                     <div id="actions_div" class="form-group">
     					<label for="actions" class="col-sm-2 control-label">actions</label>
     					<div class="col-sm-10">
@@ -210,28 +226,9 @@ foreach ($models as $model) {
 </div>
 
 
-<!-- <div class="modal fade" id="tree_dialog" tabindex="-1" role="dialog" -->
-<!-- 	aria-labelledby="myModalLabel" aria-hidden="true"> -->
-<!-- 	<div class="modal-dialog"> -->
-<!-- 		<div class="modal-content"> -->
-<!-- 			<div class="modal-header"> -->
-<!-- 				<button type="button" class="close" data-dismiss="modal">×</button> -->
-<!-- 				<h3 class="modal-title" id="myModalLabel">Settings</h3> -->
-<!-- 			</div> -->
-<!-- 			<div class="modal-body"> -->
-<!-- 			   <input type="hidden" id="select_right_id" /> -->
-<!--                <div id="treeview"/>         -->
-<!--             </div> -->
-<!-- 			<div class="modal-footer"> -->
-<!-- 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a -->
-<!-- 					id="right_dialog_ok" href="#" class="btn btn-primary">确定</a> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- </div> -->
-
-
 <script>
+window.controllerData = <?php echo json_encode($controllerData); ?>;
+
 // 配置功能url
 function changeCheckState(node, checked){
 	if(!!node.nodes == true){
@@ -342,6 +339,14 @@ function initEditSystemModule(data, type){
     	$("#right_name").val(data.right_name);
     	$("#display_label").val(data.display_label);
     	$("#des").val(data.des);
+    	$("#controller option").each(function(){
+        	var opt = $(this);
+    		if(opt.val() == data.controller){
+    			opt.attr('selected', true);
+    			opt.change();
+    			return false;
+    		}
+        	});
     	$("#display_order").val(data.display_order);
     	$("#has_lef").val(data.has_lef);
     	$("#create_user").val(data.create_user);
@@ -503,7 +508,7 @@ $('#create_btn').click(function (e) {
 			    alert("出错了，" + textStatus);
 			},
 		   success: function(data){
-			   //console.log(data);
+			  // console.log("data====",data);
 				$('#treeview').treeview({
 					data:data,
 					showIcon: false,
@@ -516,7 +521,7 @@ $('#create_btn').click(function (e) {
 			        onNodeUnchecked: function (event, node) {
 			        	changeCheckState(node, false);
 			        }
-					});
+				});
 		   }
 		});
     
@@ -551,7 +556,6 @@ $('#system-right-form').bind('submit', function(e) {
     	data: {"rightUrls":rightUrls},
     	success: function(value) 
     	{
-    		//console.log(value);
         	if(value.errno == 0){
         		$('#edit_dialog').modal('hide');
         		admin_tool.alert('msg_info', '添加成功', 'success');
@@ -569,7 +573,32 @@ $('#system-right-form').bind('submit', function(e) {
     	}
     });
 });
-
+$("#controller").change(function(){
+    // 先清空第二个
+	var controller = $(this).val();
+     $("#action").empty();
+     var option = $("<option>").html("请选择");
+     $("#action").append(option);
+    // 实际的应用中，这里的option一般都是用循环生成多个了
+     var actions = window.controllerData[controller];
+     var nodes = actions.nodes;
+     var rightTree = {'text':controller, 'selectable':false, 'state':{'checked':false}, 'type':'r'};
+     rightTree['nodes'] = nodes;
+     
+     $('#treeview').treeview({
+		data: [rightTree],
+		showIcon: false,
+        showCheckbox: true,
+        levels: 2,
+        onNodeChecked: function(event, node) {
+          changeCheckState(node, true);
+        },
+        onNodeUnchecked: function (event, node) {
+        	changeCheckState(node, false);
+        }
+	});
+     
+});
 </script>
 
 

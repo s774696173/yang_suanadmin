@@ -427,7 +427,7 @@ if($otherMenu == false){
         </div>
         <div class="pull-left info">
           <p><?php echo Yii::$app->user->identity->uname;?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="<?=Url::toRoute('site/logout')?>"><i class="fa fa-circle text-success"></i>退出</a>
         </div>
       </div>
       <!-- search form -->
