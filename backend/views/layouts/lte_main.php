@@ -62,7 +62,7 @@ if($otherMenu == false){
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="libs/font-awesome.min.css">
-  <!-- Ionicons -->
+  <!-- Ionicons  -->
   <link rel="stylesheet" href="libs/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">

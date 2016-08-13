@@ -33,9 +33,9 @@ class AdminUserRoleController extends BaseController
      * Lists all AdminUserRole models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($roleId)
     {
-        $query = AdminUserRole::find();
+        $query = AdminUserRole::find()->andWhere(['role_id'=>$roleId]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -71,6 +71,7 @@ class AdminUserRoleController extends BaseController
             'models'=>$models,
             'pages'=>$pagination,
             'query'=>$querys,
+            'role_id'=>$roleId
         ]);
     }
 

