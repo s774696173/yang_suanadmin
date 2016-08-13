@@ -13,9 +13,7 @@ class AdminRoleRightService extends AdminRoleRight{
                 'create_date'=>$date, 'update_user'=>$userName, 'update_date'=>$date);
             $insertData[] = $data;
         }
-       
-        
-    
+
         $connection = $this->getDb();
         $transaction = $connection->beginTransaction();
         try {
