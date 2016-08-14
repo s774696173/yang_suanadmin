@@ -64,7 +64,7 @@ $modelLabel = new \backend\models\AdminLog();
             
             <?php 
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
+              echo '<th onclick="orderby(\'id\', \'desc\')" class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
 //               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller_id').'</th>';
 //               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action_id').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('url').'</th>';
@@ -254,6 +254,21 @@ $modelLabel = new \backend\models\AdminLog();
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
+ function orderby(field, op){
+	 var url = window.location.search;
+	 var optemp = field + " desc";
+	 if(url.indexOf('orderby') != -1){
+		 url = url.replace(/orderby=([^&?]*)/ig,  function($0, $1){ 
+			 var optemp = field + " desc";
+			 optemp = decodeURI($1) != optemp ? optemp : field + " asc";
+			 return "orderby=" + optemp;
+		   }); 
+	 }
+	 else{
+		 url = url + "&orderby=" + encodeURI(optemp);
+	 }
+	 window.location.href=url; 
+ }
  function searchAction(){
 		$('#admin-log-search-form').submit();
 	}
