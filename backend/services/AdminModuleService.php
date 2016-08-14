@@ -2,7 +2,7 @@
 namespace backend\services;
 
 use backend\models\AdminModule;
-
+use Yii;
 class AdminModuleService extends AdminModule{
 
     function __construct()
@@ -18,7 +18,7 @@ class AdminModuleService extends AdminModule{
 				sru1.right_id as rid,sr.display_label as rlb,sru1.url,sru1.para_name,sru1.para_value
 				from admin_right_url sru1
 				left outer join admin_right sr on sru1.right_id=sr.id
-				left outer join admin_function func on sr.func_id=func.id
+				left outer join admin_menu func on sr.menu_id=func.id
 				left outer join admin_module module on module.id=func.module_id
 				where sru1.right_id in (
 				select sru.right_id from admin_right_url sru
@@ -62,8 +62,8 @@ class AdminModuleService extends AdminModule{
      * 获取所有系统功能
      */
     public function getAllFunctions(){
-        $sql = 'SELECT r.id AS right_id, r.func_id, r.right_name, f.entry_url, f.func_name, m.display_label
-            FROM admin_right r LEFT JOIN admin_function f ON r.func_id = f.id
+        $sql = 'SELECT r.id AS right_id, r.menu_id, r.right_name, f.entry_url, f.menu_name, m.display_label
+            FROM admin_right r LEFT JOIN admin_menu f ON r.menu_id = f.id
             LEFT JOIN admin_module m ON f.module_id = m.id';
         $connection = Yii::$app->db;
         $command=$connection->createCommand($sql);

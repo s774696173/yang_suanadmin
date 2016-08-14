@@ -76,6 +76,8 @@ class AdminRightController extends BaseController
         foreach($controllers as $c){
             $controllerData[$c['text']] = $c;
         }
+//         var_dump($controllerData);
+//         exit();
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
@@ -213,14 +215,17 @@ class AdminRightController extends BaseController
     private function rightAction($rightId, $menu_id){
         $systemRightUrls = AdminRightUrlService::findAll(['right_id'=>$rightId]);
         $rightUrls = [];
+        $controller = '';
         foreach($systemRightUrls as $ru){
             $url = $ru->para_name . '/' . $ru->para_value;
             $rightUrls[$url] = true;
+            $controller = 'backend\controllers\\'.Inflector::id2camel($ru->para_name, '-'). 'Controller';
         }
-        $fun = AdminMenuService::findOne(array('id'=>$menu_id));
-        //         var_dump($fun);
+        //$fun = AdminMenuService::findOne(array('id'=>$menu_id));
+        //var_dump($rightUrls);
         //         exit();
-        $controllerDatas = [$fun->controller];
+        $controllerDatas = [$controller];
+        $rightActionData = array();
         foreach($controllerDatas as $c){
             if(StringHelper::startsWith($c, 'backend\controllers') == true && $c != 'backend\controllers\BaseController'){
                 $controllerName = substr($c, 0, strlen($c) - 10);
@@ -242,6 +247,7 @@ class AdminRightController extends BaseController
                 $rightActionData[] = $rightTree;
             }
         }
+        //var_dump($rightActionData);
         return $rightActionData;
     }
 }

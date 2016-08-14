@@ -2,7 +2,7 @@
 namespace backend\models;
 
 use Yii;
-
+use backend\models\AdminUserRole;
 /**
  * This is the model class for table "admin_user".
  *

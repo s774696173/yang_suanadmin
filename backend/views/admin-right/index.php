@@ -267,6 +267,7 @@ $modelLabel = new \backend\models\AdminRight();
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
+ window.controllerData = <?php echo json_encode($controllerData); ?>;
  function searchAction(){
 		$('#admin-right-search-form').submit();
 	}

@@ -584,7 +584,7 @@ $("#controller").change(function(){
      var nodes = actions.nodes;
      var rightTree = {'text':controller, 'selectable':false, 'state':{'checked':false}, 'type':'r'};
      rightTree['nodes'] = nodes;
-     
+     //console.log('====', rightTree);
      $('#treeview').treeview({
 		data: [rightTree],
 		showIcon: false,
