@@ -19,12 +19,14 @@ $modelLabel = new \backend\models\AdminLog();
       <div class="box">
       
         <div class="box-header">
-          <h3 class="box-title">数据列表</h3>
+          <h3 class="box-title">日志列表</h3>
           <div class="box-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
+            <!--  
                 <button id="create_btn" type="button" class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
         			|
         		<button id="delete_btn" type="button" class="btn btn-xs btn-danger">批量删除</button>
+             -->
             </div>
           </div>
         </div>
@@ -59,8 +61,8 @@ $modelLabel = new \backend\models\AdminLog();
             <?php 
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller_id').'</th>';
-              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action_id').'</th>';
+//               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller_id').'</th>';
+//               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action_id').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('url').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('module_name').'</th>';
               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('func_name').'</th>';
@@ -82,8 +84,8 @@ $modelLabel = new \backend\models\AdminLog();
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
                 echo '  <td>' . $model->id . '</td>';
-                echo '  <td>' . $model->controller_id . '</td>';
-                echo '  <td>' . $model->action_id . '</td>';
+//                 echo '  <td>' . $model->controller_id . '</td>';
+//                 echo '  <td>' . $model->action_id . '</td>';
                 echo '  <td>' . $model->url . '</td>';
                 echo '  <td>' . $model->module_name . '</td>';
                 echo '  <td>' . $model->func_name . '</td>';
@@ -93,8 +95,8 @@ $modelLabel = new \backend\models\AdminLog();
                 echo '  <td>' . $model->create_date . '</td>';
                 echo '  <td class="center">';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-                echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
-                echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
+//                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+//                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
                 echo '  </td>';
                 echo '<tr/>';
             }
