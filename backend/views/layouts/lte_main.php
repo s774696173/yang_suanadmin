@@ -9,6 +9,7 @@ $system_rights = Yii::$app->user->identity->getSystemRights();
 $route = $this->context->route;
 $absoluteUrl = Yii::$app->request->absoluteUrl;
 $funInfo = isset($system_rights[$this->context->route]) == true ? $system_rights[$route] : null;
+
 $otherMenu = true;
 
 //检查是否为主菜单，主菜单不需要添加返回上一层菜单
@@ -141,7 +142,7 @@ if($otherMenu == false){
 <?= $this->blocks['header'] ?>
 <?php endif;?>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini">
 <div class="modal fade" id="confirm_dialog" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -242,30 +243,44 @@ if($otherMenu == false){
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">菜单项</li>
-        <li class="active"><a href="<?=Url::to(['site/index'])?>"><i class="fa fa-circle-o text-aqua"></i> <span>首页</span></a></li>
+        <!-- <?php
+       
+        var_dump($funInfo);
+        ?> -->
+        <li <?=$route == 'site/index' ?  ' class="active" ' : ''?>>
+        	<a href="<?=Url::to(['site/index'])?>">
+        	<i class="fa fa-dashboard"></i> 
+        	<span>首页</span>
+        	</a>
+        </li>
         <?php 
         
 			foreach($system_menus as $menu){
 			    $funcList = $menu['funcList'];
+			    $isMenuActive = '';
 			    $isTreeView = count($funcList) > 0 ? "treeview" : "";
-			    echo '<li class="'. $isTreeView .'">'; // active 
-			    echo '   <a href="#">';
-			    echo '   <i class="fa fa-dashboard"></i> <span>'. $menu['label'] .'</span>';
-			    echo '   <span class="pull-right-container">';
-			    echo '       <i class="fa fa-angle-left pull-right"></i>';
-			    echo '   </span>';
-			    echo '   </a>';
+			    $menuHtml = '<li class="#isMenuActive#'. $isTreeView .'">'; // active 
+			    $menuHtml .= '   <a href="#">';
+			    $menuHtml .= '   <i class="fa fa-table"></i> <span>'. $menu['label'] .'</span>';
+			    $menuHtml .= '   <span class="pull-right-container">';
+			    $menuHtml .= '       <i class="fa fa-angle-left pull-right"></i>';
+			    $menuHtml .= '   </span>';
+			    $menuHtml .= '   </a>';
 			   // echo '   <ul class="treeview-menu">';
 			   if($isTreeView != ""){
-			       echo '<ul class="treeview-menu">';
+			       $menuHtml .= '<ul class="treeview-menu">';
 			       foreach($funcList as $fun){
-			           $isActive = $fun['url'] == $funInfo['entry_url'] ? ' class="active"' : '';
-			           echo '<li'. $isActive .'><a href="'.Url::to([$fun['url']]).'"><i class="fa fa-circle-o"></i>'. $fun['label'] .'</a></li>';
+			           $isActive = $fun['url'] == $funInfo['entry_url'] ? 'class="active"' : ''; //'. $isActive .'
+			           $menuHtml .= '<li '. $isActive .'><a href="'.Url::to([$fun['url']]).'"><i class="fa fa-circle-o"></i>'. $fun['label'] .'</a></li>';
+			           if(empty($isMenuActive) == true && $isActive != ""){
+			               $isMenuActive = 'active ';
+			           }
 			       }
-			       echo '</ul>';
+			       $menuHtml .= '</ul>';
 			   }
-			    echo '</li>';
-
+			    $menuHtml .= '</li>';
+			    $menuHtml = str_replace('#isMenuActive#', $isMenuActive, $menuHtml);
+			    echo $menuHtml;
 			}
 						
 			
@@ -292,8 +307,11 @@ if($otherMenu == false){
   
   <div class="content-wrapper">
     <section class="content-header">
-      <h1> 数据列表 <small><?=$funInfo['menu_name']?></small></h1>
-      <ol class="breadcrumb">
+     
+      <h1> <?=$funInfo['menu_name']?> <small>
+      
+      </small></h1>
+      <ol class="breadcrumb breadcrumb-quirk">
         <li><a href="index.php?r=site/index"><i class="fa fa-dashboard"></i> 首页</a></li>
         <!-- 
         <li><a href="#">Tables</a></li>
