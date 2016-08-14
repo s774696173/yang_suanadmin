@@ -48,19 +48,7 @@ use yii\filters\VerbFilter;
 class <?= $controllerClass ?> extends BaseController
 {
 	public $layout = "lte_main";
-    /*
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-    */
+
     /**
      * Lists all <?= $modelClass ?> models.
      * @return mixed

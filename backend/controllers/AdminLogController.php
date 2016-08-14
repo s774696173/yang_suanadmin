@@ -16,19 +16,7 @@ use yii\filters\VerbFilter;
 class AdminLogController extends BaseController
 {
 	public $layout = "lte_main";
-    /*
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-    */
+   
     /**
      * Lists all AdminLog models.
      * @return mixed
