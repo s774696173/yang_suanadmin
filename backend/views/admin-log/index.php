@@ -43,6 +43,10 @@ $modelLabel = new \backend\models\AdminLog();
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
                   </div>
+                  <div class="form-group" style="margin: 5px;">
+                      <label><?=$modelLabel->getAttributeLabel('url')?>:</label>
+                      <input type="text" class="form-control" id="query[url]" name="query[url]"  value="<?=isset($query["url"]) ? $query["url"] : "" ?>">
+                  </div>
               <div class="form-group">
               	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
            	  </div>
