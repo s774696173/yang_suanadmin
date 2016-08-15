@@ -39,6 +39,7 @@ class SiteController extends BaseController
                 ['name'=>'PHP版本', 'value'=>phpversion()],
                 ['name'=>'Yii版本', 'value'=>Yii::getVersion()],
                 ['name'=>'数据库', 'value'=>$this->getDbVersion()],
+                ['name'=>'AdminLTE', 'value'=>'V2.3.6'],
             ];
             return $this->render('index', [
                 'system_menus' => $menus,
