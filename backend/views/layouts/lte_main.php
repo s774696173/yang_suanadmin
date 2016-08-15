@@ -171,7 +171,7 @@ if($otherMenu == false){
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>Y</b>BT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Yii</b>BOOT后台管理系统</span>
+      <span class="logo-lg"><b>Yii</b>BOOT管理系统</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
