@@ -1,5 +1,6 @@
- **简介** 
-YiiBoot简单便捷高效安全，非常适合二次开发的通用管理后台。基于Yii2 + AdminLTE + mysql开发，提供易用安全的用户菜单权限管理，操作日志记录，并基于gii代码生成模板实现快速开发平台，非常方便用户基于yiiboot开发自己的管理后台
+### 简介
+
+YiiBoot简单便捷高效安全，非常适合二次开发的通用管理后台。基于Yii2 + AdminLTE + mysql开发，提供易用安全的用户菜单权限管理，操作日志记录，定制了基于AdminLTE的gii代码model和curl模板，非常方便用户在此基础上快速开发自己的管理后台。
 
  **功能特点，4个基本的功能：** 
 菜单管理：系统自动识别可用路由，用户只需选择添加到对应菜单中
@@ -11,8 +12,8 @@ Model Generator：同时生成model类和service类，所有数据库操作业�
 CRUD Generator：基于AdminLTE的web模板，生成对model的crud操作，同时可以通过model的TableColumnInfo信息配置字段是否可以显示在列表，是否可以编辑，是否可以查询等。
 
 
+### 下载安装
 
- **1、下载安装** 
 1. 运行环境 php5.5+
 2. 下载代码
 git clone https://git.oschina.net/penngo/chadmin.git
@@ -21,4 +22,8 @@ git clone https://git.oschina.net/penngo/chadmin.git
 4. 导入data/db.sql。
 5. 浏览器访问yiiboot/backend/web/index.php ,如果配置了域名xx.com请指向路径yiiboot/backend/web，访问 xx.com/index，默认帐号密码admin 123456
 
+### 问题反馈：http://git.oschina.net/penngo/chadmin/issues
 
+参考资料
+Yii官网http://www.yiiframework.com/
+AdminLTE官网https://github.com/almasaeed2010/AdminLTE
