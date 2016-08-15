@@ -76,13 +76,20 @@ class <?= $controllerClass ?> extends BaseController
                 $query = $query->where($condition, $parame);
             }
         }
-        //$models = $query->orderBy('display_order')
+
         $pagination = new Pagination([
             'totalCount' =>$query->count(), 
             'pageSize' => '10', 
             'pageParam'=>'page', 
             'pageSizeParam'=>'per-page']
         );
+        
+        $orderby = Yii::$app->request->get('orderby', '');
+        if(empty($orderby) == false){
+            $query = $query->orderBy($orderby);
+        }
+        
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)

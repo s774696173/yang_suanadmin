@@ -4,7 +4,7 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use backend\models\AdminLog;
-use common\utils\CommonFun;
+
 $modelLabel = new \backend\models\AdminLog();
 ?>
 
@@ -62,11 +62,9 @@ $modelLabel = new \backend\models\AdminLog();
             <thead>
             <tr role="row">
             
-            <?php   
-              $orderby = $_GET['orderby'];
-		      echo '<th><input id="data_table_check" type="checkbox"></th>';  
-		      
-              echo '<th onclick="orderby(\'id\', \'desc\')" '.CommonFun::sortClass($orderby, 'id').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
+            <?php 
+		      echo '<th><input id="data_table_check" type="checkbox"></th>';
+              echo '<th onclick="orderby(\'id\', \'desc\')" class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
 //               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('controller_id').'</th>';
 //               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('action_id').'</th>';
               echo '<th onclick="orderby(\'url\', \'desc\')" class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('url').'</th>';
@@ -130,8 +128,8 @@ $modelLabel = new \backend\models\AdminLog();
               	<div class="dataTables_paginate paging_simple_numbers" id="data_table_paginate">
               	<?= LinkPager::widget([
               	    'pagination' => $pages,
-              	    'nextPageLabel' => '»',// '下一页',
-              	    'prevPageLabel' => '«',
+              	    'nextPageLabel' => '下一页',
+              	    'prevPageLabel' => '上一页',
               	    'firstPageLabel' => '首页',
               	    'lastPageLabel' => '尾页',
               	]); ?>	

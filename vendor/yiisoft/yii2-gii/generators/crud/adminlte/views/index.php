@@ -20,6 +20,7 @@ $controllerName = substr($controllerClass, 0, strlen($controllerClass) - 10);
 use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
+use common\utils\CommonFun;
 use <?=$modelClass?>;
 
 $modelLabel = new \<?=$modelClass?>();
@@ -81,11 +82,12 @@ $modelLabel = new \<?=$modelClass?>();
             <tr role="row">
             
             <?="<?php \n"?>
+              $orderby = $_GET['orderby'];
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
 <?php 
 foreach($tableColumnInfo as $key=>$column){
 if($column['isDisplay'] == true){
-echo "              echo '<th class=\"sorting\" tabindex=\"0\" aria-controls=\"data_table\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" >'.\$modelLabel->getAttributeLabel('$key').'</th>';\n";
+echo "              echo '<th onclick=\"orderby(\'$key\', \'desc\')\" '.CommonFun::sortClass(\$orderby, '$key').' tabindex=\"0\" aria-controls=\"data_table\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" >'.\$modelLabel->getAttributeLabel('$key').'</th>';\n";
 }
 
 }
@@ -144,8 +146,8 @@ foreach($tableColumnInfo as $key=>$column){
               	<div class="dataTables_paginate paging_simple_numbers" id="data_table_paginate">
               	<?="<?= LinkPager::widget([
               	    'pagination' => \$pages,
-              	    'nextPageLabel' => '下一页',
-              	    'prevPageLabel' => '上一页',
+              	    'nextPageLabel' => '»',
+              	    'prevPageLabel' => '«',
               	    'firstPageLabel' => '首页',
               	    'lastPageLabel' => '尾页',
               	]); ?>	\n"?>

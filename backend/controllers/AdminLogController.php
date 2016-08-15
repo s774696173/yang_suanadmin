@@ -24,7 +24,7 @@ class AdminLogController extends BaseController
     public function actionIndex()
     {
         $query = AdminLog::find();
-         $querys = Yii::$app->request->get('query');
+        $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
             $parame = array();
@@ -44,6 +44,7 @@ class AdminLogController extends BaseController
                 $query = $query->where($condition, $parame);
             }
         }
+
         //$models = $query->orderBy('display_order')
         $pagination = new Pagination([
             'totalCount' =>$query->count(), 
@@ -51,6 +52,12 @@ class AdminLogController extends BaseController
             'pageParam'=>'page', 
             'pageSizeParam'=>'per-page']
         );
+//         $query
+        $orderby = Yii::$app->request->get('orderby', '');
+        if(empty($orderby) == false){
+            $query = $query->orderBy($orderby);
+        }
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
