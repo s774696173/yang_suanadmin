@@ -118,12 +118,13 @@ class CommonFun extends Object{
         $data = explode(' ', $orderby);
         $sortClass = 'class="sorting"';
         if(count($data) > 0){
-            if(isset($data[0]) == true){
+            if(empty($data[0]) == false && $data[0] == $key){
                 if(empty($data[1]) == false && $data[1] == 'desc'){
-                    $sortClass = 'class=sorting_desc';
+                    $sortClass = 'class="sorting_desc"';
+                    
                 }
                 else{
-                    $sortClass = 'class=sorting_asc';
+                    $sortClass = 'class="sorting_asc"';
                 }
             }
         }

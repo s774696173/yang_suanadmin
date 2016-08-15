@@ -108,7 +108,6 @@ class <?= $controllerClass ?> extends BaseController
      */
     public function actionView(<?= $actionParams ?>)
     {
-        //$id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         echo json_encode($model->getAttributes());
 

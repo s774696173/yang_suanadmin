@@ -12,8 +12,7 @@ if(method_exists($model, 'getTableColumnInfo') == false){
 $tableColumnInfo = $model->getTableColumnInfo();
 $controllerClass = $generator->controllerClass;
 $controllerName = substr($controllerClass, 0, strlen($controllerClass) - 10);
-// var_dump($controllerName);
-// exit();
+
 ?>
 
 <?="<?php\n"?>
@@ -216,6 +215,21 @@ foreach($tableColumnInfo as $key=>$column){
 <?="<?php \$this->beginBlock('footer');  ?>\n"?>
 <!-- <body></body>后代码块 -->
  <script>
+function orderby(field, op){
+	 var url = window.location.search;
+	 var optemp = field + " desc";
+	 if(url.indexOf('orderby') != -1){
+		 url = url.replace(/orderby=([^&?]*)/ig,  function($0, $1){ 
+			 var optemp = field + " desc";
+			 optemp = decodeURI($1) != optemp ? optemp : field + " asc";
+			 return "orderby=" + optemp;
+		   }); 
+	 }
+	 else{
+		 url = url + "&orderby=" + encodeURI(optemp);
+	 }
+	 window.location.href=url; 
+ }
  function searchAction(){
 		$('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-search-form').submit();
 	}
@@ -251,15 +265,15 @@ foreach($tableColumnInfo as $key=>$column){
 	}
 	else{
 <?php 
-//var_dump($tableColumnInfo);
+
 foreach($tableColumnInfo as $key=>$column){
     echo '      $("#'.$key.'").attr({readonly:false,disabled:false});'."\n";
     if($column['isEdit'] === false){
     echo '      $("#'.$key.'").parent().parent().hide();'."\n";
-    //var_dump($column);
+
     }
 }
-//exit();
+
 ?>
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
