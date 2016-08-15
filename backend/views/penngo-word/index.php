@@ -1,34 +1,17 @@
+
 <?php
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
-
-$modelClass = $generator->modelClass;
-$mn = explode('\\', $modelClass);
-$modelName = array_pop($mn);
-$model = new $modelClass();
-if(method_exists($model, 'getTableColumnInfo') == false){
-    exit('error, ' . get_class($model) . ' no getTableColumnInfo method. can not use common (..\..\vendor\yiisoft\yii2-gii\generators\crud\common) to generated.');
-}
-$tableColumnInfo = $model->getTableColumnInfo();
-$controllerClass = $generator->controllerClass;
-$controllerName = substr($controllerClass, 0, strlen($controllerClass) - 10);
-
-?>
-
-<?="<?php\n"?>
 use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use common\utils\CommonFun;
-use <?=$modelClass?>;
+use backend\models\PenngoWord;
 
-$modelLabel = new \<?=$modelClass?>();
+$modelLabel = new \backend\models\PenngoWord();
 ?>
 
-<?="<?php \$this->beginBlock('header');  ?>\n"?>
+<?php $this->beginBlock('header');  ?>
 <!-- <head></head>中代码块 -->
-<?="<?php \$this->endBlock(); ?>"?>
-
+<?php $this->endBlock(); ?>
 
 <!-- Main content -->
 <section class="content">
@@ -53,22 +36,16 @@ $modelLabel = new \<?=$modelClass?>();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?="<?php ActiveForm::begin(['id' => '".Inflector::camel2id(StringHelper::basename($controllerName))."-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=".Inflector::camel2id(StringHelper::basename($controllerName))."/index']); ?>"?>     
-                <?php foreach($tableColumnInfo as $key=>$column){
-                        if($column['isSearch'] === true){
-                            echo "\n";
-                            echo "                  <div class=\"form-group\" style=\"margin: 5px;\">\n";
-                            echo "                      <label><?=\$modelLabel->getAttributeLabel('$key')?>:</label>\n";
-                            echo "                      <input type=\"text\" class=\"form-control\" id=\"query[$key]\" name=\"query[$key]\"  value=\"<?=isset(\$query[\"$key\"]) ? \$query[\"$key\"] : \"\" ?>\">\n";
-                            echo "                  </div>\n";
-                        }
-                    }
+                <?php ActiveForm::begin(['id' => 'penngo-word-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=penngo-word/index']); ?>     
                 
-                    ?>
+                  <div class="form-group" style="margin: 5px;">
+                      <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
+                      <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
+                  </div>
               <div class="form-group">
               	<a onclick="searchAction()" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>搜索</a>
            	  </div>
-               <?="<?php ActiveForm::end(); ?>"?> 
+               <?php ActiveForm::end(); ?> 
             </div>
           	</div>
           	<!-- row end search -->
@@ -80,17 +57,16 @@ $modelLabel = new \<?=$modelClass?>();
             <thead>
             <tr role="row">
             
-            <?="<?php \n"?>
+            <?php 
               $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
-<?php 
-foreach($tableColumnInfo as $key=>$column){
-if($column['isDisplay'] == true){
-echo "              echo '<th onclick=\"orderby(\'$key\', \'desc\')\" '.CommonFun::sortClass(\$orderby, '$key').' tabindex=\"0\" aria-controls=\"data_table\" rowspan=\"1\" colspan=\"1\" aria-sort=\"ascending\" >'.\$modelLabel->getAttributeLabel('$key').'</th>';\n";
-}
-
-}
-?>         
+              echo '<th onclick="orderby(\'id\', \'desc\')" '.CommonFun::sortClass($orderby, 'id').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
+              echo '<th onclick="orderby(\'name\', \'desc\')" '.CommonFun::sortClass($orderby, 'name').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('name').'</th>';
+              echo '<th onclick="orderby(\'create_user\', \'desc\')" '.CommonFun::sortClass($orderby, 'create_user').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_user').'</th>';
+              echo '<th onclick="orderby(\'update_user\', \'desc\')" '.CommonFun::sortClass($orderby, 'update_user').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
+              echo '<th onclick="orderby(\'create_date\', \'desc\')" '.CommonFun::sortClass($orderby, 'create_date').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('create_date').'</th>';
+              echo '<th onclick="orderby(\'update_date\', \'desc\')" '.CommonFun::sortClass($orderby, 'update_date').' tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
+         
 			?>
 	
             <th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >操作</th>
@@ -98,20 +74,16 @@ echo "              echo '<th onclick=\"orderby(\'$key\', \'desc\')\" '.CommonFu
             </thead>
             <tbody>
             
-            <?= "<?php\n" ?>
+            <?php
             foreach ($models as $model) {
                 echo '<tr id="rowid_' . $model->id . '">';
                 echo '  <td><label><input type="checkbox" value="' . $model->id . '"></label></td>';
-<?php 
-foreach($tableColumnInfo as $key=>$column){
-    if($column['isDisplay'] === true){
-        echo "                echo '  <td>' . \$model->$key . '</td>';\n";
-    }
-    else{
-        echo "                //echo '  <td>' . \$model->$key . '</td>';\n";
-    }
-}
-?>
+                echo '  <td>' . $model->id . '</td>';
+                echo '  <td>' . $model->name . '</td>';
+                echo '  <td>' . $model->create_user . '</td>';
+                echo '  <td>' . $model->update_user . '</td>';
+                echo '  <td>' . $model->create_date . '</td>';
+                echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
@@ -136,20 +108,18 @@ foreach($tableColumnInfo as $key=>$column){
           	<div class="col-sm-5">
             	<div class="dataTables_info" id="data_table_info" role="status" aria-live="polite">
             		<div class="infos">
-            		从<?= "<?= \$pages->getPage() * \$pages->getPageSize() + 1 ?>"?>
-            		到 <?= "<?= (\$pageCount = (\$pages->getPage() + 1) * \$pages->getPageSize()) < \$pages->totalCount ?  \$pageCount : \$pages->totalCount?>" ?>
-            		 共 <?= "<?= \$pages->totalCount?>" ?> 条记录</div>
+            		从<?= $pages->getPage() * $pages->getPageSize() + 1 ?>            		到 <?= ($pageCount = ($pages->getPage() + 1) * $pages->getPageSize()) < $pages->totalCount ?  $pageCount : $pages->totalCount?>            		 共 <?= $pages->totalCount?> 条记录</div>
             	</div>
             </div>
           	<div class="col-sm-7">
               	<div class="dataTables_paginate paging_simple_numbers" id="data_table_paginate">
-              	<?="<?= LinkPager::widget([
-              	    'pagination' => \$pages,
+              	<?= LinkPager::widget([
+              	    'pagination' => $pages,
               	    'nextPageLabel' => '»',
               	    'prevPageLabel' => '«',
               	    'firstPageLabel' => '首页',
               	    'lastPageLabel' => '尾页',
-              	]); ?>	\n"?>
+              	]); ?>	
               	
               	</div>
           	</div>
@@ -176,34 +146,52 @@ foreach($tableColumnInfo as $key=>$column){
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?='<?php $form = ActiveForm::begin(["id" => "'.Inflector::camel2id(StringHelper::basename($controllerName)).'-form", "class"=>"form-horizontal", "action"=>"index.php?r='.Inflector::camel2id(StringHelper::basename($controllerName)).'/save"]); ?>'?>                      
-                 <?php foreach($tableColumnInfo as $key=>$column){
-                    echo "\n";
-                    $isNeed = $column['allowNull'] == false ? '必填' : '';
-                    //$widget = '';
-                    $widget = '          <div id="'.$key.'_div" class="form-group">'."\n";
-                    $widget.= '              <label for="'.$key.'" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("'.$key.'")?></label>'."\n";
-                    $widget.= '              <div class="col-sm-10">'."\n";
-                    $widget.= '==widget==';
-                    $widget.= '              </div>'."\n";
-                    $widget.= '              <div class="clearfix"></div>'."\n";
-                    $widget.= '          </div>'."\n";
-                    
-                    switch($column['inputType']){
-                        case 'hidden':
-                            $inputWidget = '          <input type="hidden" class="form-control" id="id" name="'.$modelName.'['.$key.']" />'."\n";
-                            echo $inputWidget;
-                            break;
-                        case 'text':
-                            $inputWidget = '                  <input type="text" class="form-control" id="'.$key.'" name="'.$modelName.'['.$key.']" placeholder="'.$isNeed . '" />'."\n";
-                            echo str_replace('==widget==', $inputWidget, $widget);
-                            break;
-                    }
-                 }
-                 ?>
+                <?php $form = ActiveForm::begin(["id" => "penngo-word-form", "class"=>"form-horizontal", "action"=>"index.php?r=penngo-word/save"]); ?>                      
+                 
+          <input type="hidden" class="form-control" id="id" name="PenngoWord[id]" />
+
+          <div id="name_div" class="form-group">
+              <label for="name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("name")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="name" name="PenngoWord[name]" placeholder="必填" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="create_user_div" class="form-group">
+              <label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="create_user" name="PenngoWord[create_user]" placeholder="必填" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="update_user_div" class="form-group">
+              <label for="update_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_user")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="update_user" name="PenngoWord[update_user]" placeholder="" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="create_date_div" class="form-group">
+              <label for="create_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_date")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="create_date" name="PenngoWord[create_date]" placeholder="必填" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+
+          <div id="update_date_div" class="form-group">
+              <label for="update_date" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("update_date")?></label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="update_date" name="PenngoWord[update_date]" placeholder="必填" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
                     
 
-			<?= "<?php ActiveForm::end(); ?>" ?>          
+			<?php ActiveForm::end(); ?>          
                 </div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a> <a
@@ -212,7 +200,7 @@ foreach($tableColumnInfo as $key=>$column){
 		</div>
 	</div>
 </div>
-<?="<?php \$this->beginBlock('footer');  ?>\n"?>
+<?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
  <script>
 function orderby(field, op){
@@ -231,7 +219,7 @@ function orderby(field, op){
 	 window.location.href=url; 
  }
  function searchAction(){
-		$('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-search-form').submit();
+		$('#penngo-word-search-form').submit();
 	}
  function viewAction(id){
 		initModel(id, 'view', 'fun');
@@ -239,42 +227,38 @@ function orderby(field, op){
 
  function initEditSystemModule(data, type){
 	if(type == 'create'){
-	<?php foreach($tableColumnInfo as $key=>$column){?>
-	$("#<?=$key?>").val('');
-	<?php }?>
-	
+		$("#id").val('');
+		$("#name").val('');
+		$("#create_user").val('');
+		$("#update_user").val('');
+		$("#create_date").val('');
+		$("#update_date").val('');
+		
 	}
 	else{
-	<?php foreach($tableColumnInfo as $key=>$column){?>
-	$("#<?=$key?>").val(data.<?=$key?>);
-    <?php }?>
-	}
+		$("#id").val(data.id);
+    	$("#name").val(data.name);
+    	$("#create_user").val(data.create_user);
+    	$("#update_user").val(data.update_user);
+    	$("#create_date").val(data.create_date);
+    	$("#update_date").val(data.update_date);
+    	}
 	if(type == "view"){
-<?php 
-
-foreach($tableColumnInfo as $key=>$column){
-    echo '      $("#'.$key.'").attr({readonly:true,disabled:true});'."\n";
-    if($column['isEdit'] === false){
-    echo '      $("#'.$key.'").parent().parent().show();'."\n";
-    
-    }
-}
-
-?>
+      $("#id").attr({readonly:true,disabled:true});
+      $("#name").attr({readonly:true,disabled:true});
+      $("#create_user").attr({readonly:true,disabled:true});
+      $("#update_user").attr({readonly:true,disabled:true});
+      $("#create_date").attr({readonly:true,disabled:true});
+      $("#update_date").attr({readonly:true,disabled:true});
 	$('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
-<?php 
-
-foreach($tableColumnInfo as $key=>$column){
-    echo '      $("#'.$key.'").attr({readonly:false,disabled:false});'."\n";
-    if($column['isEdit'] === false){
-    echo '      $("#'.$key.'").parent().parent().hide();'."\n";
-
-    }
-}
-
-?>
+      $("#id").attr({readonly:false,disabled:false});
+      $("#name").attr({readonly:false,disabled:false});
+      $("#create_user").attr({readonly:false,disabled:false});
+      $("#update_user").attr({readonly:false,disabled:false});
+      $("#create_date").attr({readonly:false,disabled:false});
+      $("#update_date").attr({readonly:false,disabled:false});
 		$('#edit_dialog_ok').removeClass('hidden');
 		}
 		$('#edit_dialog').modal('show');
@@ -284,7 +268,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/view",
+		   url: "index.php?r=penngo-word/view",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -322,7 +306,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/delete",
+				   url: "index.php?r=penngo-word/delete",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -365,7 +349,7 @@ function getSelectedIdValues(formId)
 
 $('#edit_dialog_ok').click(function (e) {
     e.preventDefault();
-	$('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-form').submit();
+	$('#penngo-word-form').submit();
 });
 
 $('#create_btn').click(function (e) {
@@ -378,14 +362,14 @@ $('#delete_btn').click(function (e) {
     deleteAction('');
 });
 
-$('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-form').bind('submit', function(e) {
+$('#penngo-word-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
 	var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/" + action,
+    	url: "index.php?r=penngo-word/" + action,
     	success: function(value) 
     	{
         	if(value.errno == 0){
@@ -407,4 +391,4 @@ $('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-form').bin
 
  
 </script>
-<?="<?php \$this->endBlock(); ?>"?>
+<?php $this->endBlock(); ?>

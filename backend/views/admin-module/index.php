@@ -164,14 +164,8 @@ $modelLabel = new \backend\models\AdminModule();
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-module-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-module/save"]); ?>                      
-                 
-          <div id="id_div" class="form-group">
-              <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
-              <div class="col-sm-10">
-          <input type="hidden" class="form-control" id="id" name="AdminModule[id]" />
-              </div>
-              <div class="clearfix"></div>
-          </div>
+                 <input type="hidden" class="form-control" id="id" name="AdminModule[id]" />
+         
 
           <div id="code_div" class="form-group">
               <label for="code" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("code")?></label>
@@ -188,7 +182,7 @@ $modelLabel = new \backend\models\AdminModule();
               </div>
               <div class="clearfix"></div>
           </div>
-
+		<!-- 
           <div id="has_lef_div" class="form-group">
               <label for="has_lef" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("has_lef")?></label>
               <div class="col-sm-10">
@@ -196,7 +190,7 @@ $modelLabel = new \backend\models\AdminModule();
               </div>
               <div class="clearfix"></div>
           </div>
-
+-->
           <div id="des_div" class="form-group">
               <label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
               <div class="col-sm-10">
@@ -205,6 +199,7 @@ $modelLabel = new \backend\models\AdminModule();
               <div class="clearfix"></div>
           </div>
 
+		<!-- 
           <div id="entry_url_div" class="form-group">
               <label for="entry_url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_url")?></label>
               <div class="col-sm-10">
@@ -212,7 +207,7 @@ $modelLabel = new \backend\models\AdminModule();
               </div>
               <div class="clearfix"></div>
           </div>
-
+-->
           <div id="display_order_div" class="form-group">
               <label for="display_order" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_order")?></label>
               <div class="col-sm-10">

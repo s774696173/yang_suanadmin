@@ -4,39 +4,60 @@ namespace backend\controllers;
 
 use Yii;
 use yii\data\Pagination;
-use backend\models\AdminUser;
+use backend\models\PenngoWord;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminUserController implements the CRUD actions for AdminUser model.
+ * PenngoWordController implements the CRUD actions for PenngoWord model.
  */
-class AdminUser2Controller extends BaseController
+class PenngoWordController extends BaseController
 {
-    /*
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-    */
+	public $layout = "lte_main";
+
     /**
-     * Lists all AdminUser models.
+     * Lists all PenngoWord models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $query = AdminUser::find();
-        $pagination = new Pagination(['totalCount' =>$query->count(), 'pageSize' => '10']);
-        //$models = $query->orderBy('display_order')
+        $query = PenngoWord::find();
+         $querys = Yii::$app->request->get('query');
+        if(count($querys) > 0){
+            $condition = "";
+            $parame = array();
+            foreach($querys as $key=>$value){
+                $value = trim($value);
+                if(empty($value) == false){
+                    $parame[":{$key}"]=$value;
+                    if(empty($condition) == true){
+                        $condition = " {$key}=:{$key} ";
+                    }
+                    else{
+                        $condition = $condition . " AND {$key}=:{$key} ";
+                    }
+                }
+            }
+            if(count($parame) > 0){
+                $query = $query->where($condition, $parame);
+            }
+        }
+
+        $pagination = new Pagination([
+            'totalCount' =>$query->count(), 
+            'pageSize' => '10', 
+            'pageParam'=>'page', 
+            'pageSizeParam'=>'per-page']
+        );
+        
+        $orderby = Yii::$app->request->get('orderby', '');
+        if(empty($orderby) == false){
+            $query = $query->orderBy($orderby);
+        }
+        
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
@@ -44,11 +65,12 @@ class AdminUser2Controller extends BaseController
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,
+            'query'=>$querys,
         ]);
     }
 
     /**
-     * Displays a single AdminUser model.
+     * Displays a single PenngoWord model.
      * @param string $id
      * @return mixed
      */
@@ -60,26 +82,20 @@ class AdminUser2Controller extends BaseController
     }
 
     /**
-     * Creates a new AdminUser model.
+     * Creates a new PenngoWord model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new AdminUser();
+        $model = new PenngoWord();
         if ($model->load(Yii::$app->request->post())) {
-            $model->password = Yii::$app->security->generatePasswordHash($model->password);
-            $model->auth_key = Yii::$app->security->generateRandomString();;
-            $model->last_ip = '';//Yii::$app->user->identity->uname;
-            $model->is_online = 'n';//date('Y-m-d H:i:s');
-            $model->domain_account = '';//Yii::$app->user->identity->uname;
-            $model->status = 10;//date('Y-m-d H:i:s');
-            $model->create_user = Yii::$app->user->identity->uname;
-            $model->create_date = date('Y-m-d H:i:s');
-            $model->update_user = Yii::$app->user->identity->uname;
-            $model->update_date = date('Y-m-d H:i:s');
-            
-            if($model->validate() && $model->save()){
+        
+              $model->create_user = Yii::$app->user->identity->uname;
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->create_date = date('Y-m-d H:i:s');
+              $model->update_date = date('Y-m-d H:i:s');        
+            if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -94,7 +110,7 @@ class AdminUser2Controller extends BaseController
     }
 
     /**
-     * Updates an existing AdminUser model.
+     * Updates an existing PenngoWord model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -103,6 +119,10 @@ class AdminUser2Controller extends BaseController
     {
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
+        
+              $model->update_user = Yii::$app->user->identity->uname;
+              $model->update_date = date('Y-m-d H:i:s');        
+        
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
@@ -119,7 +139,7 @@ class AdminUser2Controller extends BaseController
     }
 
     /**
-     * Deletes an existing AdminUser model.
+     * Deletes an existing PenngoWord model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -127,25 +147,26 @@ class AdminUser2Controller extends BaseController
     public function actionDelete(array $ids)
     {
         if(count($ids) > 0){
-            $c = AdminUser::deleteAll(['in', 'id', $ids]);
+            $c = PenngoWord::deleteAll(['in', 'id', $ids]);
             echo json_encode(array('errno'=>0, 'data'=>$c, 'msg'=>json_encode($ids)));
         }
         else{
             echo json_encode(array('errno'=>2, 'msg'=>''));
         }
     
+  
     }
 
     /**
-     * Finds the AdminUser model based on its primary key value.
+     * Finds the PenngoWord model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return AdminUser the loaded model
+     * @return PenngoWord the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AdminUser::findOne($id)) !== null) {
+        if (($model = PenngoWord::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

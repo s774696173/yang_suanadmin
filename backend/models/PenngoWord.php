@@ -2,30 +2,25 @@
 namespace backend\models;
 
 use Yii;
-use backend\models\AdminRight;
+
 /**
- * This is the model class for table "admin_right_url".
+ * This is the model class for table "penngo_word".
  *
- * @property integer $id
- * @property integer $right_id
- * @property string $url
- * @property string $para_name
- * @property string $para_value
+ * @property string $id
+ * @property string $name
  * @property string $create_user
- * @property string $create_date
  * @property string $update_user
+ * @property string $create_date
  * @property string $update_date
- *
- * @property AdminRight $right
  */
-class AdminRightUrl extends \backend\models\BaseModel
+class PenngoWord extends \backend\models\BaseModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'admin_right_url';
+        return 'penngo_word';
     }
 
     /**
@@ -34,12 +29,10 @@ class AdminRightUrl extends \backend\models\BaseModel
     public function rules()
     {
         return [
-            [['right_id'], 'required'],
-            [['right_id'], 'integer'],
+            [['name', 'create_user', 'create_date', 'update_date'], 'required'],
             [['create_date', 'update_date'], 'safe'],
-            [['url'], 'string', 'max' => 200],
-            [['para_name', 'para_value'], 'string', 'max' => 40],
-            [['create_user', 'update_user'], 'string', 'max' => 50]
+            [['name'], 'string', 'max' => 100],
+            [['create_user', 'update_user'], 'string', 'max' => 20]
         ];
     }
 
@@ -49,24 +42,13 @@ class AdminRightUrl extends \backend\models\BaseModel
     public function attributeLabels()
     {
         return [
-            'id' => '主键',
-            'right_id' => 'right主键',
-            'url' => 'url',
-            'para_name' => '参数名',
-            'para_value' => '参数值',
+            'id' => 'ID',
+            'name' => '敏感词',
             'create_user' => '创建人',
+            'update_user' => '更新人',
             'create_date' => '创建时间',
-            'update_user' => '修改人',
-            'update_date' => '修改时间',
+            'update_date' => '更新时间',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRight()
-    {
-        return $this->hasOne(AdminRight::className(), ['id' => 'right_id']);
     }
 
   /**
@@ -90,17 +72,17 @@ class AdminRightUrl extends \backend\models\BaseModel
                         'name' => 'id',
                         'allowNull' => false,
 //                         'autoIncrement' => true,
-//                         'comment' => '主键',
-//                         'dbType' => "int(11)",
+//                         'comment' => '',
+//                         'dbType' => "int(10) unsigned",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => true,
-                        'phpType' => 'integer',
-                        'precision' => '11',
+                        'phpType' => 'string',
+                        'precision' => '10',
                         'scale' => '',
-                        'size' => '11',
+                        'size' => '10',
                         'type' => 'integer',
-                        'unsigned' => false,
+                        'unsigned' => true,
                         'label'=>$this->getAttributeLabel('id'),
                         'inputType' => 'hidden',
                         'isEdit' => true,
@@ -109,91 +91,22 @@ class AdminRightUrl extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'right_id' => array(
-                        'name' => 'right_id',
+		'name' => array(
+                        'name' => 'name',
                         'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => 'right主键',
-//                         'dbType' => "int(11)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'integer',
-                        'precision' => '11',
-                        'scale' => '',
-                        'size' => '11',
-                        'type' => 'integer',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('right_id'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'url' => array(
-                        'name' => 'url',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => 'url',
-//                         'dbType' => "varchar(200)",
+//                         'comment' => '敏感词',
+//                         'dbType' => "varchar(100)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '200',
+                        'precision' => '100',
                         'scale' => '',
-                        'size' => '200',
+                        'size' => '100',
                         'type' => 'string',
                         'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('url'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'para_name' => array(
-                        'name' => 'para_name',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '参数名',
-//                         'dbType' => "varchar(40)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '40',
-                        'scale' => '',
-                        'size' => '40',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('para_name'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
-		'para_value' => array(
-                        'name' => 'para_value',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '参数值',
-//                         'dbType' => "varchar(40)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '40',
-                        'scale' => '',
-                        'size' => '40',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('para_value'),
+                        'label'=>$this->getAttributeLabel('name'),
                         'inputType' => 'text',
                         'isEdit' => true,
                         'isSearch' => false,
@@ -203,17 +116,17 @@ class AdminRightUrl extends \backend\models\BaseModel
                     ),
 		'create_user' => array(
                         'name' => 'create_user',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '创建人',
-//                         'dbType' => "varchar(50)",
+//                         'dbType' => "varchar(20)",
                         'defaultValue' => '',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',
-                        'precision' => '50',
+                        'precision' => '20',
                         'scale' => '',
-                        'size' => '50',
+                        'size' => '20',
                         'type' => 'string',
                         'unsigned' => false,
                         'label'=>$this->getAttributeLabel('create_user'),
@@ -224,9 +137,32 @@ class AdminRightUrl extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
+		'update_user' => array(
+                        'name' => 'update_user',
+                        'allowNull' => true,
+//                         'autoIncrement' => false,
+//                         'comment' => '更新人',
+//                         'dbType' => "varchar(20)",
+                        'defaultValue' => '',
+                        'enumValues' => null,
+                        'isPrimaryKey' => false,
+                        'phpType' => 'string',
+                        'precision' => '20',
+                        'scale' => '',
+                        'size' => '20',
+                        'type' => 'string',
+                        'unsigned' => false,
+                        'label'=>$this->getAttributeLabel('update_user'),
+                        'inputType' => 'text',
+                        'isEdit' => true,
+                        'isSearch' => false,
+                        'isDisplay' => true,
+                        'isSort' => true,
+//                         'udc'=>'',
+                    ),
 		'create_date' => array(
                         'name' => 'create_date',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '创建时间',
 //                         'dbType' => "datetime",
@@ -247,34 +183,11 @@ class AdminRightUrl extends \backend\models\BaseModel
                         'isSort' => true,
 //                         'udc'=>'',
                     ),
-		'update_user' => array(
-                        'name' => 'update_user',
-                        'allowNull' => true,
-//                         'autoIncrement' => false,
-//                         'comment' => '修改人',
-//                         'dbType' => "varchar(50)",
-                        'defaultValue' => '',
-                        'enumValues' => null,
-                        'isPrimaryKey' => false,
-                        'phpType' => 'string',
-                        'precision' => '50',
-                        'scale' => '',
-                        'size' => '50',
-                        'type' => 'string',
-                        'unsigned' => false,
-                        'label'=>$this->getAttributeLabel('update_user'),
-                        'inputType' => 'text',
-                        'isEdit' => true,
-                        'isSearch' => false,
-                        'isDisplay' => true,
-                        'isSort' => true,
-//                         'udc'=>'',
-                    ),
 		'update_date' => array(
                         'name' => 'update_date',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
-//                         'comment' => '修改时间',
+//                         'comment' => '更新时间',
 //                         'dbType' => "datetime",
                         'defaultValue' => '',
                         'enumValues' => null,
