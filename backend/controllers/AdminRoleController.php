@@ -17,19 +17,7 @@ use backend\services\AdminRightService;
 class AdminRoleController extends BaseController
 {
 	public $layout = "lte_main";
-    /*
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-    */
+
     /**
      * Lists all AdminRole models.
      * @return mixed

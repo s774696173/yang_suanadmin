@@ -27,7 +27,6 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         if(Yii::$app->user->isGuest){
-            //$this->layout = "main_main";
             $this->layout = "lte_main_login";
             return $this->render('login');
         }
