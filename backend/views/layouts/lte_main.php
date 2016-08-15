@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
+$this->title = 'YiiBoot通用管理后台';
 
 $system_menus = Yii::$app->user->identity->getSystemMenus();
 $system_rights = Yii::$app->user->identity->getSystemRights();
@@ -56,7 +56,7 @@ if($otherMenu == false){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+  <title><?=$this->title?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
