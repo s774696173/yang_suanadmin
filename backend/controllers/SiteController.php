@@ -6,6 +6,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use backend\models\AdminUser;
+use backend\models\BackendUser;
+use backend\models\AdminUserRole;
 /**
  * Site controller
  */
@@ -85,21 +87,13 @@ class SiteController extends BaseController
     }
     public function actionPsw()
     {
-        return $this->render('psw');
+       $userRole = AdminUserRole::find()->with('role')->andWhere(['user_id'=>Yii::$app->user->identity->id])->one();
+        return $this->render('psw',[
+            'user_role' => $userRole->role->name
+        ]);
     }
     public function actionPswSave()
     {
-//         ["old_password"]=>
-//         string(1) "1"
-//             ["new_password"]=>
-//             string(1) "1"
-//                 ["confirm_password"]=>
-//                 string(1) "1"
-//         var_dump($_POST);
-//         $msg = array('error'=>2, 'data'=>array('user_id'=>'用户不存在'));
-//         echo json_encode($msg);
-//         exit();
-        //return $this->render('psw');
         $old_password = Yii::$app->request->post('old_password', '');
         $new_password = Yii::$app->request->post('new_password', '');
         $confirm_password = Yii::$app->request->post('confirm_password', '');
@@ -125,20 +119,21 @@ class SiteController extends BaseController
         }
         if(Yii::$app->user->isGuest == false){
             $user = AdminUser::findByUsername(Yii::$app->user->identity->uname);
-            $old_password = Yii::$app->security->generatePasswordHash($old_password);
-            if($user->password == $old_password){
+            //$old_password = Yii::$app->security->generatePasswordHash($old_password);
+            //if($user->password == $old_password){
+            if(BackendUser::validatePassword($user, $old_password) == true){
                 $user->password = Yii::$app->security->generatePasswordHash($new_password);
                 $user->save();
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
             else{
-                $msg = array('errno'=>0, 'msg'=>'旧密码不正确'.$old_password);
+                $msg = array('errno'=>2, 'data'=>array('old_password'=>'旧密码不正确'));
                 echo json_encode($msg);
             }
         }
         else{
-            $msg = array('errno'=>0, 'msg'=>'请先登录');
+            $msg = array('errno'=>2, 'msg'=>'请先登录');
             echo json_encode($msg);
         }
     }

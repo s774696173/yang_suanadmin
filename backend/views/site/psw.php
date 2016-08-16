@@ -20,34 +20,33 @@ use yii\bootstrap\ActiveForm;
                     <!-- form start -->
                                 
                     <?php ActiveForm::begin(["id" => "update-psw-form", 'options' => ['class' => 'form-horizontal']]); ?>                      
-                    <!-- <form id="update-psw-form" class="form-horizontal" >  -->
                       <div class="box-body">
                       
                         <div class="form-group">
-                          <label for="inputEmail3" class="col-sm-2 control-label">当前角色</label>
+                          <label for="inputEmail3" class="col-sm-3 control-label">当前角色</label>
         
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="user_role">
+                          <div class="col-sm-9">
+                            <input type="text" readonly="readonly" disabled="disabled" class="form-control" id="user_role" value="<?=$user_role?>" />
                           </div>
                         </div>
                         
                         <div class="form-group">
-                          <label for="inputPassword3" class="col-sm-2 control-label">旧密码</label>
-                          <div class="col-sm-10">
-                            <input type="password" class="form-control" id="old_password" name="old_password"  placeholder="旧密码">
+                          <label for="inputPassword3" class="col-sm-3 control-label">旧密码</label>
+                          <div class="col-sm-9">
+                            <input type="password" class="form-control" id="old_password" name="old_password"  placeholder="旧密码" />
                           </div>
                         </div>
                         
                         <div class="form-group">
-                          <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
-                          <div class="col-sm-10">
+                          <label for="inputPassword3" class="col-sm-3 control-label">新密码</label>
+                          <div class="col-sm-9">
                             <input type="password" class="form-control" id="new_password" name="new_password" placeholder="新密码">
                           </div>
                         </div>
                         
                         <div class="form-group">
-                          <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
-                          <div class="col-sm-10">
+                          <label for="inputPassword3" class="col-sm-3 control-label">确认密码</label>
+                          <div class="col-sm-9">
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="确认密码">
                           </div>
                         </div>
@@ -106,7 +105,6 @@ $('#update-psw-form').bind('submit', function(e) {
             	var json = value.data;
         		for(var key in json){
         			$('#' + key).attr({'data-placement':'bottom', 'data-content':json[key], 'data-toggle':'popover'}).addClass('popover-show').popover('show');
-        			
         		}
         	}
 
