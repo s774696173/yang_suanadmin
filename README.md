@@ -21,10 +21,6 @@ git clone https://git.oschina.net/penngo/chadmin.git
 4. 导入data/db.sql。
 5. 浏览器访问yiiboot/backend/web/index.php ,如果配置了域名xx.com请指向路径yiiboot/backend/web，访问 xx.com/index，默认帐号密码admin 123456
 
-使用教程：https://git.oschina.net/penngo/chadmin/wikis/tutorial
-我在这坐等各位BUG反馈：http://git.oschina.net/penngo/chadmin/issues
-### 如果觉得本项目对你有用，点击顶部右上边[捐赠](#git-project-title)按钮，打赏支持一下作者。
-
 
 
 系统截图
@@ -34,6 +30,10 @@ git clone https://git.oschina.net/penngo/chadmin.git
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/130551_d7f7b3ab_2349.png "在这里输入图片标题")
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131001_8ce731b1_2349.png "在这里输入图片标题")
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131219_46baf279_2349.png "在这里输入图片标题")
+
+使用教程：https://git.oschina.net/penngo/chadmin/wikis/tutorial
+我在这坐等各位BUG反馈：http://git.oschina.net/penngo/chadmin/issues
+### 如果觉得本项目对你有用，点击顶部右上边[捐赠](#git-project-title)按钮，打赏支持一下作者。
 
 参考资料
 Yii官网http://www.yiiframework.com/

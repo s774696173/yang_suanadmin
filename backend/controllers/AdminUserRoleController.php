@@ -23,7 +23,7 @@ class AdminUserRoleController extends BaseController
      */
     public function actionIndex($roleId)
     {
-        $query = AdminUserRole::find()->andWhere(['role_id'=>$roleId]);
+        $query = AdminUserRole::find()->with('user')->with('role')->andWhere(['role_id'=>$roleId]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";

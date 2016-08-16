@@ -19,7 +19,7 @@ $modelLabel = new \backend\models\AdminModule();
       <div class="box">
       
         <div class="box-header">
-          <h3 class="box-title">模块列表</h3>
+          <h3 class="box-title">一级菜单列表</h3>
           <div class="box-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <button id="create_btn" type="button" class="btn btn-xs btn-primary">添&nbsp;&emsp;加</button>
@@ -100,7 +100,7 @@ $modelLabel = new \backend\models\AdminModule();
                 echo '  <td>' . $model->update_user . '</td>';
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
-                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-menu/index&id='. $model->id .'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>菜单管理</a>';
+                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-menu/index&id='. $model->id .'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>二级菜单</a>';
 //                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>菜单管理</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
