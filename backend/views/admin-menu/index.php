@@ -162,7 +162,7 @@ $modelLabel = new \backend\models\AdminMenu();
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>子菜单管理</h3>
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-menu-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-menu/save"]); ?>                      

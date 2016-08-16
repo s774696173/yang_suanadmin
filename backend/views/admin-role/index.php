@@ -230,7 +230,7 @@ $modelLabel = new \backend\models\AdminRole();
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>权限分配</h3>
 			</div>
 			<div class="modal-body">
 			     <input type="hidden" id="select_role_id" />

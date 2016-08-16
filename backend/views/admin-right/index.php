@@ -149,7 +149,7 @@ $modelLabel = new \backend\models\AdminRight();
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>路由管理</h3>
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-right-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-right/save"]); ?>                      
@@ -467,7 +467,7 @@ $('#create_btn').click(function (e) {
 			    alert("出错了，" + textStatus);
 			},
 		   success: function(data){
-			   //console.log(data);
+			    console.log(data);
 				$('#treeview').treeview({
 					data:data,
 					showIcon: false,

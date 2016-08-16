@@ -209,9 +209,6 @@ class AdminRightController extends BaseController
             $rightUrls[$url] = true;
             $controller = 'backend\controllers\\'.Inflector::id2camel($ru->para_name, '-'). 'Controller';
         }
-        //$fun = AdminMenuService::findOne(array('id'=>$menu_id));
-        //var_dump($rightUrls);
-        //         exit();
         $controllerDatas = [$controller];
         $rightActionData = array();
         foreach($controllerDatas as $c){
@@ -234,6 +231,9 @@ class AdminRightController extends BaseController
                 }
                 $rightActionData[] = $rightTree;
             }
+        }
+        if(count($rightActionData) == 0){
+            $rightActionData = array(['text'=>'请先选择控制器ID...', 'c'=>'', 'a'=>'', 'selectable'=>false, 'state'=>['checked'=>false], 'type'=>'a']);
         }
         //var_dump($rightActionData);
         return $rightActionData;

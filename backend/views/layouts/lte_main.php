@@ -1,4 +1,5 @@
 <?php
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -167,7 +168,7 @@ if($otherMenu == false){
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="<?=Url::toRoute('site/index')?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>Y</b>BT</span>
       <!-- logo for regular state and mobile devices -->
@@ -243,10 +244,7 @@ if($otherMenu == false){
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">菜单项</li>
-        <!-- <?php
-       
-        var_dump($funInfo);
-        ?> -->
+
         <li <?=$route == 'site/index' ?  ' class="active" ' : ''?>>
         	<a href="<?=Url::to(['site/index'])?>">
         	<i class="fa fa-dashboard"></i> 
@@ -312,7 +310,7 @@ if($otherMenu == false){
       
       </small></h1>
       <ol class="breadcrumb breadcrumb-quirk">
-        <li><a href="index.php?r=site/index"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="<?=Url::toRoute('site/index')?>"><i class="fa fa-dashboard"></i> 首页</a></li>
         <!-- 
         <li><a href="#">Tables</a></li>
         <li class="active">Data tables</li>  -->
@@ -342,9 +340,9 @@ if($otherMenu == false){
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.3.6
+      <b>Version</b> <?=Yii::$app->params['appVersion']?>
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+    <strong>Copyright &copy; 2015-<?=date('Y')?> <a href="<?=Yii::$app->params['homePage']?>"><?=Yii::$app->params['appName']?></a>.</strong> All rights
     reserved.
   </footer>
 
