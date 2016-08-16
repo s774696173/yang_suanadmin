@@ -18,7 +18,6 @@ class BaseController extends Controller
     {
         if (parent::beforeAction($action)) {
             if($this->verifyPermission($action) == true){
-                
                 return true;
             }
         }
