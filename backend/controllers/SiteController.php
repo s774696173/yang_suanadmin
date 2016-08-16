@@ -11,7 +11,7 @@ use backend\models\AdminUser;
  */
 class SiteController extends BaseController
 {
-
+    public $layout = "lte_main";
     /**
      * @inheritdoc
      */
@@ -31,7 +31,7 @@ class SiteController extends BaseController
             return $this->render('login');
         }
         else{
-            $this->layout = "lte_main";
+//             $this->layout = "lte_main";
             $menus = Yii::$app->user->identity->getSystemMenus();
             $sysInfo = [
                 ['name'=> '操作系统', 'value'=>php_uname('s')],  //'value'=>php_uname('s').' '.php_uname('r').' '.php_uname('v')],
@@ -51,7 +51,7 @@ class SiteController extends BaseController
 
     public function actionLte()
     {
-        $this->layout = "lte_main";
+//         $this->layout = "lte_main";
         return $this->render('lte');
     }
 
@@ -83,7 +83,65 @@ class SiteController extends BaseController
         Yii::$app->user->logout();
         return $this->goHome();
     }
-    
+    public function actionPsw()
+    {
+        return $this->render('psw');
+    }
+    public function actionPswSave()
+    {
+//         ["old_password"]=>
+//         string(1) "1"
+//             ["new_password"]=>
+//             string(1) "1"
+//                 ["confirm_password"]=>
+//                 string(1) "1"
+//         var_dump($_POST);
+//         $msg = array('error'=>2, 'data'=>array('user_id'=>'用户不存在'));
+//         echo json_encode($msg);
+//         exit();
+        //return $this->render('psw');
+        $old_password = Yii::$app->request->post('old_password', '');
+        $new_password = Yii::$app->request->post('new_password', '');
+        $confirm_password = Yii::$app->request->post('confirm_password', '');
+        if(empty($old_password) == true){
+            $msg = array('error'=>2, 'data'=>array('old_password'=>'旧密码不正确'));
+            echo json_encode($msg);
+            exit();
+        }
+        if(empty($new_password) == true){
+            $msg = array('error'=>2, 'data'=>array('new_password'=>'新密码不能为空'));
+            echo json_encode($msg);
+            exit();
+        }
+        if(empty($confirm_password) == true){
+            $msg = array('error'=>2, 'data'=>array('confirm_password'=>'确认密码不能为空'));
+            echo json_encode($msg);
+            exit();
+        }
+        if($new_password != $confirm_password){
+            $msg = array('error'=>2, 'data'=>array('confirm_password'=>'两次新密码不相同'));
+            echo json_encode($msg);
+            exit();
+        }
+        if(Yii::$app->user->isGuest == false){
+            $user = AdminUser::findByUsername(Yii::$app->user->identity->uname);
+            $old_password = Yii::$app->security->generatePasswordHash($old_password);
+            if($user->password == $old_password){
+                $user->password = Yii::$app->security->generatePasswordHash($new_password);
+                $user->save();
+                $msg = array('errno'=>0, 'msg'=>'保存成功');
+                echo json_encode($msg);
+            }
+            else{
+                $msg = array('errno'=>0, 'msg'=>'旧密码不正确'.$old_password);
+                echo json_encode($msg);
+            }
+        }
+        else{
+            $msg = array('errno'=>0, 'msg'=>'请先登录');
+            echo json_encode($msg);
+        }
+    }
     private function getDbVersion(){
         $driverName = Yii::$app->db->driverName;
         if(strpos($driverName, 'mysql') !== false){

@@ -198,7 +198,7 @@ if($otherMenu == false){
               <!-- Menu Body -->
               <li class="user-body">
               	<ul class="menu">
-            		<!-- <li><a href=""><i class="fa fa-cog"></i> 修改密码</a></li>  -->
+            		<li><a href="<?=Url::toRoute('site/psw')?>"><i class="fa fa-cog"></i> 修改密码</a></li>
                 	<li><a href="<?=Url::toRoute('site/logout')?>" data-method="post"><i class="fa fa-sign-out"></i> 退出</a></li>
             	</ul>
             
