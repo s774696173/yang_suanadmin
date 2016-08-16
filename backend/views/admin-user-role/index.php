@@ -63,11 +63,11 @@ $modelLabel = new \backend\models\AdminUserRole();
             
             <?php 
 		      echo '<th><input id="data_table_check" type="checkbox"></th>';
-              echo '<th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
-               echo '<th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('user_id').'</th>';
-              echo '<th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('role_id').'</th>';
-              echo '<th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
-              echo '<th tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('id').'</th>';
+               echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('user_id').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('role_id').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_user').'</th>';
+              echo '<th class="sorting" tabindex="0" aria-controls="data_table" rowspan="1" colspan="1" aria-sort="ascending" >'.$modelLabel->getAttributeLabel('update_date').'</th>';
          
 			?>
 	
@@ -146,23 +146,30 @@ $modelLabel = new \backend\models\AdminUserRole();
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>角色用户管理</h3>
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-user-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-user-role/save"]); ?>                      
                  
           <input type="hidden" class="form-control" id="id" name="AdminUserRole[id]" />
-		  <input type="hidden" class="form-control" id="role_id" name="AdminUserRole[role_id]" value="<?=$role_id?>" />
-		  
+
           <div id="user_id_div" class="form-group">
               <label for="user_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("user_id")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="user_id" name="AdminUserRole[user_id]" placeholder="必填" />
+                  <input type="text" class="form-control" id="user_id" name="AdminUserRole[user_id]" />
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          
+		  <div id="user_name_div" class="form-group">
+              <label for="user_name" class="col-sm-2 control-label">用户名</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="user_name" name="user_name" />
               </div>
               <div class="clearfix"></div>
           </div>
 
-		
+          <input type="hidden" class="form-control" id="role_id" name="AdminUserRole[role_id]" value="<?=$role_id?>"/>
 
           <div id="create_user_div" class="form-group">
               <label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
@@ -239,8 +246,8 @@ $modelLabel = new \backend\models\AdminUserRole();
 	if(type == "view"){
       $("#id").attr({readonly:true,disabled:true});
       $("#user_id").attr({readonly:true,disabled:true});
-      $("#role_id").attr({readonly:true,disabled:true});
-      $("#role_id").parent().parent().show();
+//       $("#role_id").attr({readonly:true,disabled:true});
+//       $("#role_id").parent().parent().show();
       $("#create_user").attr({readonly:true,disabled:true});
       $("#create_user").parent().parent().show();
       $("#create_date").attr({readonly:true,disabled:true});
@@ -254,8 +261,8 @@ $modelLabel = new \backend\models\AdminUserRole();
 	else{
       $("#id").attr({readonly:false,disabled:false});
       $("#user_id").attr({readonly:false,disabled:false});
-      $("#role_id").attr({readonly:false,disabled:false});
-      $("#role_id").parent().parent().hide();
+//       $("#role_id").attr({readonly:false,disabled:false});
+//       $("#role_id").parent().parent().hide();
       $("#create_user").attr({readonly:false,disabled:false});
       $("#create_user").parent().parent().hide();
       $("#create_date").attr({readonly:false,disabled:false});

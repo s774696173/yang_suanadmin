@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\AdminUser;
 
 /**
  * AdminUserRoleController implements the CRUD actions for AdminUserRole model.
@@ -84,8 +85,30 @@ class AdminUserRoleController extends BaseController
     public function actionCreate()
     {
         $model = new AdminUserRole();
-        if ($model->load(Yii::$app->request->post())) {
         
+        if ($model->load(Yii::$app->request->post())) {
+              $user_name = Yii::$app->request->post('user_name', '');
+              $condition = array();
+              if(empty($user_name) == false){
+                  $condition['uname'] = $user_name;
+              }
+              
+              if(empty($model->user_id) == false){
+                  $condition['id'] = $model->user_id;
+              }
+              
+              if(count($condition) > 0){
+                  $user = AdminUser::findOne($condition);
+                  if(empty($user) == false){
+                      $model->user_id = $user->id;
+                  }
+                  else{
+                      $msg = array('error'=>2, 'data'=>array('user_id'=>'用户不存在'));
+                      echo json_encode($msg);
+                      exit();
+                  }
+              }
+              
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
               $model->update_user = Yii::$app->user->identity->uname;
