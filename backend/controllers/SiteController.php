@@ -119,8 +119,6 @@ class SiteController extends BaseController
         }
         if(Yii::$app->user->isGuest == false){
             $user = AdminUser::findByUsername(Yii::$app->user->identity->uname);
-            //$old_password = Yii::$app->security->generatePasswordHash($old_password);
-            //if($user->password == $old_password){
             if(BackendUser::validatePassword($user, $old_password) == true){
                 $user->password = Yii::$app->security->generatePasswordHash($new_password);
                 $user->save();

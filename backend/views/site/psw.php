@@ -53,7 +53,7 @@ use yii\bootstrap\ActiveForm;
                       </div>
                       <!-- /.box-body -->
                       <div class="box-footer">
-                       
+                       <label id="msg_info" class="control-label text-green hide"><i class="fa fa-check"></i>修改密码成功</label>
                         <button id="update_psw_btn" type="button" class="btn btn-info pull-right">修改密码</button>
                       </div>
                       <!-- /.box-footer -->
@@ -88,6 +88,7 @@ $('#update_psw_btn').click(function (e) {
 
 $('#update-psw-form').bind('submit', function(e) {
 	e.preventDefault();
+	$("#msg_info").addClass('hide');
 	//var id = $("#id").val();
 	//var action = id == "" ? "create" : "update&id=" + id;
     $(this).ajaxSubmit({
@@ -97,9 +98,7 @@ $('#update-psw-form').bind('submit', function(e) {
     	success: function(value) 
     	{
         	if(value.errno == 0){
-        		$('#edit_dialog').modal('hide');
-        		admin_tool.alert('msg_info', '添加成功', 'success');
-        		//window.location.reload();
+        		$("#msg_info").removeClass('hide');
         	}
         	else{
             	var json = value.data;
