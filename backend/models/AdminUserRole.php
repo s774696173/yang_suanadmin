@@ -47,7 +47,7 @@ class AdminUserRole extends \backend\models\BaseModel
     {
         return [
             'id' => '主键',
-            'user_id' => '用户',
+            'user_id' => '用户id',
             'role_id' => '角色',
             'create_user' => '创建人',
             'create_date' => '创建时间',
