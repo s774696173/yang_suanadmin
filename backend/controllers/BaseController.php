@@ -38,7 +38,8 @@ class BaseController extends Controller
             $loginAllowUrl = ['site/index', 'site/logout', 'site/psw', 'site/psw-save'];
 //             if($route != 'site/index' && $route != 'site/logout'){
                if(in_array($route, $loginAllowUrl) == false){
-                if(Yii::$app->user->identity->uname != 'admin' && (empty($system_rights) == true || empty($system_rights[$route]) == true)){
+                   // Yii::$app->user->identity->uname != 'admin' && 
+                if((empty($system_rights) == true || empty($system_rights[$route]) == true)){
                     header("Content-type: text/html; charset=utf-8");
                     exit('没有权限访问'.$route);
                 }
