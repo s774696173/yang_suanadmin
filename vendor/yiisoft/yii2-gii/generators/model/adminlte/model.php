@@ -104,7 +104,7 @@ class <?= $className ?> extends \backend\models\BaseModel
      * 返回数据库字段信息，仅在生成CRUD时使用，如不需要生成CRUD，请注释或删除该getTableColumnInfo()代码
      * COLUMN_COMMENT可用key如下:
      * label - 显示的label
-     * inputType 控件类型, 包含text,select,checkbox,radio,file,password,hidden
+     * inputType 控件类型, 暂时只支持text,hidden  // select,checkbox,radio,file,password,
      * isEdit   是否允许编辑，如果允许编辑将在添加和修改时输入
      * isSearch 是否允许搜索
      * isDisplay 是否在列表中显示
