@@ -18,7 +18,7 @@ CRUD Generator：基于AdminLTE的web模板，生成对应model的crud操作，�
 git clone https://git.oschina.net/penngo/chadmin.git
 下载http://git.oschina.net/penngo/chadmin/attach_files附件，或下载master zip最新代码。
 3. 新建数据库yiiboot, 修改数据库配置common\config\main.php
-4. 导入data/db.sql。
+4. 导入doc/db.sql。
 5. 浏览器访问yiiboot/backend/web/index.php ,如果配置了域名xx.com请指向路径yiiboot/backend/web，访问 xx.com/index，默认帐号密码admin 123456
 
 使用教程：https://git.oschina.net/penngo/chadmin/wikis/tutorial
