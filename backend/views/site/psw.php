@@ -17,8 +17,6 @@ use yii\bootstrap\ActiveForm;
                       <h3 class="box-title">修改密码</h3>
                     </div>
                     <!-- /.box-header -->
-                    <!-- form start -->
-                                
                     <?php ActiveForm::begin(["id" => "update-psw-form", 'options' => ['class' => 'form-horizontal']]); ?>                      
                       <div class="box-body">
                       
