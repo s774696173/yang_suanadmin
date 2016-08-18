@@ -88,7 +88,7 @@ $('#update_psw_btn').click(function (e) {
 
 $('#update-psw-form').bind('submit', function(e) {
 	e.preventDefault();
-	$("#msg_info").addClass('hide');s
+	$("#msg_info").addClass('hide');
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
