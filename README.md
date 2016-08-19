@@ -1,15 +1,12 @@
 ### 简介
 
-YiiBoot简单便捷高效安全，非常适合二次开发的通用管理后台。基于[Yii2](http://www.yiiframework.com/) + [AdminLTE](https://github.com/almasaeed2010/AdminLTE) + mysql开发，提供易用安全的用户菜单权限管理，操作日志记录，定制了基于AdminLTE的gii代码model和curl模板，易于用户在此基础上快速开发自己的管理后台。
+YiiBoot使用[Yii2](http://www.yiiframework.com/) + [AdminLTE](https://github.com/almasaeed2010/AdminLTE) + mysql，开发高效的通用管理后台；采用代码生成器，以AminLTE为样式模板，生成数据库表的数据模型model、增删改查的视图view和控制器controller，菜单配置后直接使用；高效、快速开发自己的管理后台。
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131856_3b94983a_2349.png "在这里输入图片标题")
- **基本的功能：** 
-菜单管理：系统自动识别可用路由，用户只需选择添加到对应菜单中
-角色管理：树形结构的权限分配，易于分配
-用户管理：
-日志记录：记录所有用户操作记录，让所有后台操作有数据可查。
-代码生成：这是让YiiBoot实现高效快捷开发的功能，基于gii实现，以AdminLTE为前端模板。
-Model Generator：同时生成model类和service类，所有数据库操作业务写在service类上；model类直接生成，不要把业务代码写在model类，避免重新生成时代码覆盖。
-CRUD Generator：基于AdminLTE的web模板，生成对应model的crud操作，同时包括分页列表显示，查询，排序等。
+
+### 功能特点
+1、基于Yii2 + AdminLTE + mysql开发，拥有Yii2和AdminLTE的优点，支持移动端访问的后台。
+2、便捷的菜单、权限、用户管理，自动识别可用路由控制器，轻松钩选配置路由权限，无需手写配置路由地址，
+3、快捷高效，易于二次开发扩展，使用代码生成器，根据数据库表生成对应的增删改查页面，完全不需要修改或轻微调整就能开发出满足自己需求的功能，配置好菜单直接在后台使用。
 
 ### 下载安装
 
@@ -38,4 +35,3 @@ gii Model Generator生成model和service类文件
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131001_8ce731b1_2349.png "在这里输入图片标题")
 gii CRUD Generator生成视图view和controll类文件
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131219_46baf279_2349.png "在这里输入图片标题")
-
