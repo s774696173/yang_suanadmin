@@ -32,10 +32,12 @@ class AdminRightUrlService extends AdminRightUrl{
                     'update_date'
                 ], $insertData)
                 ->execute();
+                $transaction->commit();
             }
             return $d;
         } catch (Exception $e) {
             $transaction->rollBack();
+            Yii::getLogger()->log($e->getMessage (), Logger::LEVEL_ERROR);
             return 0;
         }
         return 0;
