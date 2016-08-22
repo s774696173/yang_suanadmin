@@ -55,6 +55,10 @@ class AdminRightController extends BaseController
             'pageParam'=>'page', 
             'pageSizeParam'=>'per-page']
         );
+        
+        $orderby = ['display_order'=>SORT_ASC];
+        $query = $query->orderBy($orderby);
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
@@ -64,8 +68,7 @@ class AdminRightController extends BaseController
         foreach($controllers as $c){
             $controllerData[$c['text']] = $c;
         }
-//         var_dump($controllerData);
-//         exit();
+
         return $this->render('index', [
             'models'=>$models,
             'pages'=>$pagination,

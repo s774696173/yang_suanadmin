@@ -55,13 +55,17 @@ class AdminMenuController extends BaseController
                 $query = $query->where($condition, $parame);
             }
         }
-        //$models = $query->orderBy('display_order')
+        
         $pagination = new Pagination([
             'totalCount' =>$query->count(), 
             'pageSize' => '10', 
             'pageParam'=>'page', 
             'pageSizeParam'=>'per-page']
         );
+        
+        $orderby = ['display_order'=>SORT_ASC];
+        $query = $query->orderBy($orderby);
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)

@@ -51,6 +51,10 @@ class AdminModuleController extends BaseController
             'pageParam'=>'page', 
             'pageSizeParam'=>'per-page']
         );
+        
+        $orderby = ['display_order'=>SORT_ASC];
+        $query = $query->orderBy($orderby);
+        
         $models = $query
         ->offset($pagination->offset)
         ->limit($pagination->limit)
