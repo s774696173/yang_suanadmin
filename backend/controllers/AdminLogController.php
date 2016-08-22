@@ -5,10 +5,7 @@ namespace backend\controllers;
 use Yii;
 use yii\data\Pagination;
 use backend\models\AdminLog;
-use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * AdminLogController implements the CRUD actions for AdminLog model.

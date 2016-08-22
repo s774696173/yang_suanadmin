@@ -5,14 +5,11 @@ namespace backend\controllers;
 use Yii;
 use yii\data\Pagination;
 use backend\models\AdminRight;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\helpers\StringHelper;
 use yii\helpers\Inflector;
 use backend\services\AdminRightUrlService;
-use backend\services\AdminMenuService;
 /**
 /**
  * AdminRightController implements the CRUD actions for AdminRight model.

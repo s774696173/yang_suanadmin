@@ -5,10 +5,8 @@ namespace backend\controllers;
 use Yii;
 use yii\data\Pagination;
 use backend\models\AdminMenu;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\helpers\StringHelper;
 use yii\helpers\Inflector;
 

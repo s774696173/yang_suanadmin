@@ -5,10 +5,7 @@ namespace backend\controllers;
 use Yii;
 use yii\data\Pagination;
 use backend\models\AdminUserRole;
-use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use backend\models\AdminUser;
 
 /**

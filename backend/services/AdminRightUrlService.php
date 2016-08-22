@@ -32,8 +32,8 @@ class AdminRightUrlService extends AdminRightUrl{
                     'update_date'
                 ], $insertData)
                 ->execute();
-                $transaction->commit();
             }
+            $transaction->commit();
             return $d;
         } catch (Exception $e) {
             $transaction->rollBack();
