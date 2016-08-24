@@ -1,10 +1,9 @@
 
 <?php
 use yii\widgets\LinkPager;
-use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use backend\models\AdminRole;
-
+use yii\helpers\Url;
 $modelLabel = new \backend\models\AdminRole();
 ?>
 
@@ -35,7 +34,7 @@ $modelLabel = new \backend\models\AdminRole();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-role-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-role/index']); ?>     
+                <?php ActiveForm::begin(['id' => 'admin-role-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('admin-role/index')]); ?>     
                 
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
@@ -89,7 +88,7 @@ $modelLabel = new \backend\models\AdminRole();
                 echo '  <td>' . $model->update_user . '</td>';
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
-                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-user-role/index&roleId='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配用户</a>';
+                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="'.Url::toRoute(['admin-user-role/index', 'roleId'=>$model->id]).'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配用户</a>';
                 echo '      <a id="view_btn" onclick="rightAction('.$model->id.')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>分配权限</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
@@ -152,7 +151,7 @@ $modelLabel = new \backend\models\AdminRole();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "admin-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-role/save"]); ?>                      
+                <?php $form = ActiveForm::begin(["id" => "admin-role-form", "class"=>"form-horizontal", "action"=>Url::toRoute("admin-role/save")]); ?>                      
                  
           <input type="hidden" class="form-control" id="id" name="AdminRole[id]" />
 
@@ -234,7 +233,7 @@ $modelLabel = new \backend\models\AdminRole();
 			</div>
 			<div class="modal-body">
 			     <input type="hidden" id="select_role_id" />
-                <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>"index.php?r=system-role/save"]); ?>                
+                <?php $form = ActiveForm::begin(["id" => "system-role-form", "class"=>"form-horizontal", "action"=>Url::toRoute("system-role/save")]); ?>                
                <div id="treeview"></div>
                 <?php ActiveForm::end(); ?>            
             </div>
@@ -281,7 +280,7 @@ function rightAction(roleId){
 	$('#select_role_id').val(roleId);
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-role/get-all-rights",
+		   url: "<?=Url::toRoute('admin-role/get-all-rights')?>",
 		   data: {'roleId':roleId},
 		   cache: false,
 		   dataType:"json",
@@ -319,7 +318,7 @@ $('#right_dialog_ok').click(function(){
 		}
 		$.ajax({
 			   type: "GET",
-			   url: "index.php?r=admin-role/save-rights",
+			   url: "<?=Url::toRoute('admin-role/save-rights')?>",
 			   data: {"rids":rids, 'roleId':role_id},
 			   cache: false,
 			   dataType:"json",
@@ -409,7 +408,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-role/view",
+		   url: "<?=Url::toRoute('admin-role/view')?>",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -447,7 +446,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-role/delete",
+				   url: "<?=Url::toRoute('admin-role/delete')?>",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -507,11 +506,11 @@ $('#delete_btn').click(function (e) {
 $('#admin-role-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
-	var action = id == "" ? "create" : "update&id=" + id;
+	var action = id == "" ? "<?=Url::toRoute('admin-role/create')?>" : "<?=Url::toRoute('admin-role/update')?>";
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-role/" + action,
+    	url: action,
     	success: function(value) 
     	{
         	if(value.errno == 0){

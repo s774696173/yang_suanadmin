@@ -114,6 +114,7 @@ class AdminModuleController extends BaseController
      */
     public function actionUpdate($id)
     {
+        $id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         

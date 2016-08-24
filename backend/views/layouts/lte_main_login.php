@@ -1,3 +1,6 @@
+<?php 
+use yii\helpers\Url;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,15 +10,15 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?=Url::base()?>/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="libs/font-awesome.min.css">
+  <link rel="stylesheet" href="<?=Url::base()?>/libs/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="libs/ionicons.min.css">
+  <link rel="stylesheet" href="<?=Url::base()?>/libs/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="<?=Url::base()?>/dist/css/AdminLTE.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+  <link rel="stylesheet" href="<?=Url::base()?>/plugins/iCheck/square/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,11 +31,11 @@
 <?= $content ?>
 
 <!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="<?=Url::base()?>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="<?=Url::base()?>/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<script src="<?=Url::base()?>/plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
     $('input').iCheck({

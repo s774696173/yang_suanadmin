@@ -4,7 +4,7 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use backend\models\AdminRightUrl;
-
+use yii\helpers\Url;
 $modelLabel = new \backend\models\AdminRightUrl();
 ?>
 
@@ -35,7 +35,7 @@ $modelLabel = new \backend\models\AdminRightUrl();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-right-url-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-right-url/index']); ?>     
+                <?php ActiveForm::begin(['id' => 'admin-right-url-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('admin-right-url/index')]); ?>     
                 
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
@@ -151,7 +151,7 @@ $modelLabel = new \backend\models\AdminRightUrl();
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "admin-right-url-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-right-url/save"]); ?>                      
+                <?php $form = ActiveForm::begin(["id" => "admin-right-url-form", "class"=>"form-horizontal", "action"=>Url::toRoute('admin-right-url/save')]); ?>                      
                  
           <div id="id_div" class="form-group">
               <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
@@ -300,7 +300,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-right-url/view",
+		   url: "<?=Url::toRoute('admin-right-url/view')?>",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -338,7 +338,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-right-url/delete",
+				   url: "<?=Url::toRoute('admin-right-url/delete')?>",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -397,11 +397,11 @@ $('#delete_btn').click(function (e) {
 $('#admin-right-url-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
-	var action = id == "" ? "create" : "update&id=" + id;
+	var action = id == "" ? "<?=Url::toRoute('admin-right-url/create')?>" : "<?=Url::toRoute('admin-right-url/update')?>";
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-right-url/" + action,
+    	url: action,
     	success: function(value) 
     	{
         	if(value.errno == 0){

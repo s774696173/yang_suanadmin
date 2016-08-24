@@ -1,15 +1,16 @@
 <?php
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 ?>
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="<?=Url::toRoute('site/login')?>"><b>Yii</b>Boot</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-	<?php $form = ActiveForm::begin(['id' => 'login-form', 'action'=>'index.php?r=site/login']); ?>
+	<?php $form = ActiveForm::begin(['id' => 'login-form', 'action'=>Url::toRoute('site/login')]); ?>
     <!-- <form action="../../index2.html" method="post">   -->
       <div class="form-group has-feedback">
         <input name="username" id="username" type="text" class="form-control" placeholder="用户名" />

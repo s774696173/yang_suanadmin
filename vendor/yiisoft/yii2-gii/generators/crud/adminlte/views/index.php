@@ -20,6 +20,8 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use common\utils\CommonFun;
+use yii\helpers\Url;
+
 use <?=$modelClass?>;
 
 $modelLabel = new \<?=$modelClass?>();
@@ -53,7 +55,7 @@ $modelLabel = new \<?=$modelClass?>();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?="<?php ActiveForm::begin(['id' => '".Inflector::camel2id(StringHelper::basename($controllerName))."-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=".Inflector::camel2id(StringHelper::basename($controllerName))."/index']); ?>"?>     
+                <?="<?php ActiveForm::begin(['id' => '".Inflector::camel2id(StringHelper::basename($controllerName))."-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('".Inflector::camel2id(StringHelper::basename($controllerName))."/index')]); ?>"?>     
                 <?php foreach($tableColumnInfo as $key=>$column){
                         if($column['isSearch'] === true){
                             echo "\n";
@@ -176,7 +178,7 @@ foreach($tableColumnInfo as $key=>$column){
 				<h3>Settings</h3>
 			</div>
 			<div class="modal-body">
-                <?='<?php $form = ActiveForm::begin(["id" => "'.Inflector::camel2id(StringHelper::basename($controllerName)).'-form", "class"=>"form-horizontal", "action"=>"index.php?r='.Inflector::camel2id(StringHelper::basename($controllerName)).'/save"]); ?>'?>                      
+                <?='<?php $form = ActiveForm::begin(["id" => "'.Inflector::camel2id(StringHelper::basename($controllerName)).'-form", "class"=>"form-horizontal", "action"=>Url::toRoute("'.Inflector::camel2id(StringHelper::basename($controllerName)).'/save")]); ?>'?>                      
                  <?php foreach($tableColumnInfo as $key=>$column){
                     echo "\n";
                     $isNeed = $column['allowNull'] == false ? '必填' : '';
@@ -226,7 +228,12 @@ function orderby(field, op){
 		   }); 
 	 }
 	 else{
-		 url = url + "&orderby=" + encodeURI(optemp);
+		 if(url.indexOf('?') != -1){
+			 url = url + "&orderby=" + encodeURI(optemp);
+		 }
+		 else{
+			 url = url + "?orderby=" + encodeURI(optemp);
+		 }
 	 }
 	 window.location.href=url; 
  }
@@ -284,7 +291,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/view",
+		   url: "<?="<?=Url::toRoute('".Inflector::camel2id(StringHelper::basename($controllerName))."/view')?>"?>",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -322,12 +329,12 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/delete",
+				   url: "<?="<?=Url::toRoute('".Inflector::camel2id(StringHelper::basename($controllerName))."/delete')?>"?>",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
 				   error: function (xmlHttpRequest, textStatus, errorThrown) {
-					    alert("出错了，" + textStatus);
+					    admin_tool.alert('msg_info', '出错了，' + textStatus, 'warning');
 					},
 				   success: function(data){
 					   for(i = 0; i < ids.length; i++){
@@ -381,11 +388,11 @@ $('#delete_btn').click(function (e) {
 $('#<?=Inflector::camel2id(StringHelper::basename($controllerName))?>-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
-	var action = id == "" ? "create" : "update&id=" + id;
+	var action = id == "" ? "<?="<?=Url::toRoute('".Inflector::camel2id(StringHelper::basename($controllerName))."/create')?>"?>" : "<?="<?=Url::toRoute('".Inflector::camel2id(StringHelper::basename($controllerName))."/update')?>"?>";
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=<?=Inflector::camel2id(StringHelper::basename($controllerName))?>/" + action,
+    	url: action,
     	success: function(value) 
     	{
         	if(value.errno == 0){

@@ -5,7 +5,7 @@ use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use common\utils\CommonFun;
 use backend\models\AdminLog;
-
+use yii\helpers\Url;
 $modelLabel = new \backend\models\AdminLog();
 ?>
 
@@ -38,7 +38,7 @@ $modelLabel = new \backend\models\AdminLog();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-log-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-log/index']); ?>     
+                <?php ActiveForm::begin(['id' => 'admin-log-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('admin-log/index')]); ?>     
                 
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
@@ -256,7 +256,12 @@ function orderby(field, op){
 		   }); 
 	 }
 	 else{
-		 url = url + "&orderby=" + encodeURI(optemp);
+		 if(url.indexOf('?') != -1){
+			 url = url + "&orderby=" + encodeURI(optemp);
+		 }
+		 else{
+			 url = url + "?orderby=" + encodeURI(optemp);
+		 }
 	 }
 	 window.location.href=url; 
  }
@@ -326,7 +331,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-log/view",
+		   url: "<?=Url::toRoute('admin-log/view')?>",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -364,7 +369,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-log/delete",
+				   url: "<?=Url::toRoute('admin-log/delete')?>",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -423,11 +428,11 @@ $('#delete_btn').click(function (e) {
 $('#admin-log-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
-	var action = id == "" ? "create" : "update&id=" + id;
+	var action = id == "" ? "<?=Url::toRoute('admin-log/create')?>" : "<?=Url::toRoute('admin-log/update')?>";
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-log/" + action,
+    	url: action,
     	success: function(value) 
     	{
         	if(value.errno == 0){

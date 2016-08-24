@@ -4,7 +4,7 @@ use yii\widgets\LinkPager;
 use yii\base\Object;
 use yii\bootstrap\ActiveForm;
 use backend\models\AdminMenu;
-
+use yii\helpers\Url;
 $modelLabel = new \backend\models\AdminMenu();
 ?>
 
@@ -35,8 +35,7 @@ $modelLabel = new \backend\models\AdminMenu();
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
-                <?php ActiveForm::begin(['id' => 'admin-menu-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>'index.php?r=admin-menu/index']); ?>     
-                
+                <?php ActiveForm::begin(['id' => 'admin-menu-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('admin-menu/index')]); ?>
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
                       <input type="text" class="form-control" id="query[id]" name="query[id]"  value="<?=isset($query["id"]) ? $query["id"] : "" ?>">
@@ -103,7 +102,7 @@ $modelLabel = new \backend\models\AdminMenu();
                 echo '  <td>' . $model->update_user . '</td>';
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
-                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="index.php?r=admin-right/index&id='.$model->id.'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>路由管理</a>';
+                echo '      <a id="view_btn" class="btn btn-primary btn-sm" href="'.Url::toRoute(['admin-right/index','id'=>$model->id]).'"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>路由管理</a>';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
@@ -165,7 +164,7 @@ $modelLabel = new \backend\models\AdminMenu();
 				<h3>子菜单管理</h3>
 			</div>
 			<div class="modal-body">
-                <?php $form = ActiveForm::begin(["id" => "admin-menu-form", "class"=>"form-horizontal", "action"=>"index.php?r=admin-menu/save"]); ?>                      
+                <?php $form = ActiveForm::begin(["id" => "admin-menu-form", "class"=>"form-horizontal", "action"=>Url::toRoute('admin-menu/save')]); ?>                      
                  <input type="hidden" class="form-control" id="id" name="AdminMenu[id]" />
                  <input type="hidden" class="form-control" id="module_id" name="AdminMenu[module_id]" value="<?=$module_id?>">                    
           
@@ -193,7 +192,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
- -->
+
           <div id="display_label_div" class="form-group">
               <label for="display_label" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("display_label")?></label>
               <div class="col-sm-10">
@@ -201,7 +200,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
-
+ -->
           <div id="des_div" class="form-group">
               <label for="des" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("des")?></label>
               <div class="col-sm-10">
@@ -217,7 +216,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
-
+<!-- 
           <div id="entry_right_name_div" class="form-group">
               <label for="entry_right_name" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_right_name")?></label>
               <div class="col-sm-10">
@@ -225,7 +224,7 @@ $modelLabel = new \backend\models\AdminMenu();
               </div>
               <div class="clearfix"></div>
           </div>
-
+ -->
           <div id="entry_url_div" class="form-group">
               <label for="entry_url" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("entry_url")?></label>
               <div class="col-sm-10">
@@ -327,10 +326,10 @@ $modelLabel = new \backend\models\AdminMenu();
 		$("#code").val('');
 		$("#menu_name").val('');
 // 		$("#module_id").val('');
-		$("#display_label").val('');
+// 		$("#display_label").val('');
 		$("#des").val('');
 		$("#display_order").val('');
-		$("#entry_right_name").val('');
+// 		$("#entry_right_name").val('');
 		$("#entry_url").val('');
 		$("#action").val('');
 		$("#controller").val('');
@@ -346,10 +345,10 @@ $modelLabel = new \backend\models\AdminMenu();
     	$("#code").val(data.code);
     	$("#menu_name").val(data.menu_name);
     	$("#module_id").val(data.module_id);
-    	$("#display_label").val(data.display_label);
+//     	$("#display_label").val(data.display_label);
     	$("#des").val(data.des);
     	$("#display_order").val(data.display_order);
-    	$("#entry_right_name").val(data.entry_right_name);
+//     	$("#entry_right_name").val(data.entry_right_name);
     	$("#entry_url").val(data.entry_url);
     	$("#action").val(data.action);
     	$("#controller").val(data.controller);
@@ -364,10 +363,10 @@ $modelLabel = new \backend\models\AdminMenu();
       $("#code").attr({readonly:true,disabled:true});
       $("#menu_name").attr({readonly:true,disabled:true});
       $("#module_id").attr({readonly:true,disabled:true});
-      $("#display_label").attr({readonly:true,disabled:true});
+//       $("#display_label").attr({readonly:true,disabled:true});
       $("#des").attr({readonly:true,disabled:true});
       $("#display_order").attr({readonly:true,disabled:true});
-      $("#entry_right_name").attr({readonly:true,disabled:true});
+//       $("#entry_right_name").attr({readonly:true,disabled:true});
       $("#entry_url").attr({readonly:true,disabled:true});
       $("#action").attr({readonly:true,disabled:true});
       $("#controller").attr({readonly:true,disabled:true});
@@ -388,10 +387,10 @@ $modelLabel = new \backend\models\AdminMenu();
       $("#code").attr({readonly:false,disabled:false});
       $("#menu_name").attr({readonly:false,disabled:false});
       $("#module_id").attr({readonly:false,disabled:false});
-      $("#display_label").attr({readonly:false,disabled:false});
+//       $("#display_label").attr({readonly:false,disabled:false});
       $("#des").attr({readonly:false,disabled:false});
       $("#display_order").attr({readonly:false,disabled:false});
-      $("#entry_right_name").attr({readonly:false,disabled:false});
+//       $("#entry_right_name").attr({readonly:false,disabled:false});
       $("#entry_url").attr({readonly:true,disabled:true});
 //       $("#entry_url").attr({readonly:false,disabled:false});
       $("#action").attr({readonly:false,disabled:false});
@@ -415,7 +414,7 @@ function initModel(id, type, fun){
 	
 	$.ajax({
 		   type: "GET",
-		   url: "index.php?r=admin-menu/view",
+		   url: "<?=Url::toRoute('admin-menu/view')?>",
 		   data: {"id":id},
 		   cache: false,
 		   dataType:"json",
@@ -453,7 +452,7 @@ function deleteAction(id){
 		admin_tool.confirm('请确认是否删除', function(){
 		    $.ajax({
 				   type: "GET",
-				   url: "index.php?r=admin-menu/delete",
+				   url: "<?=Url::toRoute('admin-menu/delete')?>",
 				   data: {"ids":ids},
 				   cache: false,
 				   dataType:"json",
@@ -512,11 +511,11 @@ $('#delete_btn').click(function (e) {
 $('#admin-menu-form').bind('submit', function(e) {
 	e.preventDefault();
 	var id = $("#id").val();
-	var action = id == "" ? "create" : "update&id=" + id;
+	var action = id == "" ? "<?=Url::toRoute('admin-menu/create')?>" : "<?=Url::toRoute('admin-menu/update')?>";
     $(this).ajaxSubmit({
     	type: "post",
     	dataType:"json",
-    	url: "index.php?r=admin-menu/" + action,
+    	url: action,
     	success: function(value) 
     	{
         	if(value.errno == 0){
@@ -538,13 +537,9 @@ $('#admin-menu-form').bind('submit', function(e) {
 $("#controller").change(function(){
     // 先清空第二个
 	var controller = $(this).val();
-// 	console.log("================" + controller);
      $("#action").empty();
      var option = $("<option>").html("请选择");
      $("#action").append(option);
-    // 实际的应用中，这里的option一般都是用循环生成多个了
-     //var option = $("<option>").val(1).text("pxx");
-    // $("#action").append(option);
      var actions = window.controllerData[controller];
      var nodes = actions.nodes;
      for(i = 0; i < nodes.length; i++){
@@ -552,7 +547,6 @@ $("#controller").change(function(){
          var option = $("<option>").val(action.a).html(action.text);
          $("#action").append(option);
      }
-//      console.log("================", actions);
 });
  
 </script>
