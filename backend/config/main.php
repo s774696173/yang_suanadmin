@@ -16,10 +16,10 @@ $config = [
             'cookieValidationKey' => 'w3BnewAWmCrjijzkiLucYD5Ty1Ym_V9F',
         ],
         
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-        ],
+//         'urlManager' => [
+//             'enablePrettyUrl' => true,
+//             'showScriptName' => false,
+//         ],
         
         'user'=>[
             'class'=>'yii\web\User',
