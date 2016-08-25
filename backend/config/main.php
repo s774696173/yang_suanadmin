@@ -46,7 +46,6 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
@@ -54,17 +53,17 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'generators' => [ //here
-            'model' => [ // generator name
-                'class' => 'yii\gii\generators\model\GeneratorCommon', // generator class
-                'templates' => [ //setting for out templates
-                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\model\adminlte', // template name => path to template
+        'generators' => [
+            'model' => [
+                'class' => 'yii\gii\generators\model\GeneratorCommon',
+                'templates' => [
+                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\model\adminlte',
                 ]
             ],
             'crud' => [
-                'class' => 'yii\gii\generators\crud\Generator', // generator class
-                'templates' => [ //setting for out templates
-                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\adminlte', // template name => path to template
+                'class' => 'yii\gii\generators\crud\Generator',
+                'templates' => [
+                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\adminlte',
                 ]
             ],
         ]
