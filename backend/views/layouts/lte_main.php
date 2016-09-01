@@ -194,7 +194,7 @@ if($otherMenu == false){
              
               <ul class="dropdown-menu">
               <!-- User image -->
-             
+              
               <!-- Menu Body -->
               <li class="user-body">
               	<ul class="menu">

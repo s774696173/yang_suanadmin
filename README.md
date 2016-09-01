@@ -13,7 +13,7 @@ YiiBoot使用[Yii2](http://www.yiiframework.com/) + [AdminLTE](https://github.co
 1. 运行环境 php5.5+
 2. 下载代码
 git clone https://git.oschina.net/penngo/chadmin.git
-下载http://git.oschina.net/penngo/chadmin/attach_files附件，或下载master zip最新代码。
+下载http://git.oschina.net/penngo/chadmin/attach_files 附件，或下载master zip最新代码。
 3. 新建数据库yiiboot, 修改数据库配置common\config\main.php
 4. 导入doc/db.sql。
 5. 浏览器访问yiiboot/backend/web/index.php ,如果配置了域名xx.com请指向路径yiiboot/backend/web，访问 xx.com/index，默认帐号密码admin 123456
@@ -35,3 +35,4 @@ gii Model Generator生成model和service类文件
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131001_8ce731b1_2349.png "在这里输入图片标题")
 gii CRUD Generator生成视图view和controll类文件
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/0816/131219_46baf279_2349.png "在这里输入图片标题")
+
