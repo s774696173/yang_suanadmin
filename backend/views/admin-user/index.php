@@ -97,7 +97,7 @@ $modelLabel = new \backend\models\AdminUser();
                 echo '  <td>' . $model->update_date . '</td>';
                 echo '  <td class="center">';
                 echo '      <a id="view_btn" onclick="viewAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-zoom-in icon-white"></i>查看</a>';
-                echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
+                 echo '      <a id="edit_btn" onclick="editAction(' . $model->id . ')" class="btn btn-primary btn-sm" href="#"> <i class="glyphicon glyphicon-edit icon-white"></i>修改</a>';
                 echo '      <a id="delete_btn" onclick="deleteAction(' . $model->id . ')" class="btn btn-danger btn-sm" href="#"> <i class="glyphicon glyphicon-trash icon-white"></i>删除</a>';
                 echo '  </td>';
                 echo '<tr/>';
@@ -158,15 +158,16 @@ $modelLabel = new \backend\models\AdminUser();
 			</div>
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-user-form", "class"=>"form-horizontal", "action"=>Url::toRoute("admin-user/save")]); ?>                      
-                 
+                 <input type="hidden" class="form-control" id="id" name="AdminUser[id]" />
+                 <!-- 
           <div id="id_div" class="form-group">
               <label for="id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("id")?></label>
               <div class="col-sm-10">
-          <input type="hidden" class="form-control" id="id" name="AdminUser[id]" />
+          
               </div>
               <div class="clearfix"></div>
           </div>
-
+             -->
           <div id="uname_div" class="form-group">
               <label for="uname" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("uname")?></label>
               <div class="col-sm-10">
@@ -284,7 +285,7 @@ $modelLabel = new \backend\models\AdminUser();
 		$("#last_ip").val('');
 		$("#is_online").val('');
 		$("#domain_account").val('');
-		$("#status").val('');
+		$("#status").val('10');
 		$("#create_user").val('');
 		$("#create_date").val('');
 		$("#update_user").val('');
@@ -309,7 +310,9 @@ $modelLabel = new \backend\models\AdminUser();
       $("#id").attr({readonly:true,disabled:true});
       $("#uname").attr({readonly:true,disabled:true});
       $("#password").attr({readonly:true,disabled:true});
+      $("#password").parent().parent().hide();
       $("#auth_key").attr({readonly:true,disabled:true});
+      $("#auth_key").parent().parent().hide();
       $("#last_ip").attr({readonly:true,disabled:true});
       $("#is_online").attr({readonly:true,disabled:true});
       $("#domain_account").attr({readonly:true,disabled:true});
@@ -318,24 +321,42 @@ $modelLabel = new \backend\models\AdminUser();
       $("#create_date").attr({readonly:true,disabled:true});
       $("#update_user").attr({readonly:true,disabled:true});
       $("#update_date").attr({readonly:true,disabled:true});
-	$('#edit_dialog_ok').addClass('hidden');
+	  $('#edit_dialog_ok').addClass('hidden');
 	}
 	else{
       $("#id").attr({readonly:false,disabled:false});
-      $("#uname").attr({readonly:false,disabled:false});
-      $("#password").attr({readonly:false,disabled:false});
-      $("#auth_key").attr({readonly:false,disabled:false});
-      $("#last_ip").attr({readonly:false,disabled:false});
-      $("#is_online").attr({readonly:false,disabled:false});
+      $("#uname").attr({readonly:true,disabled:true});
+      if(type == "create"){
+    	  $("#uname").attr({readonly:false,disabled:false});
+    	  $("#password").attr({readonly:false,disabled:false});
+          $("#password").parent().parent().show();
+      }
+      else{
+    	  $("#uname").attr({readonly:true,disabled:true});
+    	  $("#password").attr({readonly:true,disabled:true});
+          $("#password").parent().parent().hide();
+      }
+      
+      $("#auth_key").attr({readonly:true,disabled:true});
+      $("#auth_key").parent().parent().hide();
+      $("#last_ip").attr({readonly:true,disabled:true});
+      $("#last_ip").parent().parent().hide();
+      $("#is_online").attr({readonly:true,disabled:true});
+      $("#is_online").parent().parent().hide();
       $("#domain_account").attr({readonly:false,disabled:false});
+      $("#domain_account").parent().parent().hide();
       $("#status").attr({readonly:false,disabled:false});
-      $("#create_user").attr({readonly:false,disabled:false});
-      $("#create_date").attr({readonly:false,disabled:false});
-      $("#update_user").attr({readonly:false,disabled:false});
-      $("#update_date").attr({readonly:false,disabled:false});
-		$('#edit_dialog_ok').removeClass('hidden');
-		}
-		$('#edit_dialog').modal('show');
+      $("#create_user").attr({readonly:true,disabled:true});
+      $("#create_user").parent().parent().hide();
+      $("#create_date").attr({readonly:true,disabled:true});
+      $("#create_date").parent().parent().hide();
+      $("#update_user").attr({readonly:true,disabled:true});
+      $("#update_user").parent().parent().hide();
+      $("#update_date").attr({readonly:true,disabled:true});
+      $("#update_date").parent().parent().hide();
+	  $('#edit_dialog_ok').removeClass('hidden');
+	}
+	$('#edit_dialog').modal('show');
 }
 
 function initModel(id, type, fun){
@@ -444,6 +465,7 @@ $('#admin-user-form').bind('submit', function(e) {
     	type: "post",
     	dataType:"json",
     	url: action,
+    	data:{id:id},
     	success: function(value) 
     	{
         	if(value.errno == 0){

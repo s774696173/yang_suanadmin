@@ -81,17 +81,18 @@ class AdminUserController extends BaseController
     {
         $model = new AdminUser();
         if ($model->load(Yii::$app->request->post())) {
-        
-              if(empty($model->is_online) == true){
-                  $model->is_online = 'n';
-              }
-              if(empty($model->status) == true){
-                  $model->status = 10;
-              }
-              $model->create_user = Yii::$app->user->identity->uname;
-              $model->create_date = date('Y-m-d H:i:s');
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');            if($model->validate() == true && $model->save()){
+            if(empty($model->is_online) == true){
+                $model->is_online = 'n';
+            }
+            if(empty($model->status) == true){
+              $model->status = 10;
+            }
+            $model->password = Yii::$app->security->generatePasswordHash($model->password);
+            $model->create_user = Yii::$app->user->identity->uname;
+            $model->create_date = date('Y-m-d H:i:s');
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');            
+            if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
                 echo json_encode($msg);
             }
@@ -111,11 +112,12 @@ class AdminUserController extends BaseController
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
+        $id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
-        
+              
               $model->is_online = 'n';
               $model->status = 10;
               $model->update_user = Yii::$app->user->identity->uname;

@@ -112,8 +112,9 @@ class AdminLogController extends BaseController
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
+        $id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         

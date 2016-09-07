@@ -26,6 +26,7 @@ class BaseController extends Controller
     
     private function verifyPermission($action){
         $route = $this->route;
+        //var_dump($route);
         // 检查是否已经登录
         if(Yii::$app->user->isGuest){
             $allowUrl = ['site/index', 'site/lte'];
@@ -36,15 +37,13 @@ class BaseController extends Controller
         else{
             $system_rights = Yii::$app->user->identity->getSystemRights();
             $loginAllowUrl = ['site/index', 'site/logout', 'site/psw', 'site/psw-save'];
-//             if($route != 'site/index' && $route != 'site/logout'){
-               if(in_array($route, $loginAllowUrl) == false){
-                   // Yii::$app->user->identity->uname != 'admin' && 
-                if((empty($system_rights) == true || empty($system_rights[$route]) == true)){
+            if(in_array($route, $loginAllowUrl) == false){
+               if((empty($system_rights) == true || empty($system_rights[$route]) == true)){
                     header("Content-type: text/html; charset=utf-8");
                     exit('没有权限访问'.$route);
-                }
-                $rights = $system_rights[$route];
-                if($route != 'system-log/index'){
+               }
+               $rights = $system_rights[$route];
+               if($route != 'system-log/index'){
                     $systemLog = new AdminLog();
                     $systemLog->url = $route;
                     $systemLog->controller_id = $action->controller->id;
@@ -55,11 +54,9 @@ class BaseController extends Controller
                     $systemLog->create_date = date('Y-m-d H:i:s');
                     $systemLog->create_user = Yii::$app->user->identity->uname;
                     $systemLog->client_ip = CommonFun::getClientIp();
-                    
                     $systemLog->save();
-                }
+               }
             }
-           
         }
         return true;
     }

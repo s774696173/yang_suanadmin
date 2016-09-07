@@ -441,6 +441,7 @@ $('#admin-module-form').bind('submit', function(e) {
     	type: "post",
     	dataType:"json",
     	url: action,
+    	data:{id:id},
     	success: function(value) 
     	{
         	if(value.errno == 0){

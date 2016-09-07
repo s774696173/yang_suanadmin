@@ -512,6 +512,7 @@ $('#admin-right-form').bind('submit', function(e) {
     	type: "post",
     	dataType:"json",
     	url: action,
+    	data:{id:id},
     	data: {"rightUrls":rightUrls},
     	success: function(value) 
     	{
