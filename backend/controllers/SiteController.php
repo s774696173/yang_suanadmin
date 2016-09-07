@@ -6,6 +6,7 @@ use yii\web\Controller;
 use backend\models\AdminUser;
 use backend\models\BackendUser;
 use backend\models\AdminUserRole;
+use common\utils\CommonFun;
 /**
  * Site controller
  */
@@ -63,6 +64,10 @@ class SiteController extends BaseController
         $rememberMe = Yii::$app->request->post('remember');
         $rememberMe = $rememberMe == 'y' ? true : false;
         if(AdminUser::login($username, $password, $rememberMe) == true){
+            AdminUser::updateAll(
+                ['last_ip' => CommonFun::getClientIp()],
+                ['uname' => $username]
+                );
             return $this->goBack();
         }
         else{

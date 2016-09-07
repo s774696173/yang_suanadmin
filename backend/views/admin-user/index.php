@@ -88,7 +88,7 @@ $modelLabel = new \backend\models\AdminUser();
 //                 echo '  <td>' . $model->password . '</td>';
 //                 echo '  <td>' . $model->auth_key . '</td>';
                 echo '  <td>' . $model->last_ip . '</td>';
-                echo '  <td>' . $model->is_online . '</td>';
+                echo '  <td>' . ($model->is_online == 'n' ? '否' : '是')  . '</td>';
 //                 echo '  <td>' . $model->domain_account . '</td>';
                 echo '  <td>' . $model->status . '</td>';
 //                 echo '  <td>' . $model->create_user . '</td>';

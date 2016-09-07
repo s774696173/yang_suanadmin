@@ -118,10 +118,10 @@ class AdminUserController extends BaseController
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
               
-              $model->is_online = 'n';
-              $model->status = 10;
-              $model->update_user = Yii::$app->user->identity->uname;
-              $model->update_date = date('Y-m-d H:i:s');        
+            //$model->is_online = 'n';
+            //$model->status = 10;
+            $model->update_user = Yii::$app->user->identity->uname;
+            $model->update_date = date('Y-m-d H:i:s');        
         
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');
