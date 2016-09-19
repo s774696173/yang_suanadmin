@@ -298,20 +298,12 @@ if($otherMenu == false){
       </small></h1>
       <ol class="breadcrumb breadcrumb-quirk">
         <li><a href="<?=Url::toRoute('site/index')?>"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <!-- 
-        <li><a href="#">Tables</a></li>
-        <li class="active">Data tables</li>  -->
+
         <?php
         if(isset($funInfo['module_name']) == true && isset($funInfo['menu_name']) == true){
             echo '<li><a href="#">'.$funInfo['module_name'].'</a></li>';
             echo '<li><a href="'.Url::toRoute($funInfo['entry_url']).'">'.$funInfo['menu_name'].'</a></li>';
-            //echo '<li><a href="#">'.$funInfo['module_name'].'</a></li>';
-            //echo '<li><a href="'.Url::toRoute($funInfo['entry_url']).'">'.$funInfo['menu_name'].'</a></li>';
-            
-            //$system_menus_current = isset(Yii::$app->session['system_menus_current']) == true ? Yii::$app->session['system_menus_current'] : [];
-            //foreach($system_menus_current as $m){
-            //    echo '<li><a href="'.$m['url'].'">'.$m['right_name'].'</a></li>';
-            //}
+          
         }
         ?>
       </ol>
