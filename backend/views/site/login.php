@@ -30,28 +30,39 @@ use yii\helpers\Url;
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+          <button id="login_btn" type="button" class="btn btn-primary btn-block btn-flat">登录</button>
         </div>
         <!-- /.col -->
       </div>
     <!-- </form>  -->
     <?php ActiveForm::end(); ?>
-	<!-- 
-    <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
-     -->
-     
-    <!-- /.social-auth-links -->
-	<!-- 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
-    -->
+
   </div>
   <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
+
+<script>
+$('#login_btn').click(function (e) {
+    e.preventDefault();
+	$('#login-form').submit();
+});
+$('#login-form').bind('submit', function(e) {
+	e.preventDefault();
+    $(this).ajaxSubmit({
+    	type: "post",
+    	dataType:"json",
+    	url: "<?=Url::toRoute('site/login')?>",
+    	success: function(value) 
+    	{
+        	if(value.errno == 0){
+        		window.location.reload();
+        	}
+        	else{
+            	$('#username').attr({'data-placement':'top', 'data-content':'<span class="text-danger">用户名或密码错误</span>', 'data-toggle':'popover'}).addClass('popover-show').popover({html : true }).popover('show');
+        	}
+
+    	}
+    });
+});
+</script>

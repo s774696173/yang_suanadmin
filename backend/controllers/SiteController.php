@@ -48,13 +48,6 @@ class SiteController extends BaseController
             ]);
         }
     }
- 
-
-    public function actionLte()
-    {
-//         $this->layout = "lte_main";
-        return $this->render('lte');
-    }
 
     public function actionLogin()
     {
@@ -68,10 +61,11 @@ class SiteController extends BaseController
                 ['last_ip' => CommonFun::getClientIp()],
                 ['uname' => $username]
                 );
-            return $this->goBack();
+            //return $this->goBack();
+            echo json_encode(['errno'=>0]);
         }
         else{
-            echo 'fail';
+            echo json_encode(['errno'=>2]);
         }
 
     }

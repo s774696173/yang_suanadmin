@@ -28,8 +28,7 @@ class BaseController extends Controller
         $route = $this->route;
         // 检查是否已经登录
         if(Yii::$app->user->isGuest){
-            
-            $allowUrl = ['site/index', 'site/lte'];
+            $allowUrl = ['site/index', 'site/login'];
             if(in_array($route, $allowUrl) == false){
                 $this->redirect(Url::toRoute('site/index'));
                 return false;
