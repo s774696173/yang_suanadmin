@@ -26,12 +26,13 @@ class BaseController extends Controller
     
     private function verifyPermission($action){
         $route = $this->route;
-        //var_dump($route);
         // 检查是否已经登录
         if(Yii::$app->user->isGuest){
+            
             $allowUrl = ['site/index', 'site/lte'];
             if(in_array($route, $allowUrl) == false){
                 $this->redirect(Url::toRoute('site/index'));
+                return false;
             }
         }
         else{
