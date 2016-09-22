@@ -260,13 +260,13 @@ $modelLabel = new \backend\models\AdminModule();
 </div>
 <?php $this->beginBlock('footer');  ?>
 <!-- <body></body>后代码块 -->
- <script>
- function searchAction(){
+<script>
+function searchAction(){
 		$('#admin-module-search-form').submit();
-	}
- function viewAction(id){
+}
+function viewAction(id){
 		initModel(id, 'view', 'fun');
-	}
+}
 
  function initEditSystemModule(data, type){
 	if(type == 'create'){
@@ -336,7 +336,6 @@ $modelLabel = new \backend\models\AdminModule();
 }
 
 function initModel(id, type, fun){
-	
 	$.ajax({
 		   type: "GET",
 		   url: "<?=Url::toRoute('admin-module/view')?>",
