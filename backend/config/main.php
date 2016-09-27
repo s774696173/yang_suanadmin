@@ -57,13 +57,15 @@ if (YII_ENV_DEV) {
             'model' => [
                 'class' => 'yii\gii\generators\model\GeneratorCommon',
                 'templates' => [
-                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\model\adminlte',
+//                     'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\model\adminlte',
+                    'adminlte' => '../../vendor/yiisoft/yii2-gii/generators/model/adminlte',
                 ]
             ],
             'crud' => [
                 'class' => 'yii\gii\generators\crud\Generator',
                 'templates' => [
-                    'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\adminlte',
+//                     'adminlte' => '..\..\vendor\yiisoft\yii2-gii\generators\crud\adminlte',
+                    'adminlte' => '../../vendor/yiisoft/yii2-gii/generators/crud/adminlte',
                 ]
             ],
         ]
