@@ -20,8 +20,8 @@ git clone https://git.oschina.net/penngo/chadmin.git
 
 使用教程：https://git.oschina.net/penngo/chadmin/wikis/tutorial
 我在这坐等各位BUG反馈：http://git.oschina.net/penngo/chadmin/issues
- **当前发布版本：v1.0.0** 
- **开发版本：v1.1.0** 
+ **当前发布版本：v1.1.0** 
+ **开发版本：v1.2.0** 
 
 
 系统截图
