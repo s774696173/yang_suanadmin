@@ -154,7 +154,7 @@ $modelLabel = new \backend\models\AdminRight();
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "admin-right-form", "class"=>"form-horizontal", "action"=>Url::toRoute('admin-right/save')]); ?>                      
                  
-                 <input type="hidden" class="form-control" id="id" name="AdminRight[id]" />
+                 <input type="hidden" class="form-control" id="id" name="id" />
           		 <input type="hidden" class="form-control" id="menu_id" name="AdminRight[menu_id]" value="<?=$menu_id?>" />
                  
           <div id="right_name_div" class="form-group">
