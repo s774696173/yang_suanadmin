@@ -168,8 +168,9 @@ foreach($tableColumnInfo as $key=>$column){
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
      */
-    public function actionUpdate(<?= $actionParams ?>)
+    public function actionUpdate()
     {
+        $id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         <?php 

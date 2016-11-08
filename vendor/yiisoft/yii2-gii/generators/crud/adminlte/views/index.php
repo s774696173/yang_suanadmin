@@ -193,7 +193,12 @@ foreach($tableColumnInfo as $key=>$column){
                     
                     switch($column['inputType']){
                         case 'hidden':
-                            $inputWidget = '          <input type="hidden" class="form-control" id="id" name="'.$modelName.'['.$key.']" />'."\n";
+                            if($column['isPrimaryKey'] == true){
+                                $inputWidget = '          <input type="hidden" class="form-control" id="'.$key.'" name="'.$key.'" />'."\n";
+                            }
+                            else{
+                                $inputWidget = '          <input type="hidden" class="form-control" id="'.$key.'" name="'.$modelName.'['.$key.']" />'."\n";
+                            }
                             echo $inputWidget;
                             break;
                         case 'text':
