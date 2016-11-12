@@ -23,8 +23,9 @@ class AdminMenuController extends BaseController
      * Lists all AdminMenu models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
+        $mid = Yii::$app->request->get('mid');
         $controllers = $this->getAllController();
         $controllerData = array();
         foreach($controllers as $c){
@@ -32,7 +33,7 @@ class AdminMenuController extends BaseController
         
         }
         
-        $query = AdminMenu::find()->andWhere(['module_id'=>$id]);
+        $query = AdminMenu::find()->andWhere(['module_id'=>$mid]);
          $querys = Yii::$app->request->get('query');
         if(count($querys) > 0){
             $condition = "";
@@ -72,7 +73,7 @@ class AdminMenuController extends BaseController
             'models'=>$models,
             'pages'=>$pagination,
             'query'=>$querys,
-            'module_id'=>$id,
+            'module_id'=>$mid,
             'controllerData'=>$controllerData,
         ]);
     }
