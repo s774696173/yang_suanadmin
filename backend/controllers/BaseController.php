@@ -40,7 +40,7 @@ class BaseController extends Controller
             if(in_array($route, $loginAllowUrl) == false){
                if((empty($system_rights) == true || empty($system_rights[$route]) == true)){
                     header("Content-type: text/html; charset=utf-8");
-                    exit('没有权限访问'.$route);
+                    //exit('没有权限访问'.$route);
                }
                $rights = $system_rights[$route];
                if($route != 'system-log/index'){

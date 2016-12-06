@@ -36,6 +36,7 @@ $modelLabel = new \backend\models\AdminUserRole();
           	<div class="row">
           	<div class="col-sm-12">
                 <?php ActiveForm::begin(['id' => 'admin-user-role-search-form', 'method'=>'get', 'options' => ['class' => 'form-inline'], 'action'=>Url::toRoute('admin-user-role/index')]); ?>     
+                <input type="hidden" class="form-control" name="roleId" value="<?=$role_id?>"/>
                 
                   <div class="form-group" style="margin: 5px;">
                       <label><?=$modelLabel->getAttributeLabel('id')?>:</label>
