@@ -263,11 +263,11 @@ class Test extends \backend\models\BaseModel
                     ),
 		'create_user' => array(
                         'name' => 'create_user',
-                        'allowNull' => true,
+                        'allowNull' => false,
 //                         'autoIncrement' => false,
 //                         'comment' => '用户',
 //                         'dbType' => "varchar(50)",
-                        'defaultValue' => '',
+                        'defaultValue' => 'admin',
                         'enumValues' => null,
                         'isPrimaryKey' => false,
                         'phpType' => 'string',

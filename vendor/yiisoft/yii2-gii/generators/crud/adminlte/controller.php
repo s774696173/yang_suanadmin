@@ -174,11 +174,13 @@ foreach($tableColumnInfo as $key=>$column){
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         <?php 
-                    echo "\n";
+            echo "\n";
             foreach($tableColumnInfo as $key=>$column){
                 if(empty($column['defaultValue']) == false){
                     $defaultValue = $column['phpType'] == 'string' ? "'{$column['defaultValue']}'" : $column['defaultValue'];
-                    echo "              \$model->$key = ".$defaultValue.";\n";
+                    echo "             if(empty(\$model->$key) == true){\n";
+                    echo "                 \$model->$key = ".$defaultValue.";\n";
+                    echo "             }";
                 }
                 switch($key){
                     case 'update_user':

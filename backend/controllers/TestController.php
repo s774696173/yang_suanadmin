@@ -91,6 +91,9 @@ class TestController extends BaseController
         $model = new Test();
         if ($model->load(Yii::$app->request->post())) {
         
+              if(empty($model->create_user) == true){
+                  $model->create_user = 'admin';
+              }
               $model->create_user = Yii::$app->user->identity->uname;
               $model->create_date = date('Y-m-d H:i:s');
         
@@ -114,12 +117,15 @@ class TestController extends BaseController
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
+        $id = Yii::$app->request->post('id');
         $model = $this->findModel($id);
         if ($model->load(Yii::$app->request->post())) {
         
-        
+             if(empty($model->create_user) == true){
+                 $model->create_user = 'admin';
+             }        
         
             if($model->validate() == true && $model->save()){
                 $msg = array('errno'=>0, 'msg'=>'保存成功');

@@ -158,7 +158,7 @@ $modelLabel = new \backend\models\Test();
 			<div class="modal-body">
                 <?php $form = ActiveForm::begin(["id" => "test-form", "class"=>"form-horizontal", "action"=>Url::toRoute("test/save")]); ?>                      
                  
-          <input type="hidden" class="form-control" id="id" name="Test[id]" />
+          <input type="hidden" class="form-control" id="id" name="id" />
 
           <div id="controller_id_div" class="form-group">
               <label for="controller_id" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("controller_id")?></label>
@@ -219,7 +219,7 @@ $modelLabel = new \backend\models\Test();
           <div id="create_user_div" class="form-group">
               <label for="create_user" class="col-sm-2 control-label"><?php echo $modelLabel->getAttributeLabel("create_user")?></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="create_user" name="Test[create_user]" placeholder="" />
+                  <input type="text" class="form-control" id="create_user" name="Test[create_user]" placeholder="必填" />
               </div>
               <div class="clearfix"></div>
           </div>
@@ -374,7 +374,7 @@ function deleteAction(id){
 				   cache: false,
 				   dataType:"json",
 				   error: function (xmlHttpRequest, textStatus, errorThrown) {
-					    alert("出错了，" + textStatus);
+					    admin_tool.alert('msg_info', '出错了，' + textStatus, 'warning');
 					},
 				   success: function(data){
 					   for(i = 0; i < ids.length; i++){
