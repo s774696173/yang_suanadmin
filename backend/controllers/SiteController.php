@@ -149,7 +149,7 @@ class SiteController extends BaseController
         $exception = Yii::$app->getErrorHandler()->exception;
         $statusCode = $exception->statusCode;
 //         return $this->render('error', ['name' => $statusCode, 'message'=>$exception->__toString()]);
-        return $this->render('error', ['name' => $statusCode, 'message'=>"系统出错，请查看日志具体错误信息！"]);
+        return $this->render('error', ['name' => $statusCode, 'message'=>"系统出错，具体错误信息请查看runtime\logs\app.log"]);
          
     }
 }
