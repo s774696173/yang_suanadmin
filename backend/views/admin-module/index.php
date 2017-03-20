@@ -361,7 +361,7 @@ function deleteAction(id){
 		ids[0] = id;
 	}
 	else{
-		var checkboxs = $('#data_table :checked');
+		var checkboxs = $('#data_table tbody :checked');
 	    if(checkboxs.size() > 0){
 	        var c = 0;
 	        for(i = 0; i < checkboxs.size(); i++){

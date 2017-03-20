@@ -16,14 +16,14 @@ class SiteController extends BaseController
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
+//     public function actions()
+//     {
+//         return [
+//             'error' => [
+//                 'class' => 'yii\web\ErrorAction',
+//             ],
+//         ];
+//     }
 
     public function actionIndex()
     {
@@ -139,5 +139,17 @@ class SiteController extends BaseController
             $driverName = $driverName .'_' . $v['v'];
         }
         return $driverName;
+    }
+    
+    /**
+     * 全局错误处理
+     */
+    public function actionError()
+    {
+        $exception = Yii::$app->getErrorHandler()->exception;
+        $statusCode = $exception->statusCode;
+//         return $this->render('error', ['name' => $statusCode, 'message'=>$exception->__toString()]);
+        return $this->render('error', ['name' => $statusCode, 'message'=>"系统出错，请查看日志具体错误信息！"]);
+         
     }
 }
