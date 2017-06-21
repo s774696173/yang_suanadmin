@@ -77,7 +77,7 @@ $modelLabel = new \<?=$modelClass?>();
           	
           	<!-- row start -->
           	<div class="row">
-          	<div class="col-sm-12">
+          	<div class="col-sm-12 table-responsive">
           	<table id="data_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="data_table_info">
             <thead>
             <tr role="row">
