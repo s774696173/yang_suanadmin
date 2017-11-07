@@ -101,10 +101,14 @@ if($otherMenu == false){
             return {
             	confirm : function(content, ok_fun){
             		$('#confirm_content').text(content);
-          			$('#confirm_dialog_ok').click(function(){
-          				ok_fun();
-          				$('#confirm_dialog').modal('hide'); 
-          			});
+            		$("#confirm_dialog_ok").one("click", function() { 
+            			ok_fun();
+            			$('#confirm_dialog').modal('hide');
+            		});
+          			//$('#confirm_dialog_ok').click(function(){
+          			//	ok_fun();
+          			//	$('#confirm_dialog').modal('hide'); 
+          			//});
           			$('#confirm_dialog').modal('show');
           		},
           		alert : function(id, msg, type){
