@@ -51,7 +51,7 @@ $modelLabel = new \<?=$modelClass?>();
         <!-- /.box-header -->
         
         <div class="box-body">
-          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap table-responsive">
             <!-- row start search-->
           	<div class="row">
           	<div class="col-sm-12">
@@ -79,7 +79,7 @@ $modelLabel = new \<?=$modelClass?>();
           	<div class="row">
           	<div class="col-sm-12 table-responsive">
           	<table id="data_table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="data_table_info">
-            <thead>
+            <thead class="text-nowrap">
             <tr role="row">
             
             <?="<?php \n"?>
