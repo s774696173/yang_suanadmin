@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'YiiBoot通用管理后台';
+$this->title = Yii::$app->params['appName'] . '管理后台';
 
 $system_menus = Yii::$app->user->identity->getSystemMenus();
 $system_rights = Yii::$app->user->identity->getSystemRights();
@@ -91,6 +91,8 @@ if($otherMenu == false){
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+   <link rel="stylesheet" href="<?=Url::base()?>/dist/css/default.css">
   <!-- jQuery 2.2.3 -->
   <script src="<?=Url::base()?>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
@@ -255,9 +257,9 @@ if($otherMenu == false){
         	<span>首页</span>
         	</a>
         </li>
-        <?php 
-        
+        <?php
 			foreach($system_menus as $menu){
+
 			    $funcList = $menu['funcList'];
 			    $isMenuActive = '';
 			    $isTreeView = count($funcList) > 0 ? "treeview" : "";

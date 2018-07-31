@@ -1,9 +1,9 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
-    'supportEmail' => 'support@example.com',
+    'adminEmail' => '84808313@qq.com',
+    'supportEmail' => '84808313@qq.com',
     'user.passwordResetTokenExpire' => 3600,
     'appVersion' => '1.0.0',
-    'appName' => 'YiiBoot',
-    'homePage' => 'http://git.oschina.net/penngo/chadmin'
+    'appName' => '易经心水',
+    'homePage' => 'http://www.ecaiying.com'
 ];

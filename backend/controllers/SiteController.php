@@ -40,7 +40,7 @@ class SiteController extends BaseController
                 ['name'=>'Yii版本', 'value'=>Yii::getVersion()],
                 ['name'=>'数据库', 'value'=>$this->getDbVersion()],
                 ['name'=>'AdminLTE', 'value'=>'V2.3.6'],
-                ['name'=>'建议和BUG', 'value'=>'http://git.oschina.net/penngo/chadmin/issues'],
+//                ['name'=>'建议和BUG', 'value'=>'http://git.oschina.net/penngo/chadmin/issues'],
             ];
             return $this->render('index', [
                 'system_menus' => $menus,
